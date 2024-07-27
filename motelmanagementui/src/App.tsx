@@ -7,7 +7,9 @@ export default function App() {
     <>
       <Header />
       <div id="body">
-        <section id="menu-left"></section>
+        <section id="menu-left">
+          <Menu />
+        </section>
         <section id="content"></section>
         <section id="info"></section>
       </div>
