@@ -1,5 +1,7 @@
 import Header from "./components/header";
 import Menu from "./components/menu";
+import Info from "./components/info";
+import Content from "./components/content";
 import "./styles.css";
 
 export default function App() {
@@ -10,8 +12,8 @@ export default function App() {
         <section id="menu-left">
           <Menu />
         </section>
-        <section id="content"></section>
-        <section id="info"></section>
+        <Content />
+        <Info />
       </div>
     </>
   );
