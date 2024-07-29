@@ -166,3 +166,16 @@ li {
   height: 96px;
   display: block;
 }
+
+
+@media only screen and (max-width: 600px) {
+  #menu-left {
+    width: 0;
+    overflow: hidden;
+  }
+  .info{
+    width:0;
+    overflow:hidden;
+    padding:0;
+  }
+}
