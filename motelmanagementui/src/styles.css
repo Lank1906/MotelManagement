@@ -167,15 +167,46 @@ li {
   display: block;
 }
 
+.arrow,
+.arrow2 {
+  display: none;
+}
+
 
 @media only screen and (max-width: 600px) {
   #menu-left {
     width: 0;
     overflow: hidden;
   }
-  .info{
-    width:0;
-    overflow:hidden;
-    padding:0;
+  .info {
+    width: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  .arrow {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px black;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+  }
+  .arrow2 {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px black;
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
   }
 }

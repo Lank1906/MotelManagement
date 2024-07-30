@@ -12,8 +12,14 @@ export default function App() {
         <section id="menu-left">
           <Menu />
         </section>
+        <div className="arrow">
+          <i className="fa-solid fa-angles-right"></i>
+        </div>
         <Content />
         <Info />
+        <div className="arrow2">
+          <i className="fa-solid fa-angles-left"></i>
+        </div>
       </div>
     </>
   );
