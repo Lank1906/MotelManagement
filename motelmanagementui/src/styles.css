@@ -18,7 +18,7 @@ header {
   background-color: #dbdbdb;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.6);
   border-bottom-right-radius: 20px;
-  z-index: -2;
+  z-index: 0;
 }
 .menu,
 .horizontal {
@@ -63,7 +63,7 @@ li {
   position: relative;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.6);
   border-bottom-right-radius: 24px;
-  z-index: -2;
+  z-index: 0;
 }
 #menu-left::before {
   content: "";
@@ -73,7 +73,7 @@ li {
   background-color: #dbdbdb;
   top: 0;
   right: -24px;
-  z-index: -1;
+  z-index: 1;
 }
 #menu-left::after {
   content: "";
@@ -85,7 +85,7 @@ li {
   right: -48px;
   border-radius: 50% 0 0 0;
   box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.6);
-  z-index: -1;
+  z-index: 1;
 }
 #menu-left .menu {
   padding-top: 48px;
@@ -110,6 +110,7 @@ li {
   gap: 18px;
   flex-direction: column;
   justify-content: flex-start;
+  z-index: 2;
 }
 .info {
   width: 24%;
@@ -148,7 +149,7 @@ li {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  height: 700px;
+  height: 800px;
   overflow-y: scroll;
 }
 .card {
@@ -172,18 +173,21 @@ li {
 .arrow,
 .arrow2 {
   display: none;
+  z-index: 3;
 }
 
 
 @media only screen and (max-width: 860px) {
   #menu-left {
-    width: 0;
-    overflow: hidden;
+    width: 5px;
   }
+ .menu{
+  width:0;
+  overflow: hidden;
+ }
   .info {
-    width: 0;
+    width: 2px;
     overflow: hidden;
-    padding: 0;
   }
   .arrow {
     width: 50px;

@@ -13,7 +13,7 @@ export default function App() {
       <Header />
       <div id="body">
         <section id="menu-left" style={{width:leftStatus}}>
-          <Menu />
+          <Menu widthE={leftStatus}/>
         </section>
         <div className="arrow" onClick={()=>{
           if(window.innerWidth<860 && leftStatus=='350px'){
