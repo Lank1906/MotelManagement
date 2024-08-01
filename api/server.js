@@ -1,5 +1,6 @@
 const express =require('express')
 const cors = require('cors');
+const test=require("./models/connect")
 const app=express()
 const port = 5000;
 app.use(cors()); // Sử dụng middleware CORS
