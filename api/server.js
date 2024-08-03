@@ -13,5 +13,5 @@ app.get('/', (req, res) => {
 
 // Lắng nghe trên cổng được xác định
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`App is running at http://localhost:${port}`);
 });
