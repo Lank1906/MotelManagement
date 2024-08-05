@@ -1,29 +1,59 @@
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
-  host: 'sql204.infinityfree.com',
-  user: 'if0_37017440',
-  password: '181881181188h',
-  database: 'if0_37017440_test'
-});
+const setupDB={
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'motel_db'
+}
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-  console.log('Connected to the MySQL database');
-});
+function createConnnect(){
+    const connection = mysql.createConnection(setupDB);
 
-function reconnect(){
     connection.connect((err) => {
-      if (err) {
-        console.error('Error connecting to the database:', err);
-        console.log('vua ket noi')
-        return;
-      }
-      console.log('Connected to the MySQL database');
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    return connection;
+}
+
+function getQuery(sql){
+    const connection = mysql.createConnection(setupDB);
+
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    
+    return new Promise((resolve,reject)=>{
+        connection.query(sql, (err, result) => {
+            if (err) {
+                console.error('Error:', err);
+                reject({message:"failed"});
+            }
+            else{
+                resolve(result);
+                connection.end();
+            }
+        });
+    });
+}
+
+function destroyConnect(connection){
+    connection.ping((err) => {
+        if (err) {
+            console.log('Connection lost. Attempting to reconnect...');
+        } else {
+            console.log('Connection active');
+            connection.end();
+        }
     });
 }
 //setInterval(reconnect,50000)
-module.exports = connection;
+module.exports = {getQuery,createConnect,destroyConnect};
