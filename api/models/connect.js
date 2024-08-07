@@ -7,9 +7,8 @@ const setupDB={
   database: 'motel_db'
 }
 
-function createConnnect(){
+function CreateConnect(){
     const connection = mysql.createConnection(setupDB);
-
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -20,9 +19,9 @@ function createConnnect(){
     return connection;
 }
 
-function getQuery(sql){
+function GetQuery(tableName,columnList){
     const connection = mysql.createConnection(setupDB);
-
+    var sql="SELECT "+columnList.join()+" from "+tableName;
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -39,18 +38,18 @@ function getQuery(sql){
             }
             else{
                 resolve(result);
-                connection.end();
             }
+            connection.end();
         });
     });
 }
 
-function destroyConnect(connection){
+function DestroyConnect(connection){
     connection.ping((err) => {
         if (err) {
-            console.log('Connection lost. Attempting to reconnect...');
+            console.log('Connection has already closed');
         } else {
-            console.log('Connection active');
+            console.log('Connection is closing => complete');
             connection.end();
         }
     });
