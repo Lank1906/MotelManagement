@@ -44,6 +44,56 @@ function GetQuery(tableName,columnList){
     });
 }
 
+function AddQuery(tableName,jsonData){
+    const connection = mysql.createConnection(setupDB);
+    var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData)+")";
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    
+    return new Promise((resolve,reject)=>{
+        connection.query(sql, (err, result) => {
+            if (err || result.insertId==0) {
+                console.error('Error creating categories:', err);
+                reject({message:"failed"});
+            }
+            else{
+                resolve(result.insertId);
+            }
+            connection.end();
+        });
+    });
+}
+
+function UpdateQuery(tableName,jsonChange,jsonCondition){
+    const connection = mysql.createConnection(setupDB);
+    var sql = "UPDATE "+tableName+" SET "+Object.entries(jsonChange).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(',')+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(' AND ');
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    
+    return new Promise((resolve,reject)=>{
+        connection.query(sql, (err, result) => {
+            if (err || result.affectedRows==0) {
+                console.error('Error deleting:', err);
+                reject({message:"failed"});
+            }
+            else{
+                resolve({message:"ok"});
+            }
+        });
+        connection.end()
+    });
+}
+
 function DestroyConnect(connection){
     connection.ping((err) => {
         if (err) {
@@ -55,4 +105,4 @@ function DestroyConnect(connection){
     });
 }
 //setInterval(reconnect,50000)
-module.exports = {getQuery,createConnect,destroyConnect};
+module.exports = {CreateConnect,GetQuery,AddQuery,UpdateQuery,DestroyConnect};
