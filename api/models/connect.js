@@ -94,6 +94,31 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
     });
 }
 
+function DeleteQuery(tableName,jsonCondition){
+    const connection = mysql.createConnection(setupDB);
+    var sql = "DELETE FROM "+tableName+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(' AND ');
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    
+    return new Promise((resolve,reject)=>{
+        connection.query(sql, (err, result) => {
+            if (err || result.affectedRows==0) {
+                console.error('Error deleting:', err);
+                reject({message:"failed"});
+            }
+            else{
+                resolve({message:"ok"});
+            }
+        });
+        connection.end()
+    });
+}
+
 function DestroyConnect(connection){
     connection.ping((err) => {
         if (err) {
@@ -105,4 +130,4 @@ function DestroyConnect(connection){
     });
 }
 //setInterval(reconnect,50000)
-module.exports = {CreateConnect,GetQuery,AddQuery,UpdateQuery,DestroyConnect};
+module.exports = {GetQuery,AddQuery,UpdateQuery,DeleteQuery,CreateConnect,DestroyConnect};
