@@ -19,9 +19,14 @@ function CreateConnect(){
     return connection;
 }
 
-function GetQuery(tableName,columnList){
+function GetQuery(tableName,columnList,jsonCondition){
     const connection = mysql.createConnection(setupDB);
-    var sql="SELECT "+columnList.join()+" from "+tableName;
+    let condition='';
+    if(jsonCondition!=undefined){
+        condition+=" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+    }
+    var sql="SELECT "+columnList.join()+" from "+tableName+condition;
+    // console.log(sql);
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -34,7 +39,7 @@ function GetQuery(tableName,columnList){
         connection.query(sql, (err, result) => {
             if (err) {
                 console.error('Error:', err);
-                reject({message:"failed"});
+                reject(err.message);
             }
             else{
                 resolve(result);
@@ -46,7 +51,7 @@ function GetQuery(tableName,columnList){
 
 function AddQuery(tableName,jsonData){
     const connection = mysql.createConnection(setupDB);
-    var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData)+")";
+    var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData).map(item=>"'"+item+"'").join()+")";
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -58,8 +63,8 @@ function AddQuery(tableName,jsonData){
     return new Promise((resolve,reject)=>{
         connection.query(sql, (err, result) => {
             if (err || result.insertId==0) {
-                console.error('Error creating categories:', err);
-                reject({message:"failed"});
+                console.error('Error creating:', err.message);
+                reject(err.message);
             }
             else{
                 resolve(result.insertId);
@@ -71,7 +76,7 @@ function AddQuery(tableName,jsonData){
 
 function UpdateQuery(tableName,jsonChange,jsonCondition){
     const connection = mysql.createConnection(setupDB);
-    var sql = "UPDATE "+tableName+" SET "+Object.entries(jsonChange).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(',')+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(' AND ');
+    var sql = "UPDATE "+tableName+" SET "+Object.entries(jsonChange).map(([key,value])=>key+"="+mysql.escape(value)).join(',')+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -84,10 +89,10 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
         connection.query(sql, (err, result) => {
             if (err || result.affectedRows==0) {
                 console.error('Error deleting:', err);
-                reject({message:"failed"});
+                reject(err.message);
             }
             else{
-                resolve({message:"ok"});
+                resolve(result.affectedRows);
             }
         });
         connection.end()
@@ -96,7 +101,7 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
 
 function DeleteQuery(tableName,jsonCondition){
     const connection = mysql.createConnection(setupDB);
-    var sql = "DELETE FROM "+tableName+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"='"+mysql.escape(value)+"'").join(' AND ');
+    var sql = "DELETE FROM "+tableName+" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -109,10 +114,10 @@ function DeleteQuery(tableName,jsonCondition){
         connection.query(sql, (err, result) => {
             if (err || result.affectedRows==0) {
                 console.error('Error deleting:', err);
-                reject({message:"failed"});
+                reject(err.message);
             }
             else{
-                resolve({message:"ok"});
+                resolve(true);
             }
         });
         connection.end()
