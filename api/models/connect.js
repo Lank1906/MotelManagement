@@ -117,7 +117,7 @@ function DeleteQuery(tableName,jsonCondition){
                 reject(err.message);
             }
             else{
-                resolve(true);
+                resolve(result.affectedRows);
             }
         });
         connection.end()
