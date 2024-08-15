@@ -31,6 +31,7 @@ Create table rooms(
 create table renters(
 	id int primary key AUTO_INCREMENT,
     room_id int,
+    user_id int,
     name varchar(30) not null,
     cccd varchar(12),
     que_quan varchar(100),
@@ -38,10 +39,10 @@ create table renters(
     img_font varchar(40), # anh mat truoc cccd 
     img_back varchar(40),# anh mat sau cccd
     tctv bit default 0, # 0 chua dang ki tam tru tam vang, 1 da dang ki tam tru tam vang
-    dd_tctv varchar(100), # dia diem dang ky tam tru tam vang
     old int default 1,
     trang_thai bit default 0, #0 nguoi o 1 khach den choi
-    FOREIGN key (room_id) REFERENCES rooms(id) on delete set null on update CASCADE
+    FOREIGN key (room_id) REFERENCES rooms(id) on delete set null on update CASCADE,
+    FOREIGN key (user_id) REFERENCES users(id) on delete set null on update cascade
 );
 create table history_room(
 	id int PRIMARY key AUTO_INCREMENT,
@@ -56,7 +57,7 @@ create table history_room(
 Insert into users(username,password,phone,email,per) values('lank','lank','0349852986','buuixuanhoangc@gmail.com',0),('test','test','0793248659','test@gmail.com',1);
 insert into types(user_id,type_name,price,electric,water,water_folow) values(1,'tang_1',1200000,3500,50000,0),(1,'tang_2',1000000,3500,20000,1);
 insert into rooms(name,type,user_id,person_limit,electric_number,img_room,check_in) values('phong_1',1,1,3,0,'','2024-07-22'),('phong_2',2,1,3,0,'','2024-07-22');
-insert into renters(name,old,que_quan,sdt,cccd,img_font,img_back,tctv,dd_tctv,room_id,trang_thai) values('ngo xuan quyen',35,'tq-vl-hy','0963852107','033003001892','','',0,'tq',1,0),
-																										('ngo van tinh',5,'tq-vl-hy','','','','',0,'tq',1,0),
-                                                                                                        ('ngo xuan tinh',35,'tq-vl-hy','0963852107','033003001892','','',0,'tq',2,0),
-                                                                                                        ('ngo xuan cang',35,'tq-vl-hy','0963852107','033003001892','','',0,'tq',2,1);
+insert into renters(user_id,name,old,que_quan,sdt,cccd,img_font,img_back,tctv,room_id,trang_thai) values(1,'ngo xuan quyen',35,'tq-vl-hy','0963852107','033003001892','','',0,1,0),
+																										(1,'ngo van tinh',5,'tq-vl-hy','','','','',0,1,0),
+                                                                                                        (2,'ngo xuan tinh',35,'tq-vl-hy','0963852107','033003001892','','',0,2,0),
+                                                                                                        (2,'ngo xuan cang',35,'tq-vl-hy','0963852107','033003001892','','',0,2,1);
