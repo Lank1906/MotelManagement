@@ -1,7 +1,7 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require('../models/room');
+const {GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require("../models/renter");
 
 async function List(req,res){
-    const result=await GetList({...req.query,"rooms.user_id":req.user.id});
+    const result=await GetList({...req.query,"rooms.user_id":req.user.id})
     if(result.length>0){
         return res.status(200).json(result);
     }
@@ -11,7 +11,7 @@ async function List(req,res){
 }
 
 async function One(req,res){
-    const result=await GetOne({...req.query,"rooms.user_id":req.user.id,"rooms.id":req.params.id});
+    const result=await GetOne({"renters.id":req.params.id,"renters.user_id":req.user.id});
     if(result.length>0){
         return res.status(200).json(result);
     }
@@ -31,7 +31,7 @@ async function Add(req,res){
 }
 
 async function Update(req,res){
-    const result = await UpdateObject(req.body,{"user_id":req.user.id,"id":req.params.id});
+    const result = await UpdateObject(req.body,{"id":req.params.id});
     if(result==1){
         return res.status(200).json({"message":"Cập nhật thành công!"});
     }

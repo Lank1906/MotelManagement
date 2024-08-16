@@ -1,6 +1,6 @@
 const {GetQuery,AddQuery,UpdateQuery,DeleteQuery}=require("./connect");
 
-async function Get(jsonData){
+async function GetList(jsonData){
     try{
         const result=await GetQuery('types',['id','type_name','price','electric','water','water_folow'],jsonData)
         return result;
@@ -9,7 +9,7 @@ async function Get(jsonData){
     }
 }
 
-async function Add(jsonData){
+async function AddObject(jsonData){
     try{
         const result=await AddQuery('types',jsonData);
         return result;
@@ -19,7 +19,7 @@ async function Add(jsonData){
     }
 }
 
-async function Update(jsonChange,jsonCondition){
+async function UpdateObject(jsonChange,jsonCondition){
     try{
         const result=await UpdateQuery('types',jsonChange,jsonCondition)
         return result;
@@ -29,7 +29,7 @@ async function Update(jsonChange,jsonCondition){
     }
 }
 
-async function Delete(jsonCondition){
+async function DeleteObject(jsonCondition){
     try{
         const result= await DeleteQuery('types',jsonCondition);
         return result
@@ -38,4 +38,4 @@ async function Delete(jsonCondition){
         return err;
     }
 }
-module.exports={Get,Add,Update,Delete};
+module.exports={GetList,AddObject,UpdateObject,DeleteObject};

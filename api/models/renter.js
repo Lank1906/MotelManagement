@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetList(jsonData){
     try{
-        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','check_in','img_room'],'rooms.type=types.id',jsonData)
+        const result=await GetJoinQuery('renters','rooms',['renters.id','rooms.name as room_name','renters.name as renter_name','trang_thai','old'],'renters.room_id=rooms.id',jsonData);
         return result;
     }catch (err){
         return err;
@@ -11,16 +11,16 @@ async function GetList(jsonData){
 
 async function GetOne(jsonData){
     try{
-        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','person_limit','electric_number','check_in','img_room'],'rooms.type=types.id',jsonData)
+        const result=await GetJoinQuery('renters','rooms',['renters.id','rooms.name as room_name','renters.room_id','renters.name as renter_name','cccd','que_quan','sdt','img_font','img_back','tctv','old','trang_thai'],'renters.room_id=rooms.id',jsonData);
         return result;
     }catch (err){
-        return err
+        return err;
     }
 }
 
 async function AddObject(jsonData){
     try{
-        const result=await AddQuery('rooms',jsonData);
+        const result=await AddQuery('renters',jsonData);
         return result;
     }
     catch (err){
@@ -30,7 +30,7 @@ async function AddObject(jsonData){
 
 async function UpdateObject(jsonChange,jsonCondition){
     try{
-        const result=await UpdateQuery('rooms',jsonChange,jsonCondition)
+        const result=await UpdateQuery('renters',jsonChange,jsonCondition)
         return result;
     }
     catch(err){
@@ -40,12 +40,11 @@ async function UpdateObject(jsonChange,jsonCondition){
 
 async function DeleteObject(jsonCondition){
     try{
-        const result= await DeleteQuery('rooms',jsonCondition);
+        const result= await DeleteQuery('renters',jsonCondition);
         return result
     }
     catch(err){
         return err;
     }
 }
-
 module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject};

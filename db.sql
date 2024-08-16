@@ -59,5 +59,5 @@ insert into types(user_id,type_name,price,electric,water,water_folow) values(1,'
 insert into rooms(name,type,user_id,person_limit,electric_number,img_room,check_in) values('phong_1',1,1,3,0,'','2024-07-22'),('phong_2',2,1,3,0,'','2024-07-22');
 insert into renters(user_id,name,old,que_quan,sdt,cccd,img_font,img_back,tctv,room_id,trang_thai) values(1,'ngo xuan quyen',35,'tq-vl-hy','0963852107','033003001892','','',0,1,0),
 																										(1,'ngo van tinh',5,'tq-vl-hy','','','','',0,1,0),
-                                                                                                        (2,'ngo xuan tinh',35,'tq-vl-hy','0963852107','033003001892','','',0,2,0),
-                                                                                                        (2,'ngo xuan cang',35,'tq-vl-hy','0963852107','033003001892','','',0,2,1);
+                                                                                                        (1,'ngo xuan tinh',35,'tq-vl-hy','0963852107','033003001892','','',0,2,0),
+                                                                                                        (1,'ngo xuan cang',35,'tq-vl-hy','0963852107','033003001892','','',0,2,1);

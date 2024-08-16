@@ -1,7 +1,7 @@
-const {Get,Add,Update,Delete}=require('../models/type');
+const {GetList,AddObject,UpdateObject,DeleteObject}=require('../models/type');
 
-async function GetCon(req,res){
-    const result=await Get({"user_id":req.user.id});
+async function List(req,res){
+    const result=await GetList({"user_id":req.user.id});
     if(result.length>0){
         return res.status(200).json(result);
     }
@@ -10,8 +10,8 @@ async function GetCon(req,res){
     }
 }
 
-async function AddCon(req,res){
-    const result=await Add({...req.body,"user_id":req.user.id});
+async function Add(req,res){
+    const result=await AddObject({...req.body,"user_id":req.user.id});
     if(result>0){
         return res.status(200).json({"message":"Đã thêm dữ liệu thành công!"});
     }
@@ -20,8 +20,8 @@ async function AddCon(req,res){
     }
 }
 
-async function UpdateCon(req,res){
-    const result = await Update(req.body,{"user_id":req.user.id,"id":req.params.id});
+async function Update(req,res){
+    const result = await UpdateObject(req.body,{"user_id":req.user.id,"id":req.params.id});
     if(result==1){
         return res.status(200).json({"message":"Cập nhật thành công!"});
     }
@@ -30,8 +30,8 @@ async function UpdateCon(req,res){
     }
 }
 
-async function DeleteCon(req,res){
-    const result=await Delete({"user_id":req.user.id,"id":req.params.id})
+async function Delete(req,res){
+    const result=await DeleteObject({"user_id":req.user.id,"id":req.params.id})
     if(result){
         return res.status(200).json({"message":"Đã xóa dữ liệu"});
     }
@@ -39,4 +39,4 @@ async function DeleteCon(req,res){
         return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
     }
 }
-module.exports={GetCon,AddCon,UpdateCon,DeleteCon};
+module.exports={List,Add,Update,Delete};
