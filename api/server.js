@@ -15,6 +15,7 @@ app.use(authenticateToken);
 app.use("/type",require("./routers/typeRoute"));
 app.use("/room",require("./routers/roomRoute"));
 app.use("/renter",require("./routers/renterRoute"));
+app.use("/history",require("./routers/historyRoute"));
 
 // Lắng nghe trên cổng được xác định
 app.listen(port,'0.0.0.0', () => {
