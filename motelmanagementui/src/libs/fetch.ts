@@ -1,5 +1,6 @@
+const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/";
 function GetFetch(link: string, Action:Function):void {
-    fetch(link)
+    fetch(publicUrl+link)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -10,12 +11,12 @@ function GetFetch(link: string, Action:Function):void {
             Action(data);
         })
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            alert(error.message)
         });
 }//GetFetch<User>(url, Function);
 
 function PostFetch<T>(link:string,data:any,Action:(data:T)=>void):void{
-    fetch(link, {
+    fetch(publicUrl+link, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ function PostFetch<T>(link:string,data:any,Action:(data:T)=>void):void{
 }
 
 function PutFetch(link:string,data:any,Action:Function):void{
-    fetch(link, {
+    fetch(publicUrl+link, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ function PutFetch(link:string,data:any,Action:Function):void{
 }
 
 function DeleteFetch(link:string,Action:Function):void{
-    fetch(link, {
+    fetch(publicUrl+link, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -78,3 +79,5 @@ function DeleteFetch(link:string,Action:Function):void{
         console.error('There was a problem with the fetch operation:', error);
     });
 }
+
+export {GetFetch,PostFetch,PutFetch,DeleteFetch}
