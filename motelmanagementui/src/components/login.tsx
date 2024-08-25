@@ -2,14 +2,22 @@ import { useContext, useState } from "react"
 import { PostFetch } from "../libs/fetch";
 import { MyContext } from "../libs/context";
 
-export default function Login(){
+type LoginProps = {
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
+    setType: React.Dispatch<React.SetStateAction<string>>;
+    close: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Login({ setMessage, setType,close }:LoginProps){
     const context=useContext(MyContext)
     const [name,setName]=useState('');
     const [pass,setPass]=useState('');
     function HandleLogin(){
         PostFetch('login',{"username":name,"password":pass},(data:any)=>{
-            alert(data.message);
             context?.setData(data.token)
+            setMessage("ok");
+            setType("information");
+            close(true);
         });
     }
     return (
