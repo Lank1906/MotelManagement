@@ -1,24 +1,22 @@
 import { useContext, useState } from "react"
 import { PostFetch } from "../libs/fetch";
 import { MyContext } from "../libs/context";
+import { AnnounceContext } from "../libs/announce_context";
 
-type LoginProps = {
-    setMessage: React.Dispatch<React.SetStateAction<string>>;
-    setType: React.Dispatch<React.SetStateAction<string>>;
-    close: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
-export default function Login({ setMessage, setType,close }:LoginProps){
+export default function Login(){
     const context=useContext(MyContext)
+    const announceContext=useContext(AnnounceContext);
     const [name,setName]=useState('');
     const [pass,setPass]=useState('');
     function HandleLogin(){
         PostFetch('login',{"username":name,"password":pass},(data:any)=>{
             context?.setData(data.token)
-            setMessage("ok");
-            setType("information");
-            close(true);
+            announceContext?.setMessage("okok")
+            announceContext?.setType("information")
+            announceContext?.setClose(true)
         });
+        
     }
     return (
         <div id="login">

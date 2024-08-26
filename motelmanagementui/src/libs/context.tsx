@@ -6,10 +6,8 @@ interface MyContextType {
   setData: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// Tạo context với giá trị mặc định là undefined
 const MyContext = createContext<MyContextType | undefined>(undefined);
 
-// Định nghĩa kiểu cho props của ContextProvider
 interface ContextProviderProps {
   children: ReactNode;
 }
