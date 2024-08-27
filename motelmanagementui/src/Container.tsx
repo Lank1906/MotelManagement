@@ -1,8 +1,8 @@
 import Header from "./components/header";
 import Menu from "./components/menu";
 import Info from "./components/info";
-import Content from "./components/content";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 export default function Container() {
   const [leftStatus,setLeftStatus]=useState('');
@@ -24,7 +24,7 @@ export default function Container() {
         }}>
           <i className="fa-solid fa-angles-right" ></i>
         </div>
-        <Content />
+        <Outlet />
         <Info widthE={rightStatus}/>
         <div className="arrow2" onClick={()=>{
           if(window.innerWidth<860 && rightStatus=='350px'){

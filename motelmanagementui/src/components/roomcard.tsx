@@ -1,7 +1,7 @@
 export default function RoomCard() {
     return (
       <div className="card">
-        <img src="images/home.png" alt="home-demo" />
+        <img src="/images/home.png" alt="home-demo" />
         <p>ten phong</p>
         <p>Gia phong</p>
         <p>so nguoi</p>

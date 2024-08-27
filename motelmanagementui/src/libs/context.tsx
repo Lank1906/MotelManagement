@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useState, ReactNode } from "react";
 
 // Định nghĩa kiểu dữ liệu cho context
@@ -16,7 +17,10 @@ function ContextProvider({ children }: ContextProviderProps) {
   const [data, setData] = useState<string>("Initial Data");
 
   return (
-    <MyContext.Provider value={{ data, setData }}>
+    <MyContext.Provider value={React.useMemo(() => ({ data, setData }), [
+      data,
+      setData,
+    ])}>
       {children}
     </MyContext.Provider>
   );
