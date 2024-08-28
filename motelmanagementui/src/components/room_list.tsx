@@ -1,22 +1,16 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import RoomCard from "./roomcard";
 import Search from "./search";
 import { GetFetch } from "../libs/fetch";
 import { MyContext } from "../libs/context";
-
-interface RoomType{
-    id:number,
-    name:string,
-    type_name:string,
-    check_in:Date,
-    img_room:string
-}
+import { RoomType } from "../interface/room_type";
 
 export default function RoomList() {
     const context=useContext(MyContext)
+    const [list,setList]=useState<RoomType[]>([]);
     useEffect(()=>{
         GetFetch('room',(data:RoomType[])=>{
-            console.log(data)
+            setList(data)
         },context?.data)
     })
   return (
@@ -26,10 +20,9 @@ export default function RoomList() {
         <div className="like-search"></div>
       </div>
       <div className="body-content">
-        <RoomCard />
-        <RoomCard />
-        <RoomCard />
-        <RoomCard />
+        {list? list.map((item:RoomType)=>{
+          return (<RoomCard {...item} key={item.id}/>)
+        }):"Loading ..."}
       </div>
     </div>
   );

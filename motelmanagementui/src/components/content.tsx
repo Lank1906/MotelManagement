@@ -9,10 +9,7 @@ export default function Content() {
         <div className="like-search"></div>
       </div>
       <div className="body-content">
-        <RoomCard />
-        <RoomCard />
-        <RoomCard />
-        <RoomCard />
+        
       </div>
     </div>
   );
