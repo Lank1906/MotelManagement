@@ -12,7 +12,7 @@ export default function RoomList() {
         GetFetch('room',(data:RoomType[])=>{
             setList(data)
         },context?.data)
-    })
+    },[])
   return (
     <div className="content">
       <div className="top-content">

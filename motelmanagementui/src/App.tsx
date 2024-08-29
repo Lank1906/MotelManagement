@@ -8,6 +8,7 @@ import Announce from './components/announce';
 import { AnnounceContext } from './libs/announce_context';
 import NotFound from './components/notfound';
 import RoomList from './components/room_list';
+import PersonList from './components/person_list';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)
@@ -18,7 +19,7 @@ export default function App() {
                 <Route path="/home" element={<Container />}>
                     <Route path="dashboard" element={<h1>test</h1>} />
                     <Route path="room" element={<RoomList />} />
-                    <Route path="renter" element={<NotFound />} />
+                    <Route path="renter" element={<PersonList />} />
                     <Route path="setting" element={<NotFound />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

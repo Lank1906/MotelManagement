@@ -13,7 +13,7 @@ CREATE TABLE types (
     price float default 1,
     electric FLOAT DEFAULT 3.5,
     water FLOAT DEFAULT 1,
-    water_folow bit default 0,#0 thu theo nguoi ,#1 thu theo khoi
+    water_folow TINYINT(1) default 0,#0 thu theo nguoi ,#1 thu theo khoi
     FOREIGN Key (user_id) REFERENCES users(id) on DELETE cascade on UPDATE CASCADE
 );
 Create table rooms(
@@ -38,9 +38,9 @@ create table renters(
     sdt varchar(10),
     img_font varchar(40), # anh mat truoc cccd 
     img_back varchar(40),# anh mat sau cccd
-    tctv bit default 0, # 0 chua dang ki tam tru tam vang, 1 da dang ki tam tru tam vang
+    tctv TINYINT(1) default 0, # 0 chua dang ki tam tru tam vang, 1 da dang ki tam tru tam vang
     old int default 1,
-    trang_thai bit default 0, #0 nguoi o 1 khach den choi
+    trang_thai TINYINT(1) default 0, #0 nguoi o 1 khach den choi
     FOREIGN key (room_id) REFERENCES rooms(id) on delete set null on update CASCADE,
     FOREIGN key (user_id) REFERENCES users(id) on delete set null on update cascade
 );
@@ -48,7 +48,7 @@ create table history_room(
 	id int PRIMARY key AUTO_INCREMENT,
     room_id int not null,
     ngay DATE,
-    hanh_dong bit(2) default b'00', #00 chuyen den, 01 thanh toan dinh ki,10 doi phong, 11 chuyen di
+    hanh_dong TINYINT(1) default b'0', #0 chuyen den, 1 thanh toan dinh ki,2 doi phong, 3 chuyen di
     luong_tien float default 0,
     so_dien int default 0,
     FOREIGN key (room_id) REFERENCES rooms(id) on delete cascade on update cascade

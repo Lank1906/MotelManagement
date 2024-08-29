@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface menuProps{
   widthE?:string;
 }
@@ -5,9 +7,9 @@ interface menuProps{
 export default function Menu(props:menuProps) {
   return (
     <ul className="menu" style={{width:props.widthE}}>
-      <li className="btn">Trang Chủ</li>
-      <li className="btn">Danh sách phòng</li>
-      <li className="btn">Danh sách người thuê</li>
+      <li className="btn"><Link to="dashboard">Trang Chủ</Link></li>
+      <li className="btn"><Link to="room">Danh sách phòng</Link></li>
+      <li className="btn"><Link to="renter">Danh sách người thuê</Link></li>
       <li className="btn">Tính tiền</li>
     </ul>
   );
