@@ -1,19 +1,8 @@
 import { createContext, ReactNode, useState } from "react";
-
-interface AnnounceContextType{
-    message:string;
-    setMessage: React.Dispatch<React.SetStateAction<string>>,
-    type?:string;
-    setType: React.Dispatch<React.SetStateAction<string>>,
-    close:boolean,
-    setClose:React.Dispatch<React.SetStateAction<boolean>>,
-}
+import { ContextProviderProps } from "../interface/context_provider_props";
+import { AnnounceContextType } from "../interface/announce_context_type";
 
 const AnnounceContext = createContext<AnnounceContextType | undefined>(undefined);
-
-interface ContextProviderProps {
-  children: ReactNode;
-}
 
 function AnnounceProvider({children}:ContextProviderProps){
     const [message,setMessage]=useState<string>("");

@@ -24,7 +24,7 @@ export default function Container() {
         }}>
           <i className="fa-solid fa-angles-right" ></i>
         </div>
-        <Outlet />
+        <Outlet/>
         <Info widthE={rightStatus}/>
         <div className="arrow2" onClick={()=>{
           if(window.innerWidth<860 && rightStatus=='350px'){

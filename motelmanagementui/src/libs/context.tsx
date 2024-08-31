@@ -1,17 +1,9 @@
 import React from "react";
-import { createContext, useState, ReactNode } from "react";
-
-// Định nghĩa kiểu dữ liệu cho context
-interface MyContextType {
-  data: string;
-  setData: React.Dispatch<React.SetStateAction<string>>;
-}
+import { createContext, useState } from "react";
+import { MyContextType } from "../interface/my_context_type";
+import { ContextProviderProps } from "../interface/context_provider_props";
 
 const MyContext = createContext<MyContextType | undefined>(undefined);
-
-interface ContextProviderProps {
-  children: ReactNode;
-}
 
 function ContextProvider({ children }: ContextProviderProps) {
   const [data, setData] = useState<string>("Initial Data");
