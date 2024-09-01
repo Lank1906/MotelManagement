@@ -15,7 +15,6 @@ export default function Login(){
         PostFetch('login',{"username":name,"password":pass},(data:any)=>{
             context?.setData(data.token)
             console.log(data.token)
-            console.log(context?.data)
             announceContext?.setMessage(data.message)
             announceContext?.setType("information")
             announceContext?.setClose(true)

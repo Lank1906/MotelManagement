@@ -18,12 +18,10 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} index />
                 <Route path="/home" element={<Container />}>
-                    <DataContextProvider>
-                        <Route path="dashboard" element={<h1>test</h1>} />
-                        <Route path="room" element={<RoomList />} />
-                        <Route path="renter" element={<PersonList />} />
-                        <Route path="setting" element={<NotFound />} />
-                    </DataContextProvider>
+                    <Route path="dashboard" element={<h1>test</h1>} />
+                    <Route path="room" element={<RoomList />} />
+                    <Route path="renter" element={<PersonList />} />
+                    <Route path="setting" element={<NotFound />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
