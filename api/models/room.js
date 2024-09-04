@@ -11,7 +11,7 @@ async function GetList(jsonData){
 
 async function GetOne(jsonData){
     try{
-        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','person_limit','electric_number','check_in','img_room'],'rooms.type=types.id',jsonData)
+        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','person_limit','electric_number','check_in','img_room','types.id as type_id'],'rooms.type=types.id',jsonData)
         return result;
     }catch (err){
         return err

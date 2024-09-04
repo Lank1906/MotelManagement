@@ -6,7 +6,7 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 function DataContextProvider({ children }: ContextProviderProps) {
     const [id, setId] = useState<number>(-1)
-    const [type, setType] = useState<string>("")
+    const [type, setType] = useState<string>("room")
     function setData(id: number, type: string) {
         setId(id);
         setType(type);
