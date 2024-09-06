@@ -6,5 +6,5 @@ export interface RoomDetailType {
     name?: string,
     person_limit?: number,
     type_name?: string,
-    type_id?:number
+    type?:number
 }

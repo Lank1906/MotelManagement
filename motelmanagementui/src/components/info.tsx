@@ -30,19 +30,24 @@ export default function Info(props: infoProps) {
     }, context?.data)
   }, [])
 
-  async function uploadImage(e: React.FormEvent) {
-    e.preventDefault();
-    const fileInput = document.querySelector('#fileinput') as HTMLInputElement;
+  async function uploadImage(element: string) {
+    const fileInput = document.querySelector(element) as HTMLInputElement;
     const formData = new FormData();
-
+    let filename = "";
     if (fileInput && fileInput.files && fileInput.files[0]) {
-      formData.append('image', fileInput.files[0]); // Tên 'image' phải khớp với tên multer chờ nhận
-      PostImage('api/upload', formData, (data) => alert(data), context?.data);
+      formData.append('image', fileInput.files[0]);
+
+      await PostImage('api/upload', formData, (data) => {
+        filename = data
+      }, context?.data);
     }
-    console.log(formData);
+    return filename;
   }
 
-  function handleAdd() {
+  async function handleAdd() {
+    let t = await uploadImage("#fileinput");
+    console.log(object)
+    setObject({...object,"img_room":t})
     PostFetch('room', object, (data) => alert(data), context?.data);
   }
 
@@ -58,7 +63,7 @@ export default function Info(props: infoProps) {
             </div>
             <div className="input">
               <label htmlFor="type">Loại Phòng</label><br />
-              <select value={object?.type_id || 0} onChange={(e) => setObject({ ...object, type_name: e.target.value })}>
+              <select value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.value })}>
                 {
                   types ? types.map((item: TypeType) => {
                     return (<option value={item.id} key={item.id}>{item.type_name}</option>)
@@ -100,7 +105,7 @@ export default function Info(props: infoProps) {
               }} />
             </div>
             <div className="action">
-              <button className="btn" onClick={uploadImage}>Thêm Mới</button>
+              <button className="btn" onClick={handleAdd}>Thêm Mới</button>
               <button className="btn">Sửa đổi</button>
             </div>
           </div>

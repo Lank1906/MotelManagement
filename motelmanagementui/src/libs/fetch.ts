@@ -89,11 +89,10 @@ function DeleteFetch(link:string,Action:Function,contextData?:string):void{
     });
 }
 
-function PostImage<T>(link:string,data:any,Action:(data:T)=>void,contextData?:string):void{
-    fetch(publicUrl+link, {
+function PostImage(link:string,data:FormData,Action:(data:any)=>void,contextData?:string):Promise<any>{
+    return fetch(publicUrl+link, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization':'Lank '+contextData
         },
         body: data,
@@ -102,7 +101,7 @@ function PostImage<T>(link:string,data:any,Action:(data:T)=>void,contextData?:st
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json() as Promise<T>;
+        return response.text();
     })
     .then(data => {
         Action(data);
