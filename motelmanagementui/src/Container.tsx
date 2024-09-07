@@ -4,6 +4,7 @@ import Info from "./components/info";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DataContextProvider } from "./libs/data_handling_context";
+import { RoomContext, RoomProvider } from "./libs/room_context";
 
 export default function Container() {
   const [leftStatus, setLeftStatus] = useState('');
@@ -28,7 +29,7 @@ export default function Container() {
 
         <DataContextProvider>
           <Outlet />
-        <Info widthE={rightStatus} />
+          <Info widthE={rightStatus} />
         </DataContextProvider>
         <div className="arrow2" onClick={() => {
           if (window.innerWidth < 860 && rightStatus == '350px') {

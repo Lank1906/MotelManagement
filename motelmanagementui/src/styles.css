@@ -10,6 +10,10 @@ body {
   height: 100vh;
   pointer-events: none;
 }
+a{
+  text-decoration: none;
+  color:black;
+}
 header {
   width: 100%;
   display: flex;
@@ -36,6 +40,8 @@ header {
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.1s linear;
+  min-width:100px;
+  text-align: center;
 }
 .btn:active {
   box-shadow: 0 2px 4px transparent;
@@ -163,7 +169,7 @@ li {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  height: 800px;
+  max-height: 800px;
   overflow-y: scroll;
   pointer-events: auto;
 }

@@ -4,7 +4,8 @@ const setupDB={
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'motel_db'
+  database: 'motel_db',
+  dateStrings:true
 }
 
 function CreateConnect(){
