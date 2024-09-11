@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { RoomDetailType } from "../interface/room_detail_type";
 import { TypeType } from "../interface/type_type";
-import { GetFetch, PostFetch, PostImage } from "../libs/fetch";
+import { DeleteFetch, GetFetch, PostFetch, PostImage, PutFetch } from "../libs/fetch";
 import { MyContext } from "../libs/context";
 import { DataContext } from "../libs/data_handling_context";
+import { RoomType } from "../interface/room_type";
+import { PersonType } from "../interface/person_type";
 
 export default function RoomInfo() {
     const [image, setImage] = useState<string | null>(null)
@@ -44,13 +46,53 @@ export default function RoomInfo() {
     async function handleAdd() {
         let t = await uploadImage("#fileinput");
         setObject({ ...object, "img_room": t })
-        console.log(object)
-        PostFetch('room', object, (data) => alert(data), context?.data);
+
+        let object2 = { ...object }
+        delete object2.person_limit;
+        delete object2.electric_number;
+        delete object2.type;
+
+        const newObject: RoomType = {
+            id: object2.id as number,
+            name: object2.name as string,
+            type_name: object2.type_name as string,
+            check_in: object2.check_in ? new Date(object2.check_in) : new Date(),
+            img_room: object2.img_room as string
+        };
+
+        PostFetch('room', object, (data: any) => {
+            dataContext?.setList([...dataContext.list as RoomType[], newObject]);
+            alert(data.message)
+        }, context?.data);
     }
 
-    async function handleUpdate(){
-        
+    async function handleUpdate() {
+        PutFetch('room/' + object?.id, object, (data: any) => {
+            let tam = [...dataContext?.list as RoomType[]].map((item: any) => {
+                if (item.product_id == object?.id) {
+                    item = data;
+                }
+                return item;
+            });
+            dataContext?.setList(tam);
+            alert(data.message)
+        }, context?.data)
     }
+
+    async function handleDelete() {
+        DeleteFetch('room/' + object?.id, (data: any) => {
+            let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(
+                (item: RoomType | PersonType) =>
+                    item.id !== object?.id
+            )
+
+            dataContext?.setList(
+                tam as RoomType[]
+            )
+            alert(data.message)
+        }, context?.data)
+    }
+
     return (
         <div className="form">
             <div className="input">
@@ -102,7 +144,7 @@ export default function RoomInfo() {
             </div>
             <div className="action">
                 <button className="btn" onClick={handleAdd}>Thêm Mới</button>
-                <button className="btn">Sửa đổi</button>
+                <button className="btn" onClick={handleUpdate}>Sửa đổi</button>
             </div>
         </div>
     )

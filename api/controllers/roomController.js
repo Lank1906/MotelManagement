@@ -21,6 +21,8 @@ async function One(req,res){
 }
 
 async function Add(req,res){
+    delete req.body.type_name;
+    delete req.body.id;
     const result=await AddObject({...req.body,"user_id":req.user.id});
     if(result>0){
         return res.status(200).json({"message":"Đã thêm dữ liệu thành công!"});
@@ -31,6 +33,8 @@ async function Add(req,res){
 }
 
 async function Update(req,res){
+    delete req.body.type_name;
+    delete req.body.id;
     const result = await UpdateObject(req.body,{"user_id":req.user.id,"id":req.params.id});
     if(result==1){
         return res.status(200).json({"message":"Cập nhật thành công!"});
