@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { DataContext } from "../libs/data_handling_context";
-import { MyContext } from "../libs/context";
 import RoomInfo from "./room_info";
 
 interface infoProps {
