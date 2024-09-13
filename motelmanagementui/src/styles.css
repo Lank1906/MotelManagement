@@ -5,15 +5,19 @@
   font-size: 1.1rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
 body {
   min-height: 100vh;
   height: 100vh;
   pointer-events: none;
+  position: relative;
 }
-a{
+
+a {
   text-decoration: none;
-  color:black;
+  color: black;
 }
+
 header {
   width: 100%;
   display: flex;
@@ -26,6 +30,7 @@ header {
   z-index: 0;
   pointer-events: auto;
 }
+
 .menu,
 .horizontal {
   display: flex;
@@ -34,39 +39,46 @@ header {
   transition: all .3s ease-in;
   pointer-events: auto;
 }
+
 .btn {
   box-shadow: 0px 2px 4px black;
   padding: 2px 8px;
   border-radius: 24px;
   cursor: pointer;
   transition: all 0.1s linear;
-  min-width:100px;
+  min-width: 100px;
   text-align: center;
 }
+
 .btn:active {
   box-shadow: 0 2px 4px transparent;
   transform: translateY(2px);
 }
+
 li {
   list-style: none;
 }
+
 .logo {
   color: blue;
   font-weight: 800;
   cursor: pointer;
   font-size: larger;
 }
+
 #root {
   height: 100%;
   display: flex;
   flex-direction: column;
   pointer-events: none;
 }
+
 #body {
   flex: 1;
   display: flex;
   pointer-events: none;
 }
+
 #menu-left {
   width: 28%;
   max-width: 350px;
@@ -79,6 +91,7 @@ li {
   z-index: 0;
   pointer-events: auto;
 }
+
 #menu-left::before {
   content: "";
   position: absolute;
@@ -89,6 +102,7 @@ li {
   right: -24px;
   z-index: 1;
 }
+
 #menu-left::after {
   content: "";
   position: absolute;
@@ -101,12 +115,14 @@ li {
   box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
+
 #menu-left .menu {
   padding-top: 48px;
   flex-direction: column;
   gap: 4px;
 }
-#menu-left > .menu .btn {
+
+#menu-left>.menu .btn {
   box-shadow: none;
   width: 100%;
   padding-left: 24px;
@@ -114,9 +130,11 @@ li {
   border-radius: 0;
   cursor: pointer;
 }
-#menu-left > .menu .btn:hover {
+
+#menu-left>.menu .btn:hover {
   border-bottom: 2px solid black;
 }
+
 .content {
   flex: 1;
   margin: 24px 0 0 24px;
@@ -126,9 +144,10 @@ li {
   justify-content: flex-start;
   z-index: 2;
   width: 10px;
-  padding:10px;
+  padding: 10px;
   pointer-events: auto;
 }
+
 .info {
   width: 24%;
   height: 100%;
@@ -139,6 +158,7 @@ li {
   transition: all .3s ease-in;
   pointer-events: none;
 }
+
 .info::before {
   content: "";
   width: 48px;
@@ -148,23 +168,27 @@ li {
   left: -24px;
   border-radius: 24px;
 }
+
 .top-content {
   display: flex;
   gap: 4px;
 }
+
 .search {
   background-color: #dbdbdb;
-  padding:8px 12px;
+  padding: 8px 12px;
   width: 30%;
   height: 40px;
   border-radius: 24px;
 }
+
 .like-search {
   background-color: #dbdbdb;
   flex: 1;
   height: 40px;
   border-radius: 24px;
 }
+
 .body-content {
   display: flex;
   gap: 8px;
@@ -173,6 +197,7 @@ li {
   overflow-y: scroll;
   pointer-events: auto;
 }
+
 .card {
   width: 200px;
   height: 260px;
@@ -185,7 +210,8 @@ li {
   gap: 4px;
   padding: 4px;
 }
-.card > img {
+
+.card>img {
   width: 96px;
   height: 96px;
   display: block;
@@ -202,14 +228,17 @@ li {
   #menu-left {
     width: 5px;
   }
- .menu{
-  width:0;
-  overflow: hidden;
- }
+
+  .menu {
+    width: 0;
+    overflow: hidden;
+  }
+
   .info {
     width: 2px;
     overflow: hidden;
   }
+
   .arrow {
     width: 50px;
     height: 50px;
@@ -221,8 +250,9 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor:pointer;
+    cursor: pointer;
   }
+
   .arrow2 {
     width: 50px;
     height: 50px;
@@ -234,79 +264,130 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor:pointer;
+    cursor: pointer;
   }
 }
 
 /* login page */
-#login{
-  width:100%;
-  height:100%;
-  display:flex;
+#login {
+  width: 100%;
+  height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
   pointer-events: auto;
 }
-#login-main{
-  width:50%;
-  display:flex;
-  justify-content:center;
+
+#login-main {
+  width: 50%;
+  display: flex;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap:8px;
+  gap: 8px;
 }
-#login-main>*{
-  width:100%;
+
+#login-main>* {
+  width: 100%;
   text-align: center;
   font-size: larger;
   padding: 24px;
 }
 
 /* announce */
-#announce{
-  padding:16px;
+#announce {
+  padding: 16px;
   border-radius: 6px;
   font-size: 16px;
-  font-weight:400;
-  width:200px;
+  font-weight: 400;
+  width: 200px;
   height: fit-content;
   position: fixed;
-  top:10px;
-  right:10px;
-  transition: right 1s cubic-bezier(0.21,-1.34,0.86, 2.36);
+  top: 10px;
+  right: 10px;
+  transition: right 1s cubic-bezier(0.21, -1.34, 0.86, 2.36);
 }
-.success{
-  color:#0f5132;
+
+.success {
+  color: #0f5132;
   background-color: #d1e7dd;
 }
-.information{
-  color:#055160;
+
+.information {
+  color: #055160;
   background-color: #cff4fc;
 }
-.danger{
-  color:#842029;
+
+.danger {
+  color: #842029;
   background-color: #f8d7da;
 }
-.warning{
-  color:#664d03;
+
+.warning {
+  color: #664d03;
   background-color: #fff3cd;
 }
 
 /* info */
-.info-content{
-  margin:20px;
+.info-content {
+  margin: 20px;
   pointer-events: auto;
-  cursor:pointer;
+  cursor: pointer;
   pointer-events: auto;
 }
-.info-content>h2{
+
+.info-content>h2 {
   text-align: center;
 }
-.form{
-  display:flex;
+
+.form {
+  display: flex;
   flex-direction: column;
-  gap:8px;
+  gap: 8px;
 }
-.form>*>*{
-  width:100%;
+
+.form>*>* {
+  width: 100%;
+}
+
+/* overlay toastify */
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#toastify {
+  background-color: #cff4fc;
+  padding: 24px;
+  min-width: 400px;
+  min-height: 250px;
+  border-radius: 40px;
+  box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  pointer-events: auto;
+}
+
+#toastify>div {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  pointer-events: auto;
+}
+
+#toastify>div>.btn{
+  width:40%;
+  cursor: pointer;
+  pointer-events: auto;
 }

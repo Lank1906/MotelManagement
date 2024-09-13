@@ -9,10 +9,12 @@ import { AnnounceContext } from './libs/announce_context';
 import NotFound from './components/notfound';
 import RoomList from './components/room_list';
 import PersonList from './components/person_list';
-import { DataContextProvider } from './libs/data_handling_context';
+import Toastify from './components/toastify';
+import { ToastifyContext } from './libs/toastify_context';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)
+    const toastifyContext=useContext(ToastifyContext)
     return (
         <BrowserRouter>
             <Routes>
@@ -26,6 +28,7 @@ export default function App() {
                 <Route path="*" element={<NotFound />} />
             </Routes>
             {announceContext?.close ? <Announce /> : ''}
+            {toastifyContext?.close ? <Toastify/> :''}
         </BrowserRouter>
     )
 }
