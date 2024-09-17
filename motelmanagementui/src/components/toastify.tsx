@@ -15,7 +15,7 @@ export default function Toastify() {
         const timer=setTimeout(()=>{
             toastifyContext?.setClose(false)
         },1000)
-        toastifyContext && (toastifyContext.result = a);
+        toastifyContext?.setResult(a)
         return () => clearTimeout(timer);
     }
     return (

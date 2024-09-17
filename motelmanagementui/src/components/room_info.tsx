@@ -6,6 +6,7 @@ import { MyContext } from "../libs/context";
 import { DataContext } from "../libs/data_handling_context";
 import { RoomType } from "../interface/room_type";
 import { AnnounceContext } from "../libs/announce_context";
+import { ToastifyContext } from "../libs/toastify_context";
 
 export default function RoomInfo() {
     const [image, setImage] = useState<string | null>(null)
@@ -15,6 +16,7 @@ export default function RoomInfo() {
     const dataContext = useContext(DataContext)
     const context = useContext(MyContext)
     const announceContext=useContext(AnnounceContext)
+    const toastifyContext=useContext(ToastifyContext)
 
     useEffect(() => {
         if (dataContext?.id != -1) {
@@ -80,6 +82,9 @@ export default function RoomInfo() {
     }
 
     async function handleUpdate() {
+        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa phòng "+object?.name)
+        if(!result)
+            return
         PutFetch('room/' + object?.id, object, (data: any) => {
             let tam = [...dataContext?.list as RoomType[]].map((item: any) => {
                 if (item.id == object?.id) {
@@ -118,7 +123,7 @@ export default function RoomInfo() {
             </div>
             <div className="input">
                 <label htmlFor="type">Loại Phòng</label><br />
-                <select value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.innerText, type: parseInt(e.target.value) })}>
+                <select value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.options[e.target.selectedIndex].text, type: parseInt(e.target.value) })}>
                     {
                         types ? types.map((item: TypeType) => {
                             return (<option value={item.id} key={item.id}>{item.type_name}</option>)
