@@ -6,8 +6,8 @@ export default function Toastify() {
     const [height,setHeight]=useState(0)
     const toastifyContext=useContext(ToastifyContext)
     useEffect(()=>{
-        setWidth(100)
-        setHeight(100)
+        setWidth(400)
+        setHeight(250)
     },[])
     function returnResult(a:boolean){
         setWidth(0)
@@ -19,9 +19,9 @@ export default function Toastify() {
         return () => clearTimeout(timer);
     }
     return (
-        <div className="overlay" style={{width:width+'vw',height:height+'vh'}}>
-            <div id="toastify">
-                <p>Message</p>
+        <div className="overlay">
+            <div id="toastify" style={{width:width+"px",height:height+"px"}}>
+                <p>{toastifyContext?.message}</p>
                 <div>
                     <div className="btn" onClick={()=>returnResult(true)}>Ok</div>
                     <div className="btn" onClick={()=>returnResult(false)}>Huy</div>

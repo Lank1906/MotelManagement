@@ -14,7 +14,7 @@ export default function RoomCard(props: RoomType) {
   const toastifyContext=useContext(ToastifyContext);
   
   async function handleDelete() {
-    const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng"+props.name)
+    const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng "+props.name)
     if(!result) return
     DeleteFetch('room/' + props.id, (data: any) => {
       let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(

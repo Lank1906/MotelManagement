@@ -362,13 +362,11 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 #toastify {
   background-color: #cff4fc;
-  padding: 24px;
-  min-width: 400px;
-  min-height: 250px;
   border-radius: 40px;
   box-shadow: 0 3px 6px -1px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232, 0.3);
   display: flex;
@@ -376,6 +374,12 @@ li {
   justify-content: space-around;
   align-items: center;
   pointer-events: auto;
+  transition: all 1s cubic-bezier(0.08,1.09,0.54, 0.93);
+  overflow: hidden;
+}
+
+#toastify>*{
+  padding:24px;
 }
 
 #toastify>div {
@@ -390,4 +394,12 @@ li {
   width:40%;
   cursor: pointer;
   pointer-events: auto;
+}
+
+.loader{
+  width: 100%;
+  height:100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }

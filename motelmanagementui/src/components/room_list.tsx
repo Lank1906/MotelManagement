@@ -6,6 +6,7 @@ import { MyContext } from "../libs/context";
 import { RoomType } from "../interface/room_type";
 import { DataContext } from "../libs/data_handling_context";
 import { PersonType } from "../interface/person_type";
+import Loader from "./loader";
 
 export default function RoomList() {
   const context = useContext(MyContext)
@@ -29,7 +30,7 @@ export default function RoomList() {
               <RoomCard {...item}  />
             </div>
           )
-        }) : "Loading ..."}
+        }) : <Loader/>}
       </div>
     </div>
   );
