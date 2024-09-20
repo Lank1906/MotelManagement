@@ -39,7 +39,6 @@ create table renters(
     img_font varchar(40), # anh mat truoc cccd 
     img_back varchar(40),# anh mat sau cccd
     tctv TINYINT(1) default 0, # 0 chua dang ki tam tru tam vang, 1 da dang ki tam tru tam vang
-    old int default 1,
     trang_thai TINYINT(1) default 0, #0 nguoi o 1 khach den choi
     FOREIGN key (room_id) REFERENCES rooms(id) on delete set null on update CASCADE,
     FOREIGN key (user_id) REFERENCES users(id) on delete set null on update cascade

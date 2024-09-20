@@ -1,4 +1,3 @@
-import RoomCard from "./roomcard";
 import Search from "./search";
 
 export default function Content() {

@@ -7,6 +7,7 @@ import { DataContext } from "../libs/data_handling_context";
 import { RoomType } from "../interface/room_type";
 import { AnnounceContext } from "../libs/announce_context";
 import { ToastifyContext } from "../libs/toastify_context";
+import { uploadImage } from "../libs/libs";
 
 export default function RoomInfo() {
     const [image, setImage] = useState<string | null>(null)
@@ -31,30 +32,6 @@ export default function RoomInfo() {
             setTypes(data)
         }, context?.data)
     }, [])
-
-    async function uploadImage(element: string) {
-        const fileInput = document.querySelector(element) as HTMLInputElement;
-        const formData = new FormData();
-        let filename = "";
-        if (fileInput && fileInput.files && fileInput.files[0]) {
-            formData.append('image', fileInput.files[0]);
-
-            await PostImage('api/upload', formData, (data) => {
-                filename = data
-            }, context?.data);
-        }
-        if(filename != ""){
-            announceContext?.setMessage(filename + "has been uploaded")
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        }
-        else{
-            announceContext?.setMessage(filename + "has been failed")
-            announceContext?.setType("danger")
-            announceContext?.setClose(true)
-        }
-        return filename;
-    }
 
     async function handleAdd() {
         // let t = await uploadImage("#fileinput");
@@ -162,7 +139,7 @@ export default function RoomInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage("#fileinput");
+                        let t = await uploadImage(e.target);
                         setObject({ ...object, "img_room": t })
                     }
                 }} />

@@ -4,7 +4,6 @@ import Info from "./components/info";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DataContextProvider } from "./libs/data_handling_context";
-import { RoomContext, RoomProvider } from "./libs/room_context";
 
 export default function Container() {
   const [leftStatus, setLeftStatus] = useState('');
