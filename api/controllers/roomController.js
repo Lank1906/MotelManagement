@@ -1,4 +1,14 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require('../models/room');
+const {GetShortList,GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require('../models/room');
+
+async function Short(req,res){
+    const result=await GetShortList({...req.query,"rooms.user_id":req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
+    }
+}
 
 async function List(req,res){
     const result=await GetList({...req.query,"rooms.user_id":req.user.id});
@@ -53,4 +63,4 @@ async function Delete(req,res){
         return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
     }
 }
-module.exports={List,One,Add,Update,Delete};
+module.exports={Short,List,One,Add,Update,Delete};

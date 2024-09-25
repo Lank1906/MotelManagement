@@ -1,4 +1,14 @@
-const {GetList,AddObject,UpdateObject,DeleteObject}=require('../models/type');
+const {GetShortList,GetList,AddObject,UpdateObject,DeleteObject}=require('../models/type');
+
+async function Short(req,res){
+     const result=await GetShortList({"user_id":req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"KKhông tồn tại dữ liệu có sẵn"})
+    }
+}
 
 async function List(req,res){
     const result=await GetList({"user_id":req.user.id});
@@ -39,4 +49,4 @@ async function Delete(req,res){
         return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
     }
 }
-module.exports={List,Add,Update,Delete};
+module.exports={Short,List,Add,Update,Delete};

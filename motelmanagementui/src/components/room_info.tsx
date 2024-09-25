@@ -28,15 +28,12 @@ export default function RoomInfo() {
     }, [dataContext?.id])
 
     useEffect(() => {
-        GetFetch('type', (data: TypeType[]) => {
+        GetFetch('type/short', (data: TypeType[]) => {
             setTypes(data)
         }, context?.data)
     }, [])
 
     async function handleAdd() {
-        // let t = await uploadImage("#fileinput");
-        // setObject({ ...object, "img_room": t })
-
         let object2 = { ...object }
         delete object2.person_limit;
         delete object2.electric_number;

@@ -1,5 +1,14 @@
 const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connect.js");
 
+async function GetShortList(jsonData){
+    try{
+        const result=await GetQuery('rooms',['rooms.id','name'],jsonData)
+        return result;
+    }catch (err){
+        return err;
+    }
+}
+
 async function GetList(jsonData){
     try{
         const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','check_in','img_room'],'rooms.type=types.id',jsonData)
@@ -48,4 +57,4 @@ async function DeleteObject(jsonCondition){
     }
 }
 
-module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject};
+module.exports={GetShortList,GetList,GetOne,AddObject,UpdateObject,DeleteObject};

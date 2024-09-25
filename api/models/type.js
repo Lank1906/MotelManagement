@@ -1,5 +1,14 @@
 const {GetQuery,AddQuery,UpdateQuery,DeleteQuery}=require("./connect");
 
+async function GetShortList(jsonData){
+    try{
+        const result=await GetQuery('types',['id','type_name'],jsonData)
+        return result;
+    }catch (err){
+        return err
+    }
+}
+
 async function GetList(jsonData){
     try{
         const result=await GetQuery('types',['id','type_name','price','electric','water','water_folow'],jsonData)
@@ -38,4 +47,4 @@ async function DeleteObject(jsonCondition){
         return err;
     }
 }
-module.exports={GetList,AddObject,UpdateObject,DeleteObject};
+module.exports={GetShortList,GetList,AddObject,UpdateObject,DeleteObject};

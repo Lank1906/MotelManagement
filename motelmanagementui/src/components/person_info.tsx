@@ -1,14 +1,35 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AnnounceContext } from "../libs/announce_context";
 import { MyContext } from "../libs/context";
 import { uploadImage } from "../libs/libs";
+import { PersonDetailType } from "../interface/person_detail_type";
+import { DataContext } from "../libs/data_handling_context";
+import { GetFetch } from "../libs/fetch";
+import { RoomType } from "../interface/room_type";
 
 export default function PersonInfo(){
     const announceContext=useContext(AnnounceContext)
+    const dataContext=useContext(DataContext)
     const context=useContext(MyContext)
 
     const [cccdF, setCCCDF] = useState<string | null>(null)
     const [cccdB, setCCCDB] = useState<string | null>(null)
+    const [object,setObject]=useState<PersonDetailType|undefined>(undefined);
+    const [rooms,setRooms]=useState<RoomType[]>([])
+
+    useEffect(()=>{
+        if(dataContext?.id!=-1){
+            GetFetch(dataContext?.type+'/'+dataContext?.id,(data:PersonDetailType[])=>{
+                setObject(data[0])
+            },context?.data)
+        }
+    })
+
+    useEffect(()=>{
+        GetFetch('room/short',(data:RoomType[])=>{
+            setRooms(data)
+        },context?.data)
+    })
 
     function handleAdd(){}
     function handleUpdate(){}
