@@ -16,14 +16,14 @@ export default function PersonCard(props:PersonType) {
   async function HandleDelete(){
     const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa "+props.renter_name +" khong ?")
     if(!result) return
-    DeleteFetch('room/' + props.id, (data: any) => {
+    DeleteFetch('renter/' + props.id, (data: any) => {
       let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(
         (item: RoomType | PersonType) =>
           item.id !== props.id
       )
 
       dataContext?.setList(
-        tam as RoomType[]
+        tam as PersonType[]
       )
       announceContext?.setMessage(data.message)
       announceContext?.setType("success")

@@ -2,11 +2,14 @@ import { useContext } from "react";
 import { PostImage } from "./fetch";
 import { AnnounceContext } from "./announce_context";
 import { MyContext } from "./context";
+import { AnnounceContextType } from "../interface/announce_context_type";
+import { MyContextType } from "../interface/my_context_type";
 
-const announceContext=useContext(AnnounceContext)
-const context=useContext(MyContext)
 
-async function uploadImage(element:HTMLInputElement) {
+
+async function uploadImage(element:HTMLInputElement,announceContext:AnnounceContextType|undefined,context:MyContextType|undefined) {
+    // const announceContext=useContext(AnnounceContext)
+    // const context=useContext(MyContext)
     const fileInput = element
     const formData = new FormData();
     let filename = "";

@@ -136,7 +136,7 @@ export default function RoomInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target);
+                        let t = await uploadImage(e.target,announceContext,context);
                         setObject({ ...object, "img_room": t })
                     }
                 }} />

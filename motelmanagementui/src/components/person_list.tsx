@@ -4,15 +4,18 @@ import { MyContext } from "../libs/context"
 import { GetFetch } from "../libs/fetch";
 import { PersonType } from "../interface/person_type";
 import PersonCard from "./personcard";
+import { DataContext } from "../libs/data_handling_context";
+import { RoomType } from "../interface/room_type";
 
 export default function PersonList() {
-    const context=useContext(MyContext);
-    const [list,setList]=useState<PersonType[]>([])
-    useEffect(()=>{
-        GetFetch('renter',(data:PersonType[])=>{
-            setList(data)
-        },context?.data)
-    },[])
+    const context = useContext(MyContext);
+    const dataContext = useContext(DataContext)
+    useEffect(() => {
+        GetFetch('renter', (data: PersonType[]) => {
+            dataContext?.setList(data)
+        }, context?.data)
+    }, [])
+    const isPersonArray = (arr: RoomType[] | PersonType[] | undefined): arr is PersonType[] => { return true }
     return (
         <div className="content">
             <div className="top-content">
@@ -20,8 +23,11 @@ export default function PersonList() {
                 <div className="like-search"></div>
             </div>
             <div className="body-content">
-                {list ? list.map((item: PersonType) => {
-                    return (<PersonCard {...item} key={item.id} />)
+                {isPersonArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: PersonType) => {
+                    return (
+                        <div onClick={() => { dataContext?.setData(item.id, 'renter') }}>
+                            <PersonCard {...item} key={item.id} /></div>
+                    )
                 }) : "Loading ..."}
             </div>
         </div>

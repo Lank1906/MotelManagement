@@ -35,14 +35,16 @@ export default function PersonInfo() {
     function handleAdd() {
         let object2 = { ...object }
 
+        delete object2.room_name;
+
         let newObject: PersonType = {
             id: object2.id as number,
-            renter_name: object2.name as string,
+            renter_name: object2.renter_name as string,
             room_name: object?.room_name as string,
             trang_thai: object?.trang_thai as boolean,
         }
 
-        PostFetch('renter', object, (data: any) => {
+        PostFetch('renter', object2, (data: any) => {
             dataContext?.setList([...dataContext.list as PersonType[], newObject]);
             announceContext?.setMessage(data.message)
             announceContext?.setType("success")
@@ -70,7 +72,7 @@ export default function PersonInfo() {
         <div className="form">
             <div className="input">
                 <label htmlFor="name">Họ Tên</label><br />
-                <input type="text" name="name" value={object?.name || ''} onChange={(e) => setObject({ ...object, name: e.target.value })} />
+                <input type="text" name="name" value={object?.renter_name || ''} onChange={(e) => setObject({ ...object, renter_name: e.target.value })} />
             </div>
             <div className="input">
                 <label htmlFor="room_id">Phòng</label><br />
@@ -117,8 +119,8 @@ export default function PersonInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target);
-                        setObject({ ...object, img_front: t })
+                        let t = await uploadImage(e.target,announceContext,context);
+                        setObject({ ...object, img_font: t })
                     }
                 }} />
             </div>
@@ -137,7 +139,7 @@ export default function PersonInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target);
+                        let t = await uploadImage(e.target,announceContext,context);
                         setObject({ ...object, img_back: t })
                     }
                 }} />
