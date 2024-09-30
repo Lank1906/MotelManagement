@@ -67,7 +67,6 @@ export default function PersonInfo() {
         }, context?.data)
     }
 
-    function handleDelete() { }
     return (
         <div className="form">
             <div className="input">
