@@ -29,6 +29,7 @@ export default function PersonInfo() {
     useEffect(() => {
         GetFetch('room/short', (data: RoomType[]) => {
             setRooms(data)
+            setObject({...object,room_id:data[0].id,room_name:data[0].name})
         }, context?.data)
     }, [])
 
@@ -36,6 +37,8 @@ export default function PersonInfo() {
         let object2 = { ...object }
 
         delete object2.room_name;
+
+        console.log(object2)
 
         let newObject: PersonType = {
             id: object2.id as number,
