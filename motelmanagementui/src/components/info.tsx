@@ -14,9 +14,12 @@ export default function Info(props: infoProps) {
     <div className="info" style={{ width: props.widthE }}>
       <div className="info-content">
         <h2>Thông tin chi tiết</h2>
-        {dataContext?.type == 'room' ? (
-          <RoomInfo/>
-        ) : (<PersonInfo/>)}
+        { 
+          dataContext?.type=='room' ? <RoomInfo/> :
+          dataContext?.type=='renter' ? <PersonInfo/>:
+          dataContext?.type=='dashboard' ? '':
+          dataContext?.type=='type' ? '' :<RoomInfo/>
+        }
       </div>
     </div>
   );

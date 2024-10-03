@@ -12,6 +12,7 @@ import PersonList from './components/person_list';
 import Toastify from './components/toastify';
 import { ToastifyContext } from './libs/toastify_context';
 import TypeList from './components/type_list';
+import Dashboard from './components/dashboard';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)
@@ -21,7 +22,7 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} index />
                 <Route path="/home" element={<Container />}>
-                    <Route path="dashboard" element={<h1>test</h1>} />
+                    <Route path="dashboard" element={<Dashboard/>} />
                     <Route path="type" element={<TypeList />}/>
                     <Route path="room" element={<RoomList />} />
                     <Route path="renter" element={<PersonList />} />
