@@ -7,6 +7,7 @@ import { RoomType } from "../interface/room_type";
 import { DataContext } from "../libs/data_handling_context";
 import { PersonType } from "../interface/person_type";
 import Loader from "./loader";
+import { TypeType } from "../interface/type_type";
 
 export default function RoomList() {
   const context = useContext(MyContext)
@@ -16,7 +17,7 @@ export default function RoomList() {
       dataContext?.setList(data)
     }, context?.data)
   }, [])
-  const isRoomArray=(arr:RoomType[]|PersonType[]|undefined):arr is RoomType[]=>{return true}
+  const isRoomArray=(arr:TypeType[]|RoomType[]|PersonType[]|undefined):arr is RoomType[]=>{return true}
   return (
     <div className="content">
       <div className="top-content">

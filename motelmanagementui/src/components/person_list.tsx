@@ -6,6 +6,7 @@ import { PersonType } from "../interface/person_type";
 import PersonCard from "./personcard";
 import { DataContext } from "../libs/data_handling_context";
 import { RoomType } from "../interface/room_type";
+import { TypeType } from "../interface/type_type";
 
 export default function PersonList() {
     const context = useContext(MyContext);
@@ -15,7 +16,7 @@ export default function PersonList() {
             dataContext?.setList(data)
         }, context?.data)
     }, [])
-    const isPersonArray = (arr: RoomType[] | PersonType[] | undefined): arr is PersonType[] => { return true }
+    const isPersonArray = (arr: TypeType[]|RoomType[] | PersonType[] | undefined): arr is PersonType[] => { return true }
     return (
         <div className="content">
             <div className="top-content">
@@ -25,8 +26,8 @@ export default function PersonList() {
             <div className="body-content">
                 {isPersonArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: PersonType) => {
                     return (
-                        <div onClick={() => { dataContext?.setData(item.id, 'renter') }}>
-                            <PersonCard {...item} key={item.id} /></div>
+                        <div onClick={() => { dataContext?.setData(item.id, 'renter') }} key={item.id}>
+                            <PersonCard {...item}  /></div>
                     )
                 }) : "Loading ..."}
             </div>

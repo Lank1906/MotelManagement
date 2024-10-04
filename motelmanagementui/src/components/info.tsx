@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { DataContext } from "../libs/data_handling_context";
 import RoomInfo from "./room_info";
 import PersonInfo from "./person_info";
+import TypeInfo from "./type_info";
 
 interface infoProps {
   widthE: string,
@@ -18,7 +19,7 @@ export default function Info(props: infoProps) {
           dataContext?.type=='room' ? <RoomInfo/> :
           dataContext?.type=='renter' ? <PersonInfo/>:
           dataContext?.type=='dashboard' ? '':
-          dataContext?.type=='type' ? '' :<RoomInfo/>
+          dataContext?.type=='type' ? <TypeInfo/> :<RoomInfo/>
         }
       </div>
     </div>
