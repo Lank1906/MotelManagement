@@ -31,6 +31,7 @@ export default function TypeList() {
                             <th>So dien</th>
                             <th>Nuoc</th>
                             <th>Nuoc tinh theo</th>
+                            <th>Thao tac</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,7 +43,8 @@ export default function TypeList() {
                                         <td>{item.price}</td>
                                         <td>{item.electric}</td>
                                         <td>{item.water}</td>
-                                        <td>{item.water_follow}</td>
+                                        <td>{item.water_follow ? 'nguoi':'so'}</td>
+                                        <td><button className="btn">Xoa</button></td>
                                     </tr>
                                 )
                             }):<Loader/>
