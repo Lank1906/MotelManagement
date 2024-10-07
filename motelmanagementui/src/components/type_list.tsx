@@ -5,6 +5,8 @@ import { TypeType } from "../interface/type_type";
 import { DataContext } from "../libs/data_handling_context";
 import { MyContext } from "../libs/context";
 import Loader from "./loader";
+import { PersonType } from "../interface/person_type";
+import { RoomType } from "../interface/room_type";
 
 export default function TypeList() {
     const dataContext=useContext(DataContext);
@@ -15,6 +17,8 @@ export default function TypeList() {
             dataContext?.setList(data)
         },context?.data)
     },[])
+
+    const isTypeArray=(arr:TypeType[]|RoomType[]|PersonType[]|undefined):arr is TypeType[]=>{return true}
 
     return (
         <div className="content">
@@ -36,9 +40,9 @@ export default function TypeList() {
                     </thead>
                     <tbody>
                         {
-                            dataContext?.list ? dataContext.list.map((item:TypeType)=>{
+                            isTypeArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item:TypeType)=>{
                                 return (
-                                    <tr key={item.id}>
+                                    <tr key={item.id} onClick={()=>dataContext.setData(item.id||-1,'type')}>
                                         <td>{item.type_name}</td>
                                         <td>{item.price}</td>
                                         <td>{item.electric}</td>

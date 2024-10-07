@@ -43,8 +43,14 @@ header {
 table{
   width:100%;
 }
+table tr:hover td{
+  background-color: #bdbdbd;
+  
+}
 table tr td{
   text-align: center;
+  cursor: pointer;
+  padding:8px;
 }
 
 .btn {
