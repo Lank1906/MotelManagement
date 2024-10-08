@@ -54,19 +54,22 @@ export default function TypeInfo(){
             </div>
             <div className="input">
                 <label htmlFor="price">Gia phong</label><br/>
-                <input type="number" name="price" value={object?.price}/>
+                <input type="number" name="price" value={object?.price} onChange={(e)=>setObject({...object,price:parseInt(e.target.value)})}/>
             </div>
             <div className="input">
                 <label htmlFor="electric">So dien</label><br/>
-                <input type="number" name="electric" value={object?.electric}/>
+                <input type="number" name="electric" value={object?.electric} onChange={(e)=>setObject({...object,electric:parseInt(e.target.value)})}/>
             </div>
             <div className="input">
                 <label htmlFor="water">So nuoc</label><br/>
-                <input type="text" name="water" value={object?.water}/>
+                <input type="text" name="water" value={object?.water} onChange={(e)=>setObject({...object,water:parseInt(e.target.value)})}/>
             </div>
             <div className="input">
                 <label htmlFor="water-follow">Nuoc tinh theo </label><br/>
-                <input type="text" name="water-follow" value={object?.water_follow?'nguoi':'so'}/>
+                <select name="water-follow" id="" value={object?.water_follow} onChange={(e)=>setObject({...object,water_follow:parseInt(e.target.options[e.target.selectedIndex].text)})}>
+                    <option value="0">Nguoi</option>
+                    <option value="1">So</option>
+                </select>
             </div>
             <div className="action">
                 <button className="btn" onClick={handleAdd}>Thêm Mới</button>

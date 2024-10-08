@@ -31,6 +31,7 @@ async function One(req,res){
 }
 
 async function Add(req,res){
+    delete req.body.id;
     const result=await AddObject({...req.body,"user_id":req.user.id});
     if(result>0){
         return res.status(200).json({"message":"Đã thêm dữ liệu thành công!"});
