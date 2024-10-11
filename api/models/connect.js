@@ -20,11 +20,14 @@ function CreateConnect(){
     return connection;
 }
 
-function GetQuery(tableName,columnList,jsonCondition){
+function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
     const connection = mysql.createConnection(setupDB);
     let condition='';
-    if(jsonCondition!=undefined){
-        condition+=" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+    if(jsonEqualCondition!=undefined){
+        condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+    }
+    if(jsonLikeCondition!=undefined){
+        condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
     var sql="SELECT "+columnList.join()+" from "+tableName+condition;
     // console.log(sql);
@@ -50,14 +53,16 @@ function GetQuery(tableName,columnList,jsonCondition){
     });
 }
 
-function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonCondition){
+function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondition,jsonLikeCondition){
     const connection = mysql.createConnection(setupDB);
     let condition='';
-    if(jsonCondition!=undefined){
-        condition+=" WHERE "+Object.entries(jsonCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+    if(jsonEqualCondition!=undefined){
+        condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+    }
+    if(jsonLikeCondition!=undefined){
+        condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
     var sql="SELECT "+columnList.join()+" from "+mainTable+" left join "+sideTable+" on "+onCondition +condition;
-    // console.log(sql);
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -83,7 +88,7 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonCondition){
 function AddQuery(tableName,jsonData){
     const connection = mysql.createConnection(setupDB);
     var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData).map(item=>typeof item=='string'?"'"+item+"'":item).join()+")";
-    console.log(sql);
+    //console.log(sql);
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);

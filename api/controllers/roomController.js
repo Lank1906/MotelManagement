@@ -11,7 +11,7 @@ async function Short(req,res){
 }
 
 async function List(req,res){
-    const result=await GetList({...req.query,"rooms.user_id":req.user.id});
+    const result=await GetList({"rooms.user_id":req.user.id},req.query);
     if(result.length>0){
         return res.status(200).json(result);
     }

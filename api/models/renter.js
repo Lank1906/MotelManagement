@@ -1,8 +1,8 @@
 const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connect.js");
 
-async function GetList(jsonData){
+async function GetList(jsonEqual,jsonLike){
     try{
-        const result=await GetJoinQuery('renters','rooms',['renters.id','rooms.name as room_name','renters.name as renter_name','trang_thai'],'renters.room_id=rooms.id',jsonData);
+        const result=await GetJoinQuery('renters','rooms',['renters.id','rooms.name as room_name','renters.name as renter_name','trang_thai'],'renters.room_id=rooms.id',jsonEqual,jsonLike);
         return result;
     }catch (err){
         return err;
