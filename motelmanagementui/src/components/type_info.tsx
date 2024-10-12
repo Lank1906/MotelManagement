@@ -14,6 +14,8 @@ export default function TypeInfo(){
     const [object,setObject]=useState<TypeType|undefined>(undefined)
 
     useEffect(()=>{
+        if(dataContext?.id==-1)
+            return
         GetFetch('type/'+dataContext?.id,(data:TypeType[])=>{
             setObject(data[0])
         },context?.data)

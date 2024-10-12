@@ -23,10 +23,10 @@ function CreateConnect(){
 function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
     const connection = mysql.createConnection(setupDB);
     let condition='';
-    if(jsonEqualCondition!=undefined){
+    if(Object.keys(jsonEqualCondition).length){
         condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     }
-    if(jsonLikeCondition!=undefined){
+    if(Object.keys(jsonLikeCondition).length){
         condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
     var sql="SELECT "+columnList.join()+" from "+tableName+condition;
@@ -56,10 +56,10 @@ function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
 function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondition,jsonLikeCondition){
     const connection = mysql.createConnection(setupDB);
     let condition='';
-    if(jsonEqualCondition!=undefined){
+    if(Object.keys(jsonEqualCondition).length){
         condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     }
-    if(jsonLikeCondition!=undefined){
+    if(Object.keys(jsonLikeCondition).length){
         condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
     var sql="SELECT "+columnList.join()+" from "+mainTable+" left join "+sideTable+" on "+onCondition +condition;

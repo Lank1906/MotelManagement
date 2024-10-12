@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetShortList(jsonData){
     try{
-        const result=await GetQuery('rooms',['rooms.id','name'],jsonData)
+        const result=await GetQuery('rooms',['rooms.id','name'],jsonData,{})
         return result;
     }catch (err){
         return err;
@@ -20,7 +20,7 @@ async function GetList(jsonEqual,jsonLike){
 
 async function GetOne(jsonData){
     try{
-        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','person_limit','electric_number','check_in','img_room','type'],'rooms.type=types.id',jsonData)
+        const result=await GetJoinQuery('rooms','types',['rooms.id','name','type_name','person_limit','electric_number','check_in','img_room','type'],'rooms.type=types.id',jsonData,{})
         return result;
     }catch (err){
         return err

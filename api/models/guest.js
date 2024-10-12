@@ -11,7 +11,7 @@ async function SignUp(jsonData){
 }
 async function Login(jsonData){
     try{
-        const result= await GetQuery('users',['id','username','password'],jsonData);
+        const result= await GetQuery('users',['id','username','password'],jsonData,{});
         return result;
     }
     catch(err){

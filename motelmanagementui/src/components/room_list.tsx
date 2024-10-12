@@ -17,7 +17,7 @@ export default function RoomList() {
       dataContext?.setList(data)
     }, context?.data)
   }, [])
-  const isRoomArray=(arr:TypeType[]|RoomType[]|PersonType[]|undefined):arr is RoomType[]=>{return true}
+  const isRoomArray = (arr: TypeType[] | RoomType[] | PersonType[] | undefined): arr is RoomType[] => { return true }
   return (
     <div className="content">
       <div className="top-content">
@@ -25,13 +25,13 @@ export default function RoomList() {
         <div className="like-search"></div>
       </div>
       <div className="body-content">
-        {isRoomArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item:RoomType) => {
+        {isRoomArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: RoomType) => {
           return (
-            <div onClick={() => {dataContext?.setData(item.id, 'room')}} key={item.id} style={{height:"fit-content"}}>
-              <RoomCard {...item}  />
+            <div onClick={() => { dataContext?.setData(item.id, 'room') }} key={item.id} style={{ height: "fit-content" }}>
+              <RoomCard {...item} />
             </div>
           )
-        }) : <Loader/>}
+        }) : <Loader />}
       </div>
     </div>
   );
