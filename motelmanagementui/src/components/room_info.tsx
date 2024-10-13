@@ -100,7 +100,7 @@ export default function RoomInfo() {
                 <select value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.options[e.target.selectedIndex].text, type: parseInt(e.target.value) })}>
                     {
                         types ? types.map((item: TypeType) => {
-                            return (<option value={item.id} key={item.id}>{item.type_name}</option>)
+                            return (<option value={item.id} key={item.id}>{item.name}</option>)
                         }) : ''
                     }
                 </select>

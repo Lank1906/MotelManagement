@@ -31,7 +31,7 @@ export default function TypeInfo(){
     }
 
     async function handleUpdate(){
-        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loai phòng "+object?.type_name)
+        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loai phòng "+object?.name)
         if(!result)
             return
         PutFetch('type/'+dataContext?.id,object,(data:any)=>{
@@ -52,7 +52,7 @@ export default function TypeInfo(){
         <div className="form">
             <div className="input">
                 <label htmlFor="name">Ten loai</label><br/>
-                <input type="text" name="name" value={object?.type_name} onChange={(e)=>setObject({...object,type_name:e.target.value})}/>
+                <input type="text" name="name" value={object?.name} onChange={(e)=>setObject({...object,name:e.target.value})}/>
             </div>
             <div className="input">
                 <label htmlFor="price">Gia phong</label><br/>

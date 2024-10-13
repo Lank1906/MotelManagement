@@ -193,6 +193,7 @@ li {
   width: 30%;
   height: 40px;
   border-radius: 24px;
+  position: relative;
 }
 
 .like-search {
@@ -415,4 +416,23 @@ li {
   display:flex;
   justify-content: center;
   align-items: center;
+}
+
+.input{
+  background-color: transparent;
+  border: none;
+  width:100%;
+}
+
+.input:focus-visible{
+  border:none;
+  outline:none;
+}
+
+.search>.icon{
+  position: absolute;
+  right:10;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

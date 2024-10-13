@@ -60,12 +60,12 @@ export default function TypeList() {
                             isTypeArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item:TypeType)=>{
                                 return (
                                     <tr key={item.id} onClick={()=>dataContext.setData(item.id||-1,'type')}>
-                                        <td>{item.type_name}</td>
+                                        <td>{item.name}</td>
                                         <td>{item.price}</td>
                                         <td>{item.electric}</td>
                                         <td>{item.water}</td>
                                         <td>{item.water_follow ? 'nguoi':'so'}</td>
-                                        <td><button className="btn" onClick={()=>handleDelete(item.id,item.type_name)}>Xoa</button></td>
+                                        <td><button className="btn" onClick={()=>handleDelete(item.id,item.name)}>Xoa</button></td>
                                     </tr>
                                 )
                             }):<Loader/>

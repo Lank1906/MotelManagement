@@ -1,6 +1,6 @@
 export interface TypeType{
     id?:number,
-    type_name?:string,
+    name?:string,
     price?:number,
     electric?:number,
     water?:number,

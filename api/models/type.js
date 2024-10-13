@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery}=require("./connect");
 
 async function GetShortList(jsonData){
     try{
-        const result=await GetQuery('types',['id','type_name'],jsonData,{})
+        const result=await GetQuery('types',['id','name'],jsonData,{})
         return result;
     }catch (err){
         return err
@@ -11,7 +11,7 @@ async function GetShortList(jsonData){
 
 async function GetList(jsonEqual,jsonLike){
     try{
-        const result=await GetQuery('types',['id','type_name','price','electric','water','water_folow'],jsonEqual,jsonLike)
+        const result=await GetQuery('types',['id','name','price','electric','water','water_folow'],jsonEqual,jsonLike)
         return result;
     }catch (err){
         return err
@@ -20,7 +20,7 @@ async function GetList(jsonEqual,jsonLike){
 
 async function GetOne(jsonData){
     try{
-        const result= await GetQuery('types',['id','type_name','price','electric','water','water_folow'],jsonData,{})
+        const result= await GetQuery('types',['id','name','price','electric','water','water_folow'],jsonData,{})
         return result;
     }
     catch (err)
