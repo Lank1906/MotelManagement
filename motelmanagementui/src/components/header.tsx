@@ -3,8 +3,8 @@ export default function Header() {
     <header>
       <div className="logo">OMS.</div>
       <ul className="horizontal">
-        <li className="btn">Đăng Ký</li>
-        <li className="btn">Đăng Nhập</li>
+        <li className="btn-2"><i className="fa-solid fa-bullhorn"></i></li>
+        <li className="btn-2"><i className="fa-solid fa-arrow-right-from-bracket"></i></li>
       </ul>
     </header>
   );
