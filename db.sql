@@ -54,6 +54,21 @@ create table history_room(
     mo_ta text,
     FOREIGN key (room_id) REFERENCES rooms(id) on delete cascade on update cascade
 );
+create table services(
+    id int primary key auto_increment,
+    name varchar(20) not null,
+    follow TINYINT(1) default 0,#0 theo thang 1 theo so lan
+    price float default 0
+);
+create table room_services(
+    id int primary key auto_increment,
+    room_id int,
+    service_id int,
+    day varchar(40),
+    times int,
+    foreign key (room_id) references rooms(id) on delete set null on update cascade,
+    foreign key (service_id) references services(id) on delete set null on update cascade
+);
 
 Insert into users(username,password,phone,email,per) values('lank','lank','0349852986','buuixuanhoangc@gmail.com',0),('test','test','0793248659','test@gmail.com',1);
 insert into types(user_id,name,price,electric,water,water_folow) values(1,'tang_1',1200000,3500,50000,0),(1,'tang_2',1000000,3500,20000,1);
@@ -62,3 +77,4 @@ insert into renters(user_id,name,que_quan,sdt,cccd,img_font,img_back,tctv,room_i
 																										(1,'ngo van tinh','tq-vl-hy','','','','',0,1,0),
                                                                                                         (1,'ngo xuan tinh','tq-vl-hy','0963852107','033003001892','','',0,2,0),
                                                                                                         (1,'ngo xuan cang','tq-vl-hy','0963852107','033003001892','','',0,2,1);
+insert into services(name,follow,price) values ('sac xe',1,20),('giat',1,12),('gui xe',0,100);

@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import RoomCard from "./roomcard";
-import Search from "./search";
-import { GetFetch } from "../libs/fetch";
-import { MyContext } from "../libs/context";
-import { RoomType } from "../interface/room_type";
-import { DataContext } from "../libs/data_handling_context";
-import { PersonType } from "../interface/person_type";
-import Loader from "./loader";
-import { TypeType } from "../interface/type_type";
+import Search from "../../base/search";
+import { GetFetch } from "../../../libs/fetch";
+import { MyContext } from "../../../libs/context";
+import { RoomType } from "../../../interface/room_type";
+import { DataContext } from "../../../libs/data_handling_context";
+import { PersonType } from "../../../interface/person_type";
+import Loader from "../../base/loader";
+import { TypeType } from "../../../interface/type_type";
 
 export default function RoomList() {
   const context = useContext(MyContext)

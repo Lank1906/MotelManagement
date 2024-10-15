@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react"
-import { DataContext } from "../libs/data_handling_context"
-import { GetFetch, PostFetch, PutFetch } from "../libs/fetch"
-import { TypeType } from "../interface/type_type"
-import { MyContext } from "../libs/context"
-import { AnnounceContext } from "../libs/announce_context"
-import { ToastifyContext } from "../libs/toastify_context"
+import { DataContext } from "../../libs/data_handling_context"
+import { GetFetch, PostFetch, PutFetch } from "../../libs/fetch"
+import { TypeType } from "../../interface/type_type"
+import { MyContext } from "../../libs/context"
+import { AnnounceContext } from "../../libs/announce_context"
+import { ToastifyContext } from "../../libs/toastify_context"
 
 export default function TypeInfo(){
     const context=useContext(MyContext)

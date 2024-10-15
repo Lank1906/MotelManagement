@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react"
-import Search from "./search"
-import { MyContext } from "../libs/context"
-import { GetFetch } from "../libs/fetch";
-import { PersonType } from "../interface/person_type";
+import Search from "../base/search"
+import { MyContext } from "../../libs/context"
+import { GetFetch } from "../../libs/fetch";
+import { PersonType } from "../../interface/person_type";
 import PersonCard from "./personcard";
-import { DataContext } from "../libs/data_handling_context";
-import { RoomType } from "../interface/room_type";
-import { TypeType } from "../interface/type_type";
+import { DataContext } from "../../libs/data_handling_context";
+import { RoomType } from "../../interface/room_type";
+import { TypeType } from "../../interface/type_type";
 
 export default function PersonList() {
     const context = useContext(MyContext);

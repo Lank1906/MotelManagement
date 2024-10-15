@@ -1,4 +1,4 @@
-import Search from "./search";
+import Search from "../base/search";
 
 export default function Dashboard() {
     return (

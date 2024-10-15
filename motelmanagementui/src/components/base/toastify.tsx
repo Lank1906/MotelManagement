@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ToastifyContext } from "../libs/toastify_context";
+import { ToastifyContext } from "../../libs/toastify_context";
 
 export default function Toastify() {
     const [width,setWidth]=useState(0)

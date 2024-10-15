@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AnnounceContext } from "../libs/announce_context";
+import { AnnounceContext } from "../../libs/announce_context";
 
 export default function Announce() {
     const [right, setRight] = useState(-200);

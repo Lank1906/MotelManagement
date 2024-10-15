@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { AnnounceContext } from "../libs/announce_context";
-import { MyContext } from "../libs/context";
-import { uploadImage } from "../libs/libs";
-import { PersonDetailType } from "../interface/person_detail_type";
-import { DataContext } from "../libs/data_handling_context";
-import { GetFetch, PostFetch, PutFetch } from "../libs/fetch";
-import { RoomType } from "../interface/room_type";
-import { PersonType } from "../interface/person_type";
+import { AnnounceContext } from "../../libs/announce_context";
+import { MyContext } from "../../libs/context";
+import { uploadImage } from "../../libs/libs";
+import { PersonDetailType } from "../../interface/person_detail_type";
+import { DataContext } from "../../libs/data_handling_context";
+import { GetFetch, PostFetch, PutFetch } from "../../libs/fetch";
+import { RoomType } from "../../interface/room_type";
+import { PersonType } from "../../interface/person_type";
 
 export default function PersonInfo() {
     const announceContext = useContext(AnnounceContext)

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { DataContext } from "../libs/data_handling_context";
-import RoomInfo from "./room_info";
-import PersonInfo from "./person_info";
-import TypeInfo from "./type_info";
+import { DataContext } from "../../libs/data_handling_context";
+import RoomInfo from "../room/info/room_info";
+import PersonInfo from "../renters/person_info";
+import TypeInfo from "../type/type_info";
 
 interface infoProps {
   widthE: string,

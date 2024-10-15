@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { DataContext } from "../libs/data_handling_context";
+import { DataContext } from "../../libs/data_handling_context";
 
 interface menuProps{
   widthE?:string;

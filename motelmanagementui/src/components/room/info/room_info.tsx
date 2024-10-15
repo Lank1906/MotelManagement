@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { RoomDetailType } from "../interface/room_detail_type";
-import { TypeType } from "../interface/type_type";
-import { GetFetch, PostFetch, PostImage, PutFetch } from "../libs/fetch";
-import { MyContext } from "../libs/context";
-import { DataContext } from "../libs/data_handling_context";
-import { RoomType } from "../interface/room_type";
-import { AnnounceContext } from "../libs/announce_context";
-import { ToastifyContext } from "../libs/toastify_context";
-import { uploadImage } from "../libs/libs";
+import { RoomDetailType } from "../../../interface/room_detail_type";
+import { TypeType } from "../../../interface/type_type";
+import { GetFetch, PostFetch, PostImage, PutFetch } from "../../../libs/fetch";
+import { MyContext } from "../../../libs/context";
+import { DataContext } from "../../../libs/data_handling_context";
+import { RoomType } from "../../../interface/room_type";
+import { AnnounceContext } from "../../../libs/announce_context";
+import { ToastifyContext } from "../../../libs/toastify_context";
+import { uploadImage } from "../../../libs/libs";
 
 export default function RoomInfo() {
     const [image, setImage] = useState<string | null>(null)

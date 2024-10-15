@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { RoomType } from "../interface/room_type";
-import { DeleteFetch } from "../libs/fetch";
-import { DataContext } from "../libs/data_handling_context";
-import { PersonType } from "../interface/person_type";
-import { AnnounceContext } from "../libs/announce_context";
-import { MyContext } from "../libs/context";
-import { ToastifyContext } from "../libs/toastify_context";
+import { RoomType } from "../../../interface/room_type";
+import { DeleteFetch } from "../../../libs/fetch";
+import { DataContext } from "../../../libs/data_handling_context";
+import { PersonType } from "../../../interface/person_type";
+import { AnnounceContext } from "../../../libs/announce_context";
+import { MyContext } from "../../../libs/context";
+import { ToastifyContext } from "../../../libs/toastify_context";
 
 export default function RoomCard(props: RoomType) {
   const context = useContext(MyContext)

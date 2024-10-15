@@ -1,6 +1,6 @@
-import Header from "./components/header";
-import Menu from "./components/menu";
-import Info from "./components/info";
+import Header from "./components/base/header";
+import Menu from "./components/base/menu";
+import Info from "./components/base/info";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DataContextProvider } from "./libs/data_handling_context";

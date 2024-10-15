@@ -4,15 +4,15 @@ import Login from './components/login';
 import Container from './Container';
 
 import "./styles.css";
-import Announce from './components/announce';
+import Announce from './components/base/announce';
 import { AnnounceContext } from './libs/announce_context';
-import NotFound from './components/notfound';
-import RoomList from './components/room_list';
-import PersonList from './components/person_list';
-import Toastify from './components/toastify';
+import NotFound from './components/base/notfound';
+import RoomList from './components/room/info/room_list';
+import PersonList from './components/renters/person_list';
+import Toastify from './components/base/toastify';
 import { ToastifyContext } from './libs/toastify_context';
-import TypeList from './components/type_list';
-import Dashboard from './components/dashboard';
+import TypeList from './components/type/type_list';
+import Dashboard from './components/dashboard/dashboard';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)

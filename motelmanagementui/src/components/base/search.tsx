@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { GetFetch } from "../libs/fetch";
-import { MyContext } from "../libs/context";
-import { DataContext } from "../libs/data_handling_context";
+import { GetFetch } from "../../libs/fetch";
+import { MyContext } from "../../libs/context";
+import { DataContext } from "../../libs/data_handling_context";
 
 export default function Search() {
   const [key,setKey]=useState<string>("");

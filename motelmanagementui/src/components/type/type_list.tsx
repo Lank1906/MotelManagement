@@ -1,14 +1,14 @@
 import { useContext, useEffect } from "react";
-import Search from "./search";
-import { DeleteFetch, GetFetch } from "../libs/fetch";
-import { TypeType } from "../interface/type_type";
-import { DataContext } from "../libs/data_handling_context";
-import { MyContext } from "../libs/context";
-import Loader from "./loader";
-import { PersonType } from "../interface/person_type";
-import { RoomType } from "../interface/room_type";
-import { ToastifyContext } from "../libs/toastify_context";
-import { AnnounceContext } from "../libs/announce_context";
+import Search from "../base/search";
+import { DeleteFetch, GetFetch } from "../../libs/fetch";
+import { TypeType } from "../../interface/type_type";
+import { DataContext } from "../../libs/data_handling_context";
+import { MyContext } from "../../libs/context";
+import Loader from "../base/loader";
+import { PersonType } from "../../interface/person_type";
+import { RoomType } from "../../interface/room_type";
+import { ToastifyContext } from "../../libs/toastify_context";
+import { AnnounceContext } from "../../libs/announce_context";
 
 export default function TypeList() {
     const dataContext=useContext(DataContext);
