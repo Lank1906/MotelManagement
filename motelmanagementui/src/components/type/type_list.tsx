@@ -9,6 +9,7 @@ import { PersonType } from "../../interface/person_type";
 import { RoomType } from "../../interface/room_type";
 import { ToastifyContext } from "../../libs/toastify_context";
 import { AnnounceContext } from "../../libs/announce_context";
+import ServiceType from "../../interface/service_type";
 
 export default function TypeList() {
     const dataContext=useContext(DataContext);
@@ -35,7 +36,7 @@ export default function TypeList() {
         },context?.data)
     }
 
-    const isTypeArray=(arr:TypeType[]|RoomType[]|PersonType[]|undefined):arr is TypeType[]=>{return true}
+    const isTypeArray=(arr:ServiceType[]|TypeType[]|RoomType[]|PersonType[]|undefined):arr is TypeType[]=>{return true}
 
     return (
         <div className="content">
