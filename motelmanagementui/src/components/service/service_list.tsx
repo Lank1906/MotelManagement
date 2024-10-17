@@ -18,7 +18,7 @@ export default function ServiceList(){
     const context=useContext(MyContext)
 
     useEffect(()=>{
-        GetFetch('service/'+dataContext?.id,(data:any)=>{
+        GetFetch('service',(data:any)=>{
             dataContext?.setList(data)
         },context?.data)
     },[])

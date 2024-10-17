@@ -56,9 +56,11 @@ create table history_room(
 );
 create table services(
     id int primary key auto_increment,
+    user_id int,
     name varchar(20) not null,
     follow TINYINT(1) default 0,#0 theo thang 1 theo so lan
-    price float default 0
+    price float default 0,
+    FOREIGN key (user_id) REFERENCES users(id) on delete cascade on update cascade
 );
 create table room_services(
     id int primary key auto_increment,
@@ -77,4 +79,4 @@ insert into renters(user_id,name,que_quan,sdt,cccd,img_font,img_back,tctv,room_i
 																										(1,'ngo van tinh','tq-vl-hy','','','','',0,1,0),
                                                                                                         (1,'ngo xuan tinh','tq-vl-hy','0963852107','033003001892','','',0,2,0),
                                                                                                         (1,'ngo xuan cang','tq-vl-hy','0963852107','033003001892','','',0,2,1);
-insert into services(name,follow,price) values ('sac xe',1,20),('giat',1,12),('gui xe',0,100);
+insert into services(user_id,name,follow,price) values (1,'sac xe',1,20),(1,'giat',1,12),(1,'gui xe',0,100);
