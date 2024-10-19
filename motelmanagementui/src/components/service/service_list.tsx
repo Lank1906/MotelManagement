@@ -23,7 +23,7 @@ export default function ServiceList(){
         },context?.data)
     },[])
 
-    async function handleDelete(id:number,name:string){
+    async function handleDelete(id:number|undefined,name:string|undefined){
         const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai "+name)
         if(!result || id==undefined) return
         DeleteFetch('type/'+id,(data:any)=>{
@@ -58,6 +58,7 @@ export default function ServiceList(){
                                 return (
                                     <tr key={item.id} onClick={()=>dataContext.setData(item.id||-1,'service')}>
                                         <td>{item.name}</td>
+                                        <td>{item.follow?'lan':'thang'}</td>
                                         <td>{item.price}</td>
                                         <td><button className="btn" onClick={()=>handleDelete(item.id,item.name)}>Xoa</button></td>
                                     </tr>
