@@ -34,7 +34,7 @@ export default function ServiceInfo(){
         const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loai phòng "+object?.name)
         if(!result)
             return
-        PutFetch('type/'+dataContext?.id,object,(data:any)=>{
+        PutFetch('service/'+dataContext?.id,object,(data:any)=>{
             let tam = [...dataContext?.list as ServiceType[]].map((item: any) => {
                 if (item.id == object?.id) {
                     item = object;
@@ -55,14 +55,14 @@ export default function ServiceInfo(){
                 <input type="text" name="name" value={object?.name} onChange={(e)=>setObject({...object,name:e.target.value})}/>
             </div>
             <div className="input">
-                <label htmlFor="price">Gia phong</label><br/>
+                <label htmlFor="price">Gia thanh</label><br/>
                 <input type="number" name="price" value={object?.price} onChange={(e)=>setObject({...object,price:parseInt(e.target.value)})}/>
             </div>
             <div className="input">
                 <label htmlFor="water-follow">Tien tinh theo </label><br/>
-                <select name="water-follow" id="" value={object?.follow?0:1} onChange={(e)=>setObject({...object,follow:e.target.value==="true"})}>
-                    <option value="true">Thang</option>
-                    <option value="false">So lan su dung</option>
+                <select name="water-follow" id="" value={object?.follow?'true':'false'} onChange={(e)=>setObject({...object,follow:e.target.value==="true"})}>
+                    <option value="false">Thang</option>
+                    <option value="true">So lan su dung</option>
                 </select>
             </div>
             <div className="action">

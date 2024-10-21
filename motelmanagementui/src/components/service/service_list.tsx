@@ -26,7 +26,7 @@ export default function ServiceList(){
     async function handleDelete(id:number|undefined,name:string|undefined){
         const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai "+name)
         if(!result || id==undefined) return
-        DeleteFetch('type/'+id,(data:any)=>{
+        DeleteFetch('service/'+id,(data:any)=>{
             let tam=(dataContext?.list as ServiceType[]).filter((item:ServiceType)=> item.id!==id)
             dataContext?.setList(tam)
             announceContext?.setMessage(data.message)
