@@ -182,6 +182,7 @@ li {
   position: relative;
   transition: all .3s ease-in;
   pointer-events: none;
+  
 }
 
 .info::before {
@@ -360,6 +361,8 @@ li {
   pointer-events: auto;
   cursor: pointer;
   pointer-events: auto;
+  overflow-y: scroll;
+  height:calc(100vh - 110px)
 }
 
 .info-content>h2 {
@@ -463,4 +466,8 @@ li {
 
 .room-nav>*.active{
   border-bottom: 1px solid black;
+}
+
+.room-content{
+  margin-top: 24px;
 }

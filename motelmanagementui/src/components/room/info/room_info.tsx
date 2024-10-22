@@ -119,7 +119,7 @@ export default function RoomInfo() {
             </div>
             <div className="input">
                 <label htmlFor="electric">Số điện</label><br />
-                <input type="number" name="electric" className="input" value={object?.electric_number} onChange={(e) => setObject({ ...object, electric_number: parseInt(e.target.value) })} />
+                <input type="number" name="electric" value={object?.electric_number} onChange={(e) => setObject({ ...object, electric_number: parseInt(e.target.value) })} />
             </div>
             <div className="input">
                 <label htmlFor="electric">Hình ảnh</label><br />
