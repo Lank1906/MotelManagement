@@ -46,6 +46,7 @@ app.use(express.json())
 app.use("/type",require("./routers/typeRoute"));
 app.use("/service",require("./routers/serviceRoute"));
 app.use("/room",require("./routers/roomRoute"));
+app.use("/room-service",require("./routers/roomServiceRoute"));
 app.use("/renter",require("./routers/renterRoute"));
 app.use("/history",require("./routers/historyRoute"));
 

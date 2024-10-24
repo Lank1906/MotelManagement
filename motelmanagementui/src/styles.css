@@ -471,3 +471,11 @@ li {
 .room-content{
   margin-top: 24px;
 }
+
+#list-service{
+  text-align: center;
+}
+
+.service-action{
+  margin-top: 24px;
+}
