@@ -20,7 +20,7 @@ async function AddObject(jsonData){
             result=await AddQuery('room_services',jsonData)
             return result
         }
-        else if(!element.follow || element.day.split(',').includes(new Date().getDate().toString())){
+        else if(!element.follow && element.day.split(',').includes(new Date().getDate().toString())){
             console.log("you are here")
             return 0;
         }

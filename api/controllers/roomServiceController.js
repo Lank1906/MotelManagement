@@ -5,6 +5,7 @@ async function List(req,res){
     if(result.length>0){
         return res.status(200).json(result);
     }
+    return res.status(400).json({"message":"Lay dữ liệu thất bại !"});
 }
 
 async function Add(req,res){

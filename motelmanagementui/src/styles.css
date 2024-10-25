@@ -474,6 +474,8 @@ li {
 
 #list-service{
   text-align: center;
+  max-height: 200px;
+  overflow-y:scroll ;
 }
 
 .service-action{
