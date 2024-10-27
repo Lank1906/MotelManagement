@@ -129,7 +129,7 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
                 reject(err.message);
             }
             else{
-                resolve(result.affectedRows);
+                resolve(jsonCondition.id);
             }
         });
         connection.end()
@@ -154,7 +154,7 @@ function DeleteQuery(tableName,jsonCondition){
                 reject(err.message);
             }
             else{
-                resolve(result.affectedRows);
+                resolve(jsonCondition.id);
             }
         });
         connection.end()

@@ -11,7 +11,7 @@ async function List(req,res){
 async function Add(req,res){
     const result=await AddObject({...req.body,'room_id':req.params.id,"user_id":req.user.id})
     if(result>0){
-        return res.status(200).json({"message":"Đã thêm dữ liệu thành công!"});
+        return res.status(200).json({"message":"Đã thêm dữ liệu thành công!","id":result});
     }
     else{
         return res.status(401).json({"message":"Thêm dữ liệu thất bại !"});
@@ -20,8 +20,8 @@ async function Add(req,res){
 
 async function Delete(req,res){
     const result=await DeleteObject({'id':req.params.id});
-    if(result){
-        return res.status(200).json({"message":"Đã xóa dữ liệu"});
+    if(result>0){
+        return res.status(200).json({"message":"Đã xóa dữ liệu","id":result});
     }
     else{
         return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
