@@ -19,18 +19,32 @@ export default function PersonInfo() {
     const [rooms, setRooms] = useState<RoomType[]>([])
 
     useEffect(() => {
-        if (dataContext?.id != -1) {
-            GetFetch(dataContext?.type + '/' + dataContext?.id, (data: PersonDetailType[]) => {
+        if (dataContext?.id == -1)
+            return
+        GetFetch(dataContext?.type + '/' + dataContext?.id,
+            (data: PersonDetailType[]) => {
                 setObject(data[0])
-            }, context?.data)
-        }
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }, [dataContext?.id])
 
     useEffect(() => {
-        GetFetch('room/short', (data: RoomType[]) => {
-            setRooms(data)
-            setObject({...object,room_id:data[0].id,room_name:data[0].name})
-        }, context?.data)
+        GetFetch('room/short',
+            (data: RoomType[]) => {
+                setRooms(data)
+                setObject({ ...object, room_id: data[0].id, room_name: data[0].name })
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }, [])
 
     function handleAdd() {
@@ -38,7 +52,7 @@ export default function PersonInfo() {
 
         delete object2.room_name;
 
-        console.log(object2)
+        //console.log(object2)
 
         let newObject: PersonType = {
             id: object2.id as number,
@@ -47,27 +61,43 @@ export default function PersonInfo() {
             trang_thai: object?.trang_thai as boolean,
         }
 
-        PostFetch('renter', object2, (data: any) => {
-            dataContext?.setList([...dataContext.list as PersonType[], newObject]);
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        }, context?.data);
+        PostFetch('renter',
+            object2,
+            (data: any) => {
+                dataContext?.setList([...dataContext.list as PersonType[], newObject]);
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            });
     }
 
-    function handleUpdate() { 
-        PutFetch('renter/' + object?.id, object, (data: any) => {
-            let tam = [...dataContext?.list as PersonType[]].map((item: any) => {
-                if (item.id == object?.id) {
-                    item = object;
-                }
-                return item;
-            });
-            dataContext?.setList(tam);
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        }, context?.data)
+    function handleUpdate() {
+        PutFetch('renter/' + object?.id,
+            object,
+            (data: any) => {
+                let tam = [...dataContext?.list as PersonType[]].map((item: any) => {
+                    if (item.id == object?.id) {
+                        item = object;
+                    }
+                    return item;
+                });
+                dataContext?.setList(tam);
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }
 
     return (
@@ -121,7 +151,7 @@ export default function PersonInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target,announceContext,context);
+                        let t = await uploadImage(e.target, announceContext, context);
                         setObject({ ...object, img_font: t })
                     }
                 }} />
@@ -141,7 +171,7 @@ export default function PersonInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target,announceContext,context);
+                        let t = await uploadImage(e.target, announceContext, context);
                         setObject({ ...object, img_back: t })
                     }
                 }} />

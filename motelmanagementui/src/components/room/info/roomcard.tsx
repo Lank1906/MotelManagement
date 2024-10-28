@@ -10,25 +10,32 @@ import { ToastifyContext } from "../../../libs/toastify_context";
 export default function RoomCard(props: RoomType) {
   const context = useContext(MyContext)
   const dataContext = useContext(DataContext)
-  const announceContext=useContext(AnnounceContext)
-  const toastifyContext=useContext(ToastifyContext);
-  
-  async function handleDelete() {
-    const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng "+props.name)
-    if(!result) return
-    DeleteFetch('room/' + props.id, (data: any) => {
-      let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(
-        (item: RoomType | PersonType) =>
-          item.id !== props.id
-      )
+  const announceContext = useContext(AnnounceContext)
+  const toastifyContext = useContext(ToastifyContext);
 
-      dataContext?.setList(
-        tam as RoomType[]
-      )
-      announceContext?.setMessage(data.message)
-      announceContext?.setType("success")
-      announceContext?.setClose(true)
-    }, context?.data)
+  async function handleDelete() {
+    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name)
+    if (!result) return
+    DeleteFetch('room/' + props.id,
+      (data: any) => {
+        let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(
+          (item: RoomType | PersonType) =>
+            item.id !== props.id
+        )
+
+        dataContext?.setList(
+          tam as RoomType[]
+        )
+        announceContext?.setMessage(data.message)
+        announceContext?.setType("success")
+        announceContext?.setClose(true)
+      },
+      context?.data,
+      (data: any) => {
+        announceContext?.setMessage(data.message)
+        announceContext?.setType("danger")
+        announceContext?.setClose(true)
+      })
   }
 
   return (

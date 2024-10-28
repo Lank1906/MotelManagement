@@ -8,16 +8,28 @@ import { DataContext } from "../../../libs/data_handling_context";
 import { PersonType } from "../../../interface/person_type";
 import Loader from "../../base/loader";
 import { TypeType } from "../../../interface/type_type";
+import { AnnounceContext } from "../../../libs/announce_context";
 
 export default function RoomList() {
   const context = useContext(MyContext)
   const dataContext = useContext(DataContext)
+  const announceContext = useContext(AnnounceContext)
+  
   useEffect(() => {
-    GetFetch('room', (data: RoomType[]) => {
-      dataContext?.setList(data)
-    }, context?.data)
+    GetFetch('room',
+      (data: RoomType[]) => {
+        dataContext?.setList(data)
+      },
+      context?.data,
+      (data: any) => {
+        announceContext?.setMessage(data.message)
+        announceContext?.setType("danger")
+        announceContext?.setClose(true)
+      })
   }, [])
+
   const isRoomArray = (arr: TypeType[] | RoomType[] | PersonType[] | undefined): arr is RoomType[] => { return true }
+
   return (
     <div className="content">
       <div className="top-content">

@@ -16,21 +16,35 @@ export default function RoomInfo() {
 
     const dataContext = useContext(DataContext)
     const context = useContext(MyContext)
-    const announceContext=useContext(AnnounceContext)
-    const toastifyContext=useContext(ToastifyContext)
+    const announceContext = useContext(AnnounceContext)
+    const toastifyContext = useContext(ToastifyContext)
 
     useEffect(() => {
-        if (dataContext?.id != -1) {
-            GetFetch(dataContext?.type + '/' + dataContext?.id, (data: RoomDetailType[]) => {
+        if (dataContext?.id == -1)
+            return
+        GetFetch(dataContext?.type + '/' + dataContext?.id,
+            (data: RoomDetailType[]) => {
                 setObject(data[0])
-            }, context?.data)
-        }
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }, [dataContext?.id])
 
     useEffect(() => {
-        GetFetch('type/short', (data: TypeType[]) => {
-            setTypes(data)
-        }, context?.data)
+        GetFetch('type/short',
+            (data: TypeType[]) => {
+                setTypes(data)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }, [])
 
     async function handleAdd() {
@@ -47,30 +61,46 @@ export default function RoomInfo() {
             img_room: object2.img_room as string
         };
 
-        PostFetch('room', object, (data: any) => {
-            dataContext?.setList([...dataContext.list as RoomType[], newObject]);
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        }, context?.data);
+        PostFetch('room',
+            object,
+            (data: any) => {
+                dataContext?.setList([...dataContext.list as RoomType[], newObject]);
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            });
     }
 
     async function handleUpdate() {
-        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa phòng "+object?.name)
-        if(!result)
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa phòng " + object?.name)
+        if (!result)
             return
-        PutFetch('room/' + object?.id, object, (data: any) => {
-            let tam = [...dataContext?.list as RoomType[]].map((item: any) => {
-                if (item.id == object?.id) {
-                    item = object;
-                }
-                return item;
-            });
-            dataContext?.setList(tam);
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        }, context?.data)
+        PutFetch('room/' + object?.id,
+            object,
+            (data: any) => {
+                let tam = [...dataContext?.list as RoomType[]].map((item: any) => {
+                    if (item.id == object?.id) {
+                        item = object;
+                    }
+                    return item;
+                });
+                dataContext?.setList(tam);
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }
 
     // async function handleDelete() {
@@ -136,7 +166,7 @@ export default function RoomInfo() {
                         };
                         reader.readAsDataURL(file);
 
-                        let t = await uploadImage(e.target,announceContext,context);
+                        let t = await uploadImage(e.target, announceContext, context);
                         setObject({ ...object, "img_room": t })
                     }
                 }} />

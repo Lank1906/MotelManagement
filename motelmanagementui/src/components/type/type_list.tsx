@@ -12,31 +12,45 @@ import { AnnounceContext } from "../../libs/announce_context";
 import ServiceType from "../../interface/service_type";
 
 export default function TypeList() {
-    const dataContext=useContext(DataContext);
-    const toastifyContext=useContext(ToastifyContext)
-    const announceContext=useContext(AnnounceContext)
-    const context=useContext(MyContext)
+    const dataContext = useContext(DataContext);
+    const toastifyContext = useContext(ToastifyContext)
+    const announceContext = useContext(AnnounceContext)
+    const context = useContext(MyContext)
 
-    useEffect(()=>{
-        GetFetch('type',(data:TypeType[])=>{
-            dataContext?.setList(data)
-        },context?.data)
-    },[])
+    useEffect(() => {
+        GetFetch('type',
+            (data: TypeType[]) => {
+                dataContext?.setList(data)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
+    }, [])
 
-    async function handleDelete(id:number|undefined,name:string|undefined){
-        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai "+name)
-        if(!result || id==undefined) return
-        DeleteFetch('type/'+id,(data:any)=>{
-            let tam=(dataContext?.list as TypeType[]).filter((item:TypeType)=> item.id!==id)
-            dataContext?.setList(tam)
+    async function handleDelete(id: number | undefined, name: string | undefined) {
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai " + name)
+        if (!result || id == undefined) return
+        DeleteFetch('type/' + id,
+            (data: any) => {
+                let tam = (dataContext?.list as TypeType[]).filter((item: TypeType) => item.id !== id)
+                dataContext?.setList(tam)
 
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        },context?.data)
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }
 
-    const isTypeArray=(arr:ServiceType[]|TypeType[]|RoomType[]|PersonType[]|undefined):arr is TypeType[]=>{return true}
+    const isTypeArray = (arr: ServiceType[] | TypeType[] | RoomType[] | PersonType[] | undefined): arr is TypeType[] => { return true }
 
     return (
         <div className="content">
@@ -58,18 +72,18 @@ export default function TypeList() {
                     </thead>
                     <tbody>
                         {
-                            isTypeArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item:TypeType)=>{
+                            isTypeArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: TypeType) => {
                                 return (
-                                    <tr key={item.id} onClick={()=>dataContext.setData(item.id||-1,'type')}>
+                                    <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'type')}>
                                         <td>{item.name}</td>
                                         <td>{item.price}</td>
                                         <td>{item.electric}</td>
                                         <td>{item.water}</td>
-                                        <td>{item.water_follow ? 'nguoi':'so'}</td>
-                                        <td><button className="btn" onClick={()=>handleDelete(item.id,item.name)}>Xoa</button></td>
+                                        <td>{item.water_follow ? 'nguoi' : 'so'}</td>
+                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xoa</button></td>
                                     </tr>
                                 )
-                            }):<Loader/>
+                            }) : <Loader />
                         }
                     </tbody>
                 </table>

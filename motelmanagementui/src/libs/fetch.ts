@@ -1,5 +1,5 @@
 const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/";
-function GetFetch(link: string, Action:Function,contextData?:string):void {
+function GetFetch(link: string, Action:Function,contextData?:string,Error?:Function):void {
     fetch(publicUrl+link,{
         method:'GET',
         headers: {
@@ -7,9 +7,9 @@ function GetFetch(link: string, Action:Function,contextData?:string):void {
             'Authorization':'Lank '+contextData
         },
     })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw await response.json();
             }
             return response.json();
         })
@@ -17,11 +17,14 @@ function GetFetch(link: string, Action:Function,contextData?:string):void {
             Action(data);
         })
         .catch(error => {
-            alert(error.message)
+            if(Error) 
+                Error(error)
+            else
+                console.log(error);
         });
 }//GetFetch<User>(url, Function);
 
-function PostFetch<T>(link:string,data:any,Action:(data:T)=>void,contextData?:string):void{
+function PostFetch<T>(link:string,data:any,Action:(data:T)=>void,contextData?:string,Error?:Function):void{
     fetch(publicUrl+link, {
         method: 'POST',
         headers: {
@@ -30,9 +33,9 @@ function PostFetch<T>(link:string,data:any,Action:(data:T)=>void,contextData?:st
         },
         body: JSON.stringify(data),
     })
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw await response.json();
         }
         return response.json() as Promise<T>;
     })
@@ -40,11 +43,14 @@ function PostFetch<T>(link:string,data:any,Action:(data:T)=>void,contextData?:st
         Action(data);
     })
     .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
+        if(Error) 
+            Error(error)
+        else
+            console.log(error);
     });
 }
 
-function PutFetch(link:string,data:any,Action:Function,contextData?:string):void{
+function PutFetch(link:string,data:any,Action:Function,contextData?:string,Error?:Function):void{
     fetch(publicUrl+link, {
         method: 'PUT',
         headers: {
@@ -53,9 +59,9 @@ function PutFetch(link:string,data:any,Action:Function,contextData?:string):void
         },
         body: JSON.stringify(data),
     })
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw await response.json();
         }
         return response.json();
     })
@@ -63,11 +69,14 @@ function PutFetch(link:string,data:any,Action:Function,contextData?:string):void
         Action(data);
     })
     .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
+        if(Error) 
+            Error(error)
+        else
+            console.log(error);
     });
 }
 
-function DeleteFetch(link:string,Action:Function,contextData?:string):void{
+function DeleteFetch(link:string,Action:Function,contextData?:string,Error?:Function):void{
     fetch(publicUrl+link, {
         method: 'DELETE',
         headers: {
@@ -75,9 +84,9 @@ function DeleteFetch(link:string,Action:Function,contextData?:string):void{
             'Authorization':'Lank '+contextData
         }
     })
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw await response.json();
         }
         return response.json();
     })
@@ -85,7 +94,10 @@ function DeleteFetch(link:string,Action:Function,contextData?:string):void{
         Action(data);
     })
     .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
+        if(Error) 
+            Error(error)
+        else
+            console.log(error);
     });
 }
 

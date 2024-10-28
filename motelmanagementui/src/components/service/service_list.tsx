@@ -11,31 +11,45 @@ import { RoomType } from "../../interface/room_type";
 import { PersonType } from "../../interface/person_type";
 import Loader from "../base/loader";
 
-export default function ServiceList(){
-    const dataContext=useContext(DataContext);
-    const toastifyContext=useContext(ToastifyContext)
-    const announceContext=useContext(AnnounceContext)
-    const context=useContext(MyContext)
+export default function ServiceList() {
+    const dataContext = useContext(DataContext);
+    const toastifyContext = useContext(ToastifyContext)
+    const announceContext = useContext(AnnounceContext)
+    const context = useContext(MyContext)
 
-    useEffect(()=>{
-        GetFetch('service',(data:any)=>{
-            dataContext?.setList(data)
-        },context?.data)
-    },[])
+    useEffect(() => {
+        GetFetch('service',
+            (data: any) => {
+                dataContext?.setList(data)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
+    }, [])
 
-    async function handleDelete(id:number|undefined,name:string|undefined){
-        const result=await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai "+name)
-        if(!result || id==undefined) return
-        DeleteFetch('service/'+id,(data:any)=>{
-            let tam=(dataContext?.list as ServiceType[]).filter((item:ServiceType)=> item.id!==id)
-            dataContext?.setList(tam)
-            announceContext?.setMessage(data.message)
-            announceContext?.setType("success")
-            announceContext?.setClose(true)
-        },context?.data)
+    async function handleDelete(id: number | undefined, name: string | undefined) {
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai " + name)
+        if (!result || id == undefined) return
+        DeleteFetch('service/' + id,
+            (data: any) => {
+                let tam = (dataContext?.list as ServiceType[]).filter((item: ServiceType) => item.id !== id)
+                dataContext?.setList(tam)
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
     }
 
-    const isServiceArray = (arr:ServiceType[]|TypeType[]|RoomType[]|PersonType[]|undefined):arr is ServiceType[] =>{return true};
+    const isServiceArray = (arr: ServiceType[] | TypeType[] | RoomType[] | PersonType[] | undefined): arr is ServiceType[] => { return true };
     return (
         <div className="content">
             <div className="top-content">
@@ -54,16 +68,16 @@ export default function ServiceList(){
                     </thead>
                     <tbody>
                         {
-                            isServiceArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item:ServiceType)=>{
+                            isServiceArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: ServiceType) => {
                                 return (
-                                    <tr key={item.id} onClick={()=>dataContext.setData(item.id||-1,'service')}>
+                                    <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'service')}>
                                         <td>{item.name}</td>
-                                        <td>{item.follow?'lan':'thang'}</td>
+                                        <td>{item.follow ? 'lan' : 'thang'}</td>
                                         <td>{item.price}</td>
-                                        <td><button className="btn" onClick={()=>handleDelete(item.id,item.name)}>Xoa</button></td>
+                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xoa</button></td>
                                     </tr>
                                 )
-                            }):<Loader/>
+                            }) : <Loader />
                         }
                     </tbody>
                 </table>
