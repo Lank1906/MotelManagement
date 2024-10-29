@@ -11,6 +11,7 @@ async function GetList(jsonData){
 }
 
 async function AddObject(jsonData){
+    console.log(jsonData)
     try{
         const list=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','day','times','follow'],'room_services.service_id=services.id',{"room_id":jsonData.room_id,"user_id":jsonData.user_id},{});
         let element=list.find(item=>item.service_id==jsonData.service_id)
@@ -25,7 +26,7 @@ async function AddObject(jsonData){
             return 0;
         }
         else{
-            result=await UpdateQuery('room_services',{'day':jsonData.day+',' + new Date().getDate().toString(),'times':jsonData.times+1},{'id':element.id});
+            result=await UpdateQuery('room_services',{'day':element.day+',' + new Date().getDate().toString(),'times':element.times+1},{'id':element.id});
             return result;
         }
     }
