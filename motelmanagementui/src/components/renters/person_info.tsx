@@ -64,7 +64,7 @@ export default function PersonInfo() {
         PostFetch('renter',
             object2,
             (data: any) => {
-                dataContext?.setList([...dataContext.list as PersonType[], newObject]);
+                dataContext?.setList([...dataContext.list as PersonType[], {...newObject,id:data.id}]);
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)

@@ -29,10 +29,11 @@ export default function TypeInfo() {
     }, [dataContext?.id])
 
     function handleAdd() {
+        console.log(object)
         PostFetch('type',
             object,
             (data: any) => {
-                object ? dataContext?.setList([...dataContext.list as TypeType[], object]) : ''
+                object ? dataContext?.setList([...dataContext.list as TypeType[], {...object,id:data.id}]) : ''
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
@@ -91,7 +92,7 @@ export default function TypeInfo() {
             </div>
             <div className="input">
                 <label htmlFor="water-follow">Nuoc tinh theo </label><br />
-                <select name="water-follow" id="" value={object?.water_follow} onChange={(e) => setObject({ ...object, water_follow: parseInt(e.target.options[e.target.selectedIndex].text) })}>
+                <select name="water-follow" id="" value={object?.water_follow||0} onChange={(e) => setObject({ ...object, water_follow: parseInt(e.target.value) })}>
                     <option value="0">Nguoi</option>
                     <option value="1">So</option>
                 </select>

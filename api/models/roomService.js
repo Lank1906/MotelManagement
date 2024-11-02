@@ -11,7 +11,6 @@ async function GetList(jsonData){
 }
 
 async function AddObject(jsonData){
-    console.log(jsonData)
     try{
         const list=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','day','times','follow'],'room_services.service_id=services.id',{"room_id":jsonData.room_id,"user_id":jsonData.user_id},{});
         let element=list.find(item=>item.service_id==jsonData.service_id)

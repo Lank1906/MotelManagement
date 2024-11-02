@@ -51,6 +51,7 @@ export default function RoomService() {
             room_id: object?.room_id as number,
             service_id: object?.service_id as number,
             day: object?.day ? object.day + ',' + new Date().getDate() : new Date().getDate().toString(),
+            times:object?.times ? object.times+1:1
         };
         PostFetch('room-service/' + dataContext?.id,
             newObject,
@@ -125,7 +126,7 @@ export default function RoomService() {
 
             </table>
             <div className="service-action">
-                <select value={object?.id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0],id:parseInt(e.target.value)})}>
+                <select value={object?.id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
                     {list ? list.map(
                         (item: ServiceType) => <option value={item?.id} key={item.id}>{item.name + ' => ' + item.price + ' / ' + (item.follow ? 'lan' : 'thang')}</option>
                     ) : 'Dang tai'}

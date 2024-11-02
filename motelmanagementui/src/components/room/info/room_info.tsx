@@ -64,7 +64,7 @@ export default function RoomInfo() {
         PostFetch('room',
             object,
             (data: any) => {
-                dataContext?.setList([...dataContext.list as RoomType[], newObject]);
+                dataContext?.setList([...dataContext.list as RoomType[], {...newObject,id:data.id}]);
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)

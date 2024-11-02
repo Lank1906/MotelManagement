@@ -32,7 +32,7 @@ export default function TypeList() {
 
     async function handleDelete(id: number | undefined, name: string | undefined) {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai " + name)
-        if (!result || id == undefined) return
+        if (!result || !id) return
         DeleteFetch('type/' + id,
             (data: any) => {
                 let tam = (dataContext?.list as TypeType[]).filter((item: TypeType) => item.id !== id)

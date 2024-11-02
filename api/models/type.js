@@ -11,7 +11,7 @@ async function GetShortList(jsonData){
 
 async function GetList(jsonEqual,jsonLike){
     try{
-        const result=await GetQuery('types',['id','name','price','electric','water','water_folow'],jsonEqual,jsonLike)
+        const result=await GetQuery('types',['id','name','price','electric','water','water_follow'],jsonEqual,jsonLike)
         return result;
     }catch (err){
         return err
@@ -20,7 +20,7 @@ async function GetList(jsonEqual,jsonLike){
 
 async function GetOne(jsonData){
     try{
-        const result= await GetQuery('types',['id','name','price','electric','water','water_folow'],jsonData,{})
+        const result= await GetQuery('types',['id','name','price','electric','water','water_follow'],jsonData,{})
         return result;
     }
     catch (err)
@@ -28,6 +28,7 @@ async function GetOne(jsonData){
 }
 
 async function AddObject(jsonData){
+    console.log(jsonData)
     try{
         const result=await AddQuery('types',jsonData);
         return result;

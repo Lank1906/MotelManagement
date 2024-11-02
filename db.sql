@@ -13,7 +13,7 @@ CREATE TABLE types (
     price float default 1,
     electric FLOAT DEFAULT 3.5,
     water FLOAT DEFAULT 1,
-    water_folow TINYINT(1) default 0,#0 thu theo nguoi ,#1 thu theo khoi
+    water_follow TINYINT(1) default 0,#0 thu theo nguoi ,#1 thu theo khoi
     FOREIGN Key (user_id) REFERENCES users(id) on DELETE cascade on UPDATE CASCADE
 );
 Create table rooms(
@@ -73,7 +73,7 @@ create table room_services(
 );
 
 Insert into users(username,password,phone,email,per) values('lank','lank','0349852986','buuixuanhoangc@gmail.com',0),('test','test','0793248659','test@gmail.com',1);
-insert into types(user_id,name,price,electric,water,water_folow) values(1,'tang_1',1200000,3500,50000,0),(1,'tang_2',1000000,3500,20000,1);
+insert into types(user_id,name,price,electric,water,water_follow) values(1,'tang_1',1200000,3500,50000,0),(1,'tang_2',1000000,3500,20000,1);
 insert into rooms(name,type,user_id,person_limit,electric_number,img_room,check_in) values('phong_1',1,1,3,0,'','2024-07-22'),('phong_2',2,1,3,0,'','2024-07-22');
 insert into renters(user_id,name,que_quan,sdt,cccd,img_font,img_back,tctv,room_id,trang_thai) values(1,'ngo xuan quyen','tq-vl-hy','0963852107','033003001892','','',0,1,0),
 																										(1,'ngo van tinh','tq-vl-hy','','','','',0,1,0),

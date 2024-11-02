@@ -32,7 +32,7 @@ export default function ServiceInfo() {
         PostFetch('service',
             object,
             (data: any) => {
-                object ? dataContext?.setList([...dataContext.list as ServiceType[], object]) : ''
+                object ? dataContext?.setList([...dataContext.list as ServiceType[], {...object,id:data.id}]) : ''
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
