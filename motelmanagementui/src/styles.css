@@ -248,8 +248,8 @@ li {
 .arrow2 {
   display: none;
   z-index: 3;
+  pointer-events: auto;
 }
-
 
 @media only screen and (max-width: 860px) {
   #menu-left {
@@ -357,7 +357,8 @@ li {
 
 /* info */
 .info-content {
-  margin: 20px;
+  margin:20px;
+  padding:4px;
   pointer-events: auto;
   cursor: pointer;
   pointer-events: auto;
@@ -480,4 +481,28 @@ li {
 
 .service-action{
   margin-top: 24px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* thanh duoi */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 1px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

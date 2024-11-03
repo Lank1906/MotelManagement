@@ -9,7 +9,7 @@ import { ToastifyContext } from "../../../libs/toastify_context"
 
 export default function RoomService() {
     const [list, setList] = useState<ServiceType[] | undefined>(undefined)
-    const [list2, setList2] = useState<RoomServiceType[] | undefined>(undefined);
+    const [list2, setList2] = useState<RoomServiceType[] | undefined>([]);
     const [object, setObject] = useState<RoomServiceType | undefined>(undefined);
 
     const context = useContext(MyContext)
@@ -35,6 +35,7 @@ export default function RoomService() {
             (data: RoomServiceType[]) => setList2(data),
             context?.data,
             (data: any) => {
+                setList2([])
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
@@ -126,7 +127,7 @@ export default function RoomService() {
 
             </table>
             <div className="service-action">
-                <select value={object?.id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
+                <select value={object?.service_id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
                     {list ? list.map(
                         (item: ServiceType) => <option value={item?.id} key={item.id}>{item.name + ' => ' + item.price + ' / ' + (item.follow ? 'lan' : 'thang')}</option>
                     ) : 'Dang tai'}

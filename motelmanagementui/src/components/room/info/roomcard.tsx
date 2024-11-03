@@ -44,7 +44,6 @@ export default function RoomCard(props: RoomType) {
       <p>{props.name}</p>
       <p>{props.type_name}</p>
       <p>{props.check_in}</p>
-      <div className="btn"> Tinh tien</div>
       <div className="btn" onClick={handleDelete}> Xoa</div>
     </div>
   );
