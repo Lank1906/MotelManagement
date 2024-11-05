@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetList(jsonData){
     try{
-        const result=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','name','day','times'],'room_services.service_id=services.id',jsonData,{})
+        const result=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','name','day','times','price'],'room_services.service_id=services.id',jsonData,{})
         return result
     }
     catch(err){

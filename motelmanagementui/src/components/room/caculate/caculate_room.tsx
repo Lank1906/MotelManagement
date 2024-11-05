@@ -11,14 +11,18 @@ export default function RoomCaculate() {
     const [room, setRoom] = useState<RoomDetailType | undefined>(undefined)
     const [type, setType] = useState<TypeType | undefined>(undefined)
     const [roomService, setRoomService] = useState<RoomServiceType[] | undefined>(undefined)
+    const [electric,setEletric]=useState<number>(0)
+    const [water,setWater]=useState<number>(0)
+
     const context = useContext(MyContext)
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
 
-    useEffect(() => {
-        GetFetch('room/' + dataContext?.id,
+    function TypeFetch(id:number) {
+        GetFetch('type/' + id,
             (data: any) => {
-                setRoom(data)
+                setType(data[0])
+                console.log(data[0])
             },
             context?.data,
             (data: any) => {
@@ -26,19 +30,29 @@ export default function RoomCaculate() {
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
             })
-        GetFetch('type/' + room?.type,
-            (data: any) => {
-                setType(data)
-            },
-            context?.data,
-            (data: any) => {
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("danger")
-                announceContext?.setClose(true)
-            })
+    }
+
+    function RoomServiceFetch() {
         GetFetch('room-service/' + dataContext?.id,
             (data: any) => {
                 setRoomService(data)
+                console.log(data)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+            })
+    }
+
+    useEffect(() => {
+        GetFetch('room/' + dataContext?.id,
+            (data: any) => {
+                setRoom(data[0]);
+                console.log(data[0])
+                TypeFetch(data[0].type);
+                RoomServiceFetch();
             },
             context?.data,
             (data: any) => {
@@ -64,7 +78,9 @@ export default function RoomCaculate() {
             </table>
             <div className="service-action">
                 <label htmlFor="name">So dien: </label><br />
-                <input type="number" name="name" value={0} style={{ width: "40%" }} />
+                <input type="number" name="name" value={electric} onChange={(e)=>setEletric(parseInt(e.target.value))} style={{ width: "40%" }} />
+                <label htmlFor="name">So nuoc/{type?.water_follow?'khoi':'nguoi'}: </label><br />
+                <input type="number" name="name" value={water} onChange={(e)=>setWater(parseInt(e.target.value))} style={{ width: "40%" }} readOnly={type?.water_follow?false:true}/>
                 <div className="btn">Cap nhat</div>
             </div>
             <div className="service-action">
