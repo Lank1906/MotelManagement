@@ -20,7 +20,7 @@ function CreateConnect(){
     return connection;
 }
 
-function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
+function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition,groupBy,having,orderBy,offset,limit){
     const connection = mysql.createConnection(setupDB);
     let condition='';
     if(Object.keys(jsonEqualCondition).length){
@@ -29,7 +29,7 @@ function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
     if(Object.keys(jsonLikeCondition).length){
         condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
-    var sql="SELECT "+columnList.join()+" from "+tableName+condition;
+    var sql="SELECT "+columnList.join()+" from "+tableName+condition +(groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
     // console.log(sql);
     connection.connect((err) => {
         if (err) {
@@ -53,7 +53,7 @@ function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition){
     });
 }
 
-function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondition,jsonLikeCondition){
+function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondition,jsonLikeCondition,groupBy,having,orderBy,offset,limit){
     const connection = mysql.createConnection(setupDB);
     let condition='';
     if(Object.keys(jsonEqualCondition).length){
@@ -62,7 +62,16 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
     if(Object.keys(jsonLikeCondition).length){
         condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
-    var sql="SELECT "+columnList.join()+" from "+mainTable+" left join "+sideTable+" on "+onCondition +condition;
+    var sql="SELECT "+columnList.join()+" from "+mainTable;
+    
+    if(sideTable.length>0 && sideTable.length===onCondition.length){
+        for(let i=0;i<sideTable.length;i++){
+            sql+=" left join "+sideTable[i]+" on "+onCondition[i]
+        }
+    }
+    
+    sql+=condition+ (groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
+    // console.log(sql)
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);

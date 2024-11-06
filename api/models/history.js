@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require('./connec
 
 async function GetList(jsonCondition){
     try{
-        const result=await GetJoinQuery('history_room','room',['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],'history_room.room_id=rooms.id',jsonCondition);
+        const result=await GetJoinQuery('history_room',['room'],['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],['history_room.room_id=rooms.id'],jsonCondition);
         return result;
     }catch(err){
         return err;
@@ -11,7 +11,7 @@ async function GetList(jsonCondition){
 
 async function GetOne(jsonCondition){
     try{
-        const result=await GetJoinQuery('history_room','room',['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],'history_room.room_id=rooms.id',jsonCondition);
+        const result=await GetJoinQuery('history_room',['room'],['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],['history_room.room_id=rooms.id'],jsonCondition);
         return result;
     }catch(err){
         return err;

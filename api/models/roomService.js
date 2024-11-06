@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetList(jsonData){
     try{
-        const result=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','name','day','times','price'],'room_services.service_id=services.id',jsonData,{})
+        const result=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_id','service_id','name','day','times'],['room_services.service_id=services.id'],jsonData,{})
         return result
     }
     catch(err){
@@ -11,8 +11,9 @@ async function GetList(jsonData){
 }
 
 async function AddObject(jsonData){
+    console.log(jsonData)
     try{
-        const list=await GetJoinQuery('room_services','services',['room_services.id as id','room_id','service_id','day','times','follow'],'room_services.service_id=services.id',{"room_id":jsonData.room_id,"user_id":jsonData.user_id},{});
+        const list=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_id','service_id','day','times','follow'],['room_services.service_id=services.id'],{"room_id":jsonData.room_id,"user_id":jsonData.user_id},{});
         let element=list.find(item=>item.service_id==jsonData.service_id)
         let result=''
         if(element===undefined){
