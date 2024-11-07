@@ -11,7 +11,7 @@ async function GetShortList(jsonData){
 
 async function GetList(jsonEqual,jsonLike){
     try{
-        const result=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','check_in','img_room','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonEqual,jsonLike,'rooms.id')
+        const result=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','check_in','img_room'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonEqual,jsonLike)
         return result;
     }catch (err){
         return err;

@@ -23,6 +23,7 @@ Create table rooms(
     user_id int not null,
     person_limit int default 3,
     electric_number int default 0,
+    water_number int default 0,
     more text,
     check_in date,
     img_room varchar(40),
