@@ -21,7 +21,7 @@ async function Pay(req,res){
     try{
         const result=await History({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
         if(result)
-            return res.status(200).json(result)
+            res.status(200).json({"message":"Đã thanh toan thành công!","id":result});
         else
             return res.status(400).json({"message":"Thanh toan that bai"})
     }

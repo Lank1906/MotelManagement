@@ -25,7 +25,7 @@ Create table rooms(
     electric_number int default 0,
     water_number int default 0,
     more text,
-    check_in date,
+    check_in date null,
     img_room varchar(40),
     FOREIGN KEY (type) REFERENCES types(id) on delete set null on update CASCADE,
     FOREIGN key (user_id) REFERENCES users(id) on delete cascade on update cascade
@@ -47,11 +47,10 @@ create table renters(
 );
 create table history_room(
 	id int PRIMARY key AUTO_INCREMENT,
-    room_id int not null,
+    room_id int null,
     ngay DATE,
-    hanh_dong TINYINT(1) default b'0', #0 chuyen den, 1 thanh toan dinh ki,2 doi phong, 3 chuyen di, 4 chi
+    hanh_dong TINYINT(1) default b'0', #0 chuyen den, 1 thanh toan dinh ki, 2 chuyen di, 3 chi
     luong_tien float default 0,
-    so_dien int default 0,
     mo_ta text,
     FOREIGN key (room_id) REFERENCES rooms(id) on delete cascade on update cascade
 );
