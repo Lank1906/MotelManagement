@@ -3,6 +3,5 @@ export interface RoomType{
     name:string,
     type_name:string,
     check_in:string,
-    img_room:string,
-    number_of_person?:number
+    img_room:string
 }

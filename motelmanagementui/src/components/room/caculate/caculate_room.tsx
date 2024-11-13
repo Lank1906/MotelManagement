@@ -1,58 +1,24 @@
 import { useContext, useEffect, useState } from "react"
-import { RoomDetailType } from "../../../interface/room_detail_type"
-import { TypeType } from "../../../interface/type_type"
-import RoomServiceType from "../../../interface/room_service_type"
 import { MyContext } from "../../../libs/context"
 import { DataContext } from "../../../libs/data_handling_context"
 import { AnnounceContext } from "../../../libs/announce_context"
 import { GetFetch } from "../../../libs/fetch"
+import BillType from "../../../interface/bill_type"
+import BillDetailType from "../../../interface/bill_details_type"
 
 export default function RoomCaculate() {
-    const [room, setRoom] = useState<RoomDetailType | undefined>(undefined)
-    const [type, setType] = useState<TypeType | undefined>(undefined)
-    const [roomService, setRoomService] = useState<RoomServiceType[] | undefined>(undefined)
-    const [electric,setEletric]=useState<number>(0)
-    const [water,setWater]=useState<number>(0)
+    const [object, setObject] = useState<BillType>()
+    const [electric, setEletric] = useState<number>(0)
+    const [water, setWater] = useState<number>(0)
 
     const context = useContext(MyContext)
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
 
-    function TypeFetch(id:number) {
-        GetFetch('type/' + id,
-            (data: any) => {
-                setType(data[0])
-                console.log(data[0])
-            },
-            context?.data,
-            (data: any) => {
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("danger")
-                announceContext?.setClose(true)
-            })
-    }
-
-    function RoomServiceFetch() {
-        GetFetch('room-service/' + dataContext?.id,
-            (data: any) => {
-                setRoomService(data)
-                console.log(data)
-            },
-            context?.data,
-            (data: any) => {
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("danger")
-                announceContext?.setClose(true)
-            })
-    }
-
     useEffect(() => {
-        GetFetch('room/' + dataContext?.id,
-            (data: any) => {
-                setRoom(data[0]);
-                console.log(data[0])
-                TypeFetch(data[0].type);
-                RoomServiceFetch();
+        GetFetch('calculate/' + dataContext?.id,
+            (data: BillType) => {
+                setObject(data)
             },
             context?.data,
             (data: any) => {
@@ -60,7 +26,7 @@ export default function RoomCaculate() {
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
             })
-    }, [])
+    })
 
     return (
         <>
@@ -73,18 +39,27 @@ export default function RoomCaculate() {
                     </tr>
                 </thead>
                 <tbody>
-
+                    {object?.data ? object.data.map((item: BillDetailType) => <tr key={item.category}><td>{item.category}</td><td>{item.price}x{item.times}</td><td>{item.sum}</td></tr>) : "Loading"}
                 </tbody>
             </table>
             <div className="service-action">
-                <label htmlFor="name">So dien: </label><br />
-                <input type="number" name="name" value={electric} onChange={(e)=>setEletric(parseInt(e.target.value))} style={{ width: "40%" }} />
-                <label htmlFor="name">So nuoc/{type?.water_follow?'khoi':'nguoi'}: </label><br />
-                <input type="number" name="name" value={water} onChange={(e)=>setWater(parseInt(e.target.value))} style={{ width: "40%" }} readOnly={type?.water_follow?false:true}/>
+                <div className="block">
+                    <label htmlFor="name">So dien: </label><br />
+                    <input type="number" name="name" value={electric} onChange={(e) => setEletric(parseInt(e.target.value))} />
+                </div>
+                <div className="block">
+                    <label htmlFor="name">So nuoc: </label><br />
+                    <input type="number" name="name" value={water} onChange={(e) => setWater(parseInt(e.target.value))} readOnly={object?.water_follow ? false : true} />
+                </div>
                 <div className="btn">Cap nhat</div>
             </div>
             <div className="service-action">
-                <div className="btn">Xác nhận đã thanh toán</div>
+                <div className="btn">Chuyen di</div>
+                <div className="btn">Thanh toán</div>
+                <div className="btn">Chuyen den</div>
+            </div>
+            <div className="service-action">
+                <div className="btn">Xac Nhan Thanh toán</div>
             </div>
         </>
     )

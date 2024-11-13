@@ -43,7 +43,7 @@ export default function RoomCard(props: RoomType) {
       <img src={"/images/home.png"} alt="home-demo" />
       <p>{props.name}</p>
       <p>{props.type_name}</p>
-      <p>{props.check_in}</p>
+      <p>{props.check_in?props.check_in:"trong"}</p>
       <div className="btn" onClick={handleDelete}> Xoa</div>
     </div>
   );

@@ -482,7 +482,17 @@ li {
 .service-action{
   margin-top: 24px;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
+}
+.service-action>.btn{
+  width: 100%;
+  padding: 12px;
+}
+.block{
+  display: flex;
+  justify-content: left;
   align-items: center;
 }
 
