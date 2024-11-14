@@ -10,7 +10,6 @@ async function List(req,res){
 
 async function Bill(req,res){
     const result=await Calculate({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
-    console.log(result)
     if(result)
         return res.status(200).json(result)
     else

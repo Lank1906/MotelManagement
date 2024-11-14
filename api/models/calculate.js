@@ -21,7 +21,7 @@ async function GetList(jsonData){
             "check_in":roomDetail.check_in,
             "data":arr
         };
-        console.log(result)
+        //console.log(result)
         return result;
     }
     catch (err){
@@ -94,30 +94,50 @@ async function History(jsonData){
         roomDetail=roomDetail[0]
         let arr=[]
         
-        arr.push({"category":"Tien phong","price":roomDetail.price,"times":1,"sum":roomDetail.price})
-        sum+=roomDetail.price
-        roomDetail.water_follow?arr.push({"category":"Tien nuoc","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
+        if(type==1){
+            arr.push({"category":"Tien phong","price":roomDetail.price,"times":1,"sum":roomDetail.price})
+            roomDetail.water_follow?arr.push({"category":"Tien nuoc","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
                                 :arr.push({"category":"Tien nuoc","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
-        sum+= roomDetail.water_follow? (roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)):roomDetail.water*roomDetail.CountPeople
-        arr.push({"category":"Tien dien","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
-        sum+=roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)
+            arr.push({"category":"Tien dien","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
         
-        roomService.forEach(item=>{
-            arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
-            sum+=item.price*item.times
-        })
+            roomService.forEach(item=>{
+                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
+            })
+        }
+        else if(type==0){
+            arr.push({"category":"Tien phong","price":roomDetail.price,"times":1,"sum":roomDetail.price})
+        }
+        else if(type==2){
+            roomDetail.water_follow?arr.push({"category":"Tien nuoc","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
+                                :arr.push({"category":"Tien nuoc","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
+            arr.push({"category":"Tien dien","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
+        
+            roomService.forEach(item=>{
+                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
+            })
+        }
         
         let result={
             "room_id":roomDetail.id,
             "ngay":new Date().toISOString().split('T')[0],
-            "hanh_dong":1,
+            "hanh_dong":type,
             "luong_tien":sum,
             "mo_ta":JSON.stringify(arr)
         };
         
-        let re=AddQuery('history_room',result,)
+        let re=AddQuery('history_room',result)
         re = DeleteQuery('room_services',{"room_id":roomDetail.id})
-        re = UpdateQuery('rooms',{'electric_number':electric,'water_number':water},{"room_id":roomDetail.id})
+        re = UpdateQuery('rooms',{'electric_number':electric_number,'water_number':water_number},{"id":roomDetail.id})
+        console.log("here")
+        if(type==1){
+        }
+        else if(type==0){
+            re=UpdateQuery('rooms',{'check_in':new Date().toLocaleDateString('en-CA')},{"id":roomDetail.id});    
+        }
+        else if(type==2){
+            re=UpdateQuery('rooms',{'check_in':null},{"id":roomDetail.id});
+            re=DeleteQuery('renters',{"room_id":roomDetail.id});
+        }
         
         return re;
     }

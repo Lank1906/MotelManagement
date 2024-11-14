@@ -133,7 +133,7 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
     
     return new Promise((resolve,reject)=>{
         connection.query(sql, (err, result) => {
-            if (err || result.affectedRows==0) {
+            if (err) {
                 console.error('Error deleting:', err);
                 reject(err.message);
             }
@@ -158,7 +158,7 @@ function DeleteQuery(tableName,jsonCondition){
     
     return new Promise((resolve,reject)=>{
         connection.query(sql, (err, result) => {
-            if (err || result.affectedRows==0) {
+            if (err) {
                 console.error('Error deleting:', err);
                 reject(err.message);
             }
