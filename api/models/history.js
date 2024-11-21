@@ -1,8 +1,8 @@
-const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require('./connect');
+const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,ExcuteQuery}=require('./connect');
 
 async function GetList(jsonCondition){
     try{
-        const result=await GetJoinQuery('history_room',['room'],['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],['history_room.room_id=rooms.id'],jsonCondition);
+        const result=await GetJoinQuery('history_room',['rooms'],['history_room.id','name','ngay','hanh_dong','luong_tien','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{});
         return result;
     }catch(err){
         return err;
@@ -11,9 +11,39 @@ async function GetList(jsonCondition){
 
 async function GetOne(jsonCondition){
     try{
-        const result=await GetJoinQuery('history_room',['room'],['history_room.id','rooms.room_id','name','ngay','hanh_dong','luong_tien','so_dien'],['history_room.room_id=rooms.id'],jsonCondition);
+        const result=await GetJoinQuery('history_room',['rooms'],['history_room.id','name','ngay','hanh_dong','luong_tien','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{});
         return result;
     }catch(err){
+        return err;
+    }
+}
+
+async function GetFill(jsonCondition){
+    try{
+        const result=await ExcuteQuery('select count(check_in) as Thue,Count(*)-count(check_in) as Trong from rooms where user_id='+jsonCondition.user_id);
+        return result;
+    }
+    catch(err){
+        return err
+    }
+}
+
+async function GetRevenue(jsonCondition){
+    try{
+        const result=await ExcuteQuery("select SUM(luong_tien) as tong,Date_format(ngay,'%Y-%m') as thang from history_room left join rooms on history_room.room_id=rooms.id where user_id="+jsonCondition.user_id+" group by Date_format(ngay,'%Y-%m') LIMIT 12");
+        return result;
+    }
+    catch (err){
+        return err;
+    }
+}
+
+async function GetRevenueByRoom(jsonCondition){
+    try{
+        const result=await ExcuteQuery("select luong_tien,Date_format(ngay,'%Y-%m'),mo_ta as thang from history_room left join rooms on history_room.room_id=rooms.id where user_id="+jsonCondition.user_id+" and room_id="+jsonCondition.room_id+" LIMIT 12");
+        return result;
+    }
+    catch (err){
         return err;
     }
 }
@@ -48,4 +78,4 @@ async function DeleteObject(jsonCondition){
     }
 }
 
-module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject};
+module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject,GetFill,GetRevenue,GetRevenueByRoom};

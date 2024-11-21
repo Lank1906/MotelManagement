@@ -71,7 +71,7 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
     }
     
     sql+=condition+ (groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
-    // console.log(sql)
+    console.log(sql)
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);
@@ -170,6 +170,30 @@ function DeleteQuery(tableName,jsonCondition){
     });
 }
 
+function ExcuteQuery(sql){
+    const connection = mysql.createConnection(setupDB);
+    connection.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database');
+    });
+    
+    return new Promise((resolve,reject)=>{
+        connection.query(sql, (err, result) => {
+            if (err) {
+                console.error('Error: ', err);
+                reject(err.message);
+            }
+            else{
+                resolve(result);
+            }
+        });
+        connection.end()
+    });
+}
+
 function DestroyConnect(connection){
     connection.ping((err) => {
         if (err) {
@@ -181,4 +205,4 @@ function DestroyConnect(connection){
     });
 }
 //setInterval(reconnect,50000)
-module.exports = {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,CreateConnect,DestroyConnect};
+module.exports = {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,CreateConnect,DestroyConnect,ExcuteQuery};

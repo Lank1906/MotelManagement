@@ -1,4 +1,4 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require('../models/history');
+const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,GetFill,GetRevenue,GetRevenueByRoom}=require('../models/history');
 
 async function List(req,res){
     const result= await GetList({...req.query,"rooms.user_id":req.user.id});
@@ -18,6 +18,30 @@ async function One(req,res){
     else{
         return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
     }
+}
+
+async function Fill(req,res){
+    const result=await GetFill({"user_id":req.user.id});
+    if(result.length>0)
+        return res.status(200).json(result[0])
+    else
+        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
+}
+
+async function Revenue(req,res){
+    const result=await GetRevenue({"user_id":req.user.id});
+    if(result.length>0)
+        return res.status(200).json(result)
+    else
+        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
+}
+
+async function RevenueByRoom(req,res){
+    const result=await GetRevenueByRoom({"user_id":req.user.id,"room_id":req.params.id});
+    if(result.length>0)
+        return res.status(200).json(result)
+    else
+        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
 }
 
 async function Add(req,res){
@@ -49,4 +73,4 @@ async function Delete(req,res){
         return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
     }
 }
-module.exports={List,One,Add,Update,Delete};
+module.exports={List,One,Add,Update,Delete,Fill,Revenue,RevenueByRoom};
