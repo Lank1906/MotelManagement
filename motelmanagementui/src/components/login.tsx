@@ -19,6 +19,10 @@ export default function Login(){
             announceContext?.setType("information")
             announceContext?.setClose(true)
             navigate('/home/room')
+        },"",(data:any)=>{
+            announceContext?.setMessage(data.message)
+            announceContext?.setType("danger")
+            announceContext?.setClose(true)
         });  
     }
     return (

@@ -13,7 +13,7 @@ export default function Info(props: infoProps) {
   const dataContext = useContext(DataContext)
 
   return (
-    <div className="info" style={{ width: props.widthE }}>
+    <div className="info" style={{ width: props.widthE,display:dataContext?.type == 'dashboard' ? 'none':'block'}}>
       <div className="info-content">
         <h2 style={{ marginBottom: '24px' }}>Thông tin chi tiết</h2>
         {

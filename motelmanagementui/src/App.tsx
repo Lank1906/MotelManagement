@@ -23,7 +23,7 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} index />
                 <Route path="/home" element={<Container />}>
-                    <Route path="dashboard" element={<Dashboard/>} />
+                    <Route path="dashboard" element={<Dashboard />} />
                     <Route path="type" element={<TypeList />}/>
                     <Route path="service" element={<ServiceList/>}/>
                     <Route path="room" element={<RoomList />} />
