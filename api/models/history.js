@@ -30,7 +30,34 @@ async function GetFill(jsonCondition){
 
 async function GetRevenue(jsonCondition){
     try{
-        const result=await ExcuteQuery("select SUM(luong_tien) as tong,Date_format(ngay,'%Y-%m') as thang from history_room left join rooms on history_room.room_id=rooms.id where user_id="+jsonCondition.user_id+" group by Date_format(ngay,'%Y-%m') LIMIT 12");
+        const result=await ExcuteQuery(`SELECT 
+                                            l12.thang,
+                                            IFNULL(SUM(hr.luong_tien), 0) AS tong
+                                        FROM (
+                                            SELECT DATE_FORMAT(CURRENT_DATE, '%Y-%m') AS thang
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 2 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 3 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 4 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 5 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 7 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 8 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 9 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 10 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 11 MONTH), '%Y-%m')
+                                        ) AS l12
+                                        LEFT JOIN 
+                                            history_room hr
+                                            ON DATE_FORMAT(hr.ngay, '%Y-%m') = l12.thang
+                                        LEFT JOIN 
+                                            rooms r
+                                            ON hr.room_id = r.id AND r.user_id = ${jsonCondition.user_id}
+                                        GROUP BY 
+                                            l12.thang
+                                        ORDER BY 
+                                            l12.thang DESC;
+                                        `);
         return result;
     }
     catch (err){
@@ -40,7 +67,7 @@ async function GetRevenue(jsonCondition){
 
 async function GetRevenueByRoom(jsonCondition){
     try{
-        const result=await ExcuteQuery("select luong_tien,Date_format(ngay,'%Y-%m'),mo_ta as thang from history_room left join rooms on history_room.room_id=rooms.id where user_id="+jsonCondition.user_id+" and room_id="+jsonCondition.room_id+" LIMIT 12");
+        const result=await ExcuteQuery("select luong_tien,Date_format(ngay,'%Y-%m') as thang,mo_ta as thang from history_room left join rooms on history_room.room_id=rooms.id where user_id="+jsonCondition.user_id+" and room_id="+jsonCondition.room_id+" LIMIT 12");
         return result;
     }
     catch (err){

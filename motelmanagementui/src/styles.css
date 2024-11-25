@@ -517,3 +517,8 @@ li {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+.display-grid{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}

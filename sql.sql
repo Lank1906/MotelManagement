@@ -200,3 +200,4 @@ INSERT INTO history_room (room_id, ngay, hanh_dong, luong_tien, mo_ta) VALUES
  '[{"category":"Tien phong","price":1450000,"times":1,"sum":1450000}, {"category":"Tien nuoc","price":25000,"times":4,"sum":100000}, {"category":"Tien dien","price":4000,"times":7,"sum":28000}]'),
 (10, '2024-09-02', 1, 1550000, 
  '[{"category":"Tien phong","price":1550000,"times":1,"sum":1550000}, {"category":"Tien nuoc","price":20000,"times":2,"sum":40000}, {"category":"Tien dien","price":3500,"times":6,"sum":21000}]');
+
