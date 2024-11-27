@@ -2,7 +2,14 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,ExcuteQuery}=requi
 
 async function GetList(jsonCondition){
     try{
-        const result=await GetJoinQuery('history_room',['rooms'],['history_room.id','name','ngay','hanh_dong','luong_tien','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{});
+        let result=await GetJoinQuery('history_room',['rooms'],['history_room.id','name','ngay','hanh_dong','luong_tien','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{},['(ngay between DATE_SUB(CURRENT_DATE, INTERVAL 12 MONTH) and DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))']);
+        result = result.map(item=>{
+            if(item.mo_ta!=""){
+                item.mo_ta=JSON.parse(item.mo_ta)
+            }
+            return item
+        })
+        console.log(result)
         return result;
     }catch(err){
         return err;
@@ -34,8 +41,7 @@ async function GetRevenue(jsonCondition){
                                             l12.thang,
                                             IFNULL(SUM(hr.luong_tien), 0) AS tong
                                         FROM (
-                                            SELECT DATE_FORMAT(CURRENT_DATE, '%Y-%m') AS thang
-                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), '%Y-%m')
+                                            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 2 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 3 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 4 MONTH), '%Y-%m')
@@ -46,6 +52,7 @@ async function GetRevenue(jsonCondition){
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 9 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 10 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 11 MONTH), '%Y-%m')
+                                            UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 12 MONTH), '%Y-%m')
                                         ) AS l12
                                         LEFT JOIN 
                                             history_room hr
@@ -56,7 +63,7 @@ async function GetRevenue(jsonCondition){
                                         GROUP BY 
                                             l12.thang
                                         ORDER BY 
-                                            l12.thang DESC;
+                                            l12.thang ASC;
                                         `);
         return result;
     }

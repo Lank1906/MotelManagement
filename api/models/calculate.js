@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetList(jsonData){
     try{
-        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},'rooms.id')
+        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
         const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{})
         // console.log(roomDetail)
         // console.log(roomService)
@@ -38,7 +38,7 @@ async function Calculate(jsonData){
     delete jsonData.type
     let result={};
     try{
-        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},'rooms.id')
+        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
         const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{})
         
         roomDetail=roomDetail[0]
@@ -88,7 +88,7 @@ async function History(jsonData){
     delete jsonData.type
     let sum=0
     try{
-        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},'rooms.id')
+        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.price','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
         const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{})
         
         roomDetail=roomDetail[0]

@@ -1,12 +1,15 @@
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from '@nivo/pie';
+import { ResponsiveLine } from "@nivo/line";
 import Search from "../base/search";
 import { useContext, useEffect, useState } from "react";
 import { GetFetch } from "../../libs/fetch";
 import { MyContext } from "../../libs/context";
 
 export default function Dashboard() {
-    const [fill, setFill] = useState<any>();
+    const [fill, setFill] = useState<any[]>();
+    const [revenue, setRevenue] = useState<any[]>();
+    const [all,setAll]=useState<any[]>();
     const context = useContext(MyContext);
 
     useEffect(() => {
@@ -20,27 +23,46 @@ export default function Dashboard() {
             console.log(data)
         })
 
-        GetFetch('history/revenue',(data:any)=>{
-            
+        GetFetch('history/revenue', (data: any[]) => {
+            setRevenue(data)
+        }, context?.data, (data: any) => {
+            console.log(data)
+        })
+
+        GetFetch('history',(data:any[])=>{
+            setAll(data)
+            console.log(JSON.parse(data[0].mo_ta))
+        },context?.data,(data: any) => {
+            console.log(data)
         })
     }, [])
 
     const data = [
-        { country: 'USA', hotdog: 29, burger: 65 },
-        { country: 'France', hotdog: 35, burger: 86 },
-        { country: 'Germany', hotdog: 22, burger: 45 },
+        {
+            id: "Đường A", // Tên của đường A
+            data: [
+                { x: "Tháng 1", y: 40 },
+                { x: "Tháng 2", y: 60 },
+                { x: "Tháng 3", y: 80 },
+            ],
+        },
+        {
+            id: "Đường B", // Tên của đường B
+            data: [
+                { x: "Tháng 1", y: 30 },
+                { x: "Tháng 2", y: 50 },
+                { x: "Tháng 3", y: 70 },
+            ],
+        },
+        {
+            id: "Đường C", // Tên của đường C
+            data: [
+                { x: "Tháng 1", y: 20 },
+                { x: "Tháng 2", y: 40 },
+                { x: "Tháng 3", y: 60 },
+            ],
+        },
     ];
-
-    function getLast12Months() {
-        const months = [];
-        const currentDate = new Date();
-        for (let i = 0; i < 12; i++) {
-            const month = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
-            const formattedMonth = month.toISOString().slice(0, 7); // Lấy định dạng YYYY-MM
-            months.unshift(formattedMonth);
-        }
-        return months;
-    }
 
     return (
         <div className="content">
@@ -49,11 +71,11 @@ export default function Dashboard() {
                 <div className="like-search"></div>
             </div>
             <div className="body-content display-grid" style={{ height: "100%" }}>
-                <div style={{ height: '400px', width: '740px', margin: '20px auto' }}>
+                <div style={{ height: '400px', width: '740px', margin: '12px auto' }}>
                     <ResponsiveBar
-                        data={data}
-                        keys={['hotdog', 'burger']}
-                        indexBy="country"
+                        data={revenue || []}
+                        keys={['tong']}
+                        indexBy="thang"
                         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
                         padding={0.3}
                         colors={{ scheme: 'paired' }}
@@ -64,7 +86,7 @@ export default function Dashboard() {
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: 'Country',
+                            legend: 'Time',
                             legendPosition: 'middle',
                             legendOffset: 32,
                         }}
@@ -72,7 +94,6 @@ export default function Dashboard() {
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: 'Food Count',
                             legendPosition: 'middle',
                             legendOffset: -40,
                         }}
@@ -108,9 +129,9 @@ export default function Dashboard() {
                     />
                 </div>
 
-                <div style={{ width: '400px', height: '400px', margin: '20px auto' }}>
+                <div style={{ width: '400px', height: '400px', margin: '12px auto' }}>
                     <ResponsivePie
-                        data={fill}
+                        data={fill || []}
                         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
                         innerRadius={0.5} // Tạo biểu đồ Donut
                         padAngle={0.7} // Khoảng cách giữa các phần
@@ -140,6 +161,72 @@ export default function Dashboard() {
                                         on: 'hover',
                                         style: {
                                             itemTextColor: '#000', // Đổi màu khi hover
+                                        },
+                                    },
+                                ],
+                            },
+                        ]}
+                    />
+                </div>
+
+                <div style={{ height: '300px', width: '740px', margin: '12px auto' }}>
+                    <ResponsiveLine
+                        data={data}
+                        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                        xScale={{ type: "point" }}
+                        yScale={{
+                            type: "linear",
+                            min: "auto",
+                            max: "auto",
+                            stacked: false, // Không gộp các giá trị y
+                            reverse: false,
+                        }}
+                        axisTop={null}
+                        axisRight={null}
+                        axisBottom={{
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: "Tháng", // Nhãn trục X
+                            legendOffset: 36,
+                            legendPosition: "middle",
+                        }}
+                        axisLeft={{
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: "Giá trị", // Nhãn trục Y
+                            legendOffset: -40,
+                            legendPosition: "middle",
+                        }}
+                        colors={{ scheme: "nivo" }} // Bảng màu
+                        pointSize={10} // Kích thước điểm
+                        pointColor={{ theme: "background" }}
+                        pointBorderWidth={2}
+                        pointBorderColor={{ from: "serieColor" }}
+                        pointLabelYOffset={-12}
+                        useMesh={true} // Kích hoạt tương tác trên biểu đồ
+                        legends={[
+                            {
+                                anchor: "bottom-right",
+                                direction: "column",
+                                justify: false,
+                                translateX: 100,
+                                translateY: 0,
+                                itemsSpacing: 0,
+                                itemDirection: "left-to-right",
+                                itemWidth: 80,
+                                itemHeight: 20,
+                                itemOpacity: 0.75,
+                                symbolSize: 12,
+                                symbolShape: "circle",
+                                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                                effects: [
+                                    {
+                                        on: "hover",
+                                        style: {
+                                            itemBackground: "rgba(0, 0, 0, .03)",
+                                            itemOpacity: 1,
                                         },
                                     },
                                 ],
