@@ -1,16 +1,39 @@
 const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,ExcuteQuery}=require('./connect');
 
+function calculateMonthly(data){
+    let temp=[]
+    data.forEach(item=>{
+        const month=item.ngay.slice(0,7)
+        item.mo_ta.forEach(item=>{
+            if(!temp[month])
+                temp[month]={}
+            if(!temp[month][item.category])
+                temp[month][item.category]=0
+            temp[month][item.category]+=item.sum
+        })
+    })
+    return temp;
+}
+
 async function GetList(jsonCondition){
     try{
-        let result=await GetJoinQuery('history_room',['rooms'],['history_room.id','name','ngay','hanh_dong','luong_tien','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{},['(ngay between DATE_SUB(CURRENT_DATE, INTERVAL 12 MONTH) and DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))']);
-        result = result.map(item=>{
+        let list=await GetJoinQuery('history_room',['rooms'],['ngay','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{},['(ngay between DATE_SUB(CURRENT_DATE, INTERVAL 12 MONTH) and DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))']);
+        list = list.map(item=>{
             if(item.mo_ta!=""){
                 item.mo_ta=JSON.parse(item.mo_ta)
             }
             return item
         })
+        let result=await GetQuery('services',['name'],{},{});
+        result=result.map(item=>{
+            return {'id':item.name,'data':[]}
+        })
+        result.push({'id':'Tiền phòng','data':[]})
+        result.push({'id':'Tiền nước','data':[]})
+        result.push({'id':'Tien dien','data':[]})
+        
         console.log(result)
-        return result;
+        return calculateMonthly(list);
     }catch(err){
         return err;
     }
