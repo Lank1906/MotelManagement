@@ -2,9 +2,9 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery,ExcuteQuery}=requi
 
 function calculateMonthly(data){
     let temp=[]
-    data.forEach(item=>{
-        const month=item.ngay.slice(0,7)
-        item.mo_ta.forEach(item=>{
+    data.forEach(entry=>{
+        const month=entry.ngay.slice(0,7)
+        entry.mo_ta.forEach(item=>{
             if(!temp[month])
                 temp[month]={}
             if(!temp[month][item.category])
@@ -15,8 +15,23 @@ function calculateMonthly(data){
     return temp;
 }
 
+function getLast12Months(data) {
+  const result = [];
+  const now = new Date();
+  
+  for (let i = 1; i <= 12; i++) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthKey = date.toISOString().slice(0, 7);
+
+    result.push({x:monthKey,y:0})
+  }
+
+  return result;
+}
+
 async function GetList(jsonCondition){
     try{
+        let get12month=getLast12Months();
         let list=await GetJoinQuery('history_room',['rooms'],['ngay','mo_ta'],['history_room.room_id=rooms.id'],jsonCondition,{},['(ngay between DATE_SUB(CURRENT_DATE, INTERVAL 12 MONTH) and DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))']);
         list = list.map(item=>{
             if(item.mo_ta!=""){
@@ -26,14 +41,21 @@ async function GetList(jsonCondition){
         })
         let result=await GetQuery('services',['name'],{},{});
         result=result.map(item=>{
-            return {'id':item.name,'data':[]}
+            return {'id':item.name,'data':JSON.parse(JSON.stringify(get12month))}
         })
-        result.push({'id':'Tiền phòng','data':[]})
-        result.push({'id':'Tiền nước','data':[]})
-        result.push({'id':'Tien dien','data':[]})
+        result.push({'id':'Tien phong','data':JSON.parse(JSON.stringify(get12month))})
+        result.push({'id':'Tien nuoc','data':JSON.parse(JSON.stringify(get12month))})
+        result.push({'id':'Tien dien','data':JSON.parse(JSON.stringify(get12month))})
         
-        console.log(result)
-        return calculateMonthly(list);
+        list=calculateMonthly(list)
+        
+        result.forEach(item=>{ //id,data
+            item.data.forEach(i=>{ // x,y
+                i.y += list[i.x] ? list[i.x][item.id] ? list[i.x][item.id]:0:0;
+            })
+        })
+        
+        return result;
     }catch(err){
         return err;
     }
@@ -64,7 +86,7 @@ async function GetRevenue(jsonCondition){
                                             l12.thang,
                                             IFNULL(SUM(hr.luong_tien), 0) AS tong
                                         FROM (
-                                            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), '%Y-%m')
+                                            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH), '%Y-%m') as thang
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 2 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 3 MONTH), '%Y-%m')
                                             UNION ALL SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE, INTERVAL 4 MONTH), '%Y-%m')

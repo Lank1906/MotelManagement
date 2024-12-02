@@ -9,8 +9,9 @@ import { MyContext } from "../../libs/context";
 export default function Dashboard() {
     const [fill, setFill] = useState<any[]>();
     const [revenue, setRevenue] = useState<any[]>();
-    const [all,setAll]=useState<any[]>();
+    const [all, setAll] = useState<any[]>();
     const context = useContext(MyContext);
+    const [highlightedSerie, setHighlightedSerie] = useState<string | number | null>(null);
 
     useEffect(() => {
         GetFetch('history/fill', (data: any) => {
@@ -29,10 +30,9 @@ export default function Dashboard() {
             console.log(data)
         })
 
-        GetFetch('history',(data:any[])=>{
+        GetFetch('history', (data: any[]) => {
             setAll(data)
-            console.log(JSON.parse(data[0].mo_ta))
-        },context?.data,(data: any) => {
+        }, context?.data, (data: any) => {
             console.log(data)
         })
     }, [])
@@ -171,14 +171,14 @@ export default function Dashboard() {
 
                 <div style={{ height: '300px', width: '740px', margin: '12px auto' }}>
                     <ResponsiveLine
-                        data={data}
+                        data={all || []}
                         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
                         xScale={{ type: "point" }}
                         yScale={{
                             type: "linear",
                             min: "auto",
                             max: "auto",
-                            stacked: false, // Không gộp các giá trị y
+                            stacked: false,
                             reverse: false,
                         }}
                         axisTop={null}
@@ -187,7 +187,7 @@ export default function Dashboard() {
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: "Tháng", // Nhãn trục X
+                            legend: "Tháng",
                             legendOffset: 36,
                             legendPosition: "middle",
                         }}
@@ -195,17 +195,17 @@ export default function Dashboard() {
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: "Giá trị", // Nhãn trục Y
+                            legend: "Giá trị",
                             legendOffset: -40,
                             legendPosition: "middle",
                         }}
-                        colors={{ scheme: "nivo" }} // Bảng màu
-                        pointSize={10} // Kích thước điểm
+                        colors={{ scheme: "paired" }}
+                        pointSize={6}
                         pointColor={{ theme: "background" }}
                         pointBorderWidth={2}
                         pointBorderColor={{ from: "serieColor" }}
                         pointLabelYOffset={-12}
-                        useMesh={true} // Kích hoạt tương tác trên biểu đồ
+                        useMesh={true}
                         legends={[
                             {
                                 anchor: "bottom-right",
@@ -218,8 +218,8 @@ export default function Dashboard() {
                                 itemWidth: 80,
                                 itemHeight: 20,
                                 itemOpacity: 0.75,
-                                symbolSize: 12,
-                                symbolShape: "circle",
+                                symbolSize: 4,
+                                symbolShape: "square",
                                 symbolBorderColor: "rgba(0, 0, 0, .5)",
                                 effects: [
                                     {
@@ -230,7 +230,50 @@ export default function Dashboard() {
                                         },
                                     },
                                 ],
+                                onClick: (serie) => {
+                                    setHighlightedSerie((prev) => (prev === serie.id ? null : serie.id));
+                                },
                             },
+                        ]}
+                        layers={[
+                            "grid",
+                            "markers",
+                            "axes",
+                            ({ series, lineGenerator, xScale, yScale }) => {
+                                // Khai báo kiểu cụ thể
+                                const xScaleFn = xScale as (value: string | number) => number;
+                                const yScaleFn = yScale as (value: number) => number;
+
+                                return (
+                                    <g key="lines">
+                                        {series.map(({ id, data, color }) => (
+                                            <path
+                                                key={id}
+                                                d={
+                                                    lineGenerator(
+                                                        data.map((d) => ({
+                                                            x: xScaleFn(d.data.x as string | number),
+                                                            y: yScaleFn(d.data.y as number),
+                                                        }))
+                                                    ) || "" // Tránh null
+                                                }
+                                                fill="none"
+                                                stroke={color}
+                                                strokeWidth={
+                                                    highlightedSerie === null || highlightedSerie === id ? 3 : 1
+                                                }
+                                                opacity={
+                                                    highlightedSerie === null || highlightedSerie === id ? 1 : 0.2
+                                                }
+                                                style={{
+                                                    transition: "all 0.3s ease-in-out",
+                                                }}
+                                            />
+                                        ))}
+                                    </g>
+                                );
+                            },
+                            "legends",
                         ]}
                     />
                 </div>
