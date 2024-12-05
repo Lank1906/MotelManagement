@@ -14,4 +14,5 @@ source ~/.bashrc
 nvm install 14
 
 unset NPM_CONFIG_PREFIX
+
 nvm use 14

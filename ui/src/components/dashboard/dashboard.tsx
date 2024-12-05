@@ -36,34 +36,7 @@ export default function Dashboard() {
             console.log(data)
         })
     }, [])
-
-    const data = [
-        {
-            id: "Đường A", // Tên của đường A
-            data: [
-                { x: "Tháng 1", y: 40 },
-                { x: "Tháng 2", y: 60 },
-                { x: "Tháng 3", y: 80 },
-            ],
-        },
-        {
-            id: "Đường B", // Tên của đường B
-            data: [
-                { x: "Tháng 1", y: 30 },
-                { x: "Tháng 2", y: 50 },
-                { x: "Tháng 3", y: 70 },
-            ],
-        },
-        {
-            id: "Đường C", // Tên của đường C
-            data: [
-                { x: "Tháng 1", y: 20 },
-                { x: "Tháng 2", y: 40 },
-                { x: "Tháng 3", y: 60 },
-            ],
-        },
-    ];
-
+    
     return (
         <div className="content">
             <div className="top-content">
