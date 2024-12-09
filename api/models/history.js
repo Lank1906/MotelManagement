@@ -19,7 +19,7 @@ function getLast12Months(data) {
   const result = [];
   const now = new Date();
   
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 12; i >= 1; i--) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthKey = date.toISOString().slice(0, 7);
 
@@ -39,13 +39,13 @@ async function GetList(jsonCondition){
             }
             return item
         })
-        let result=await GetQuery('services',['name'],{},{});
+        let result=await GetQuery('services',['name'],{'user_id':jsonCondition['rooms.user_id']},{});
         result=result.map(item=>{
             return {'id':item.name,'data':JSON.parse(JSON.stringify(get12month))}
         })
-        result.push({'id':'Tien phong','data':JSON.parse(JSON.stringify(get12month))})
-        result.push({'id':'Tien nuoc','data':JSON.parse(JSON.stringify(get12month))})
-        result.push({'id':'Tien dien','data':JSON.parse(JSON.stringify(get12month))})
+        result.push({'id':'Tiền phòng','data':JSON.parse(JSON.stringify(get12month))})
+        result.push({'id':'Tiền nước','data':JSON.parse(JSON.stringify(get12month))})
+        result.push({'id':'Tiền điện','data':JSON.parse(JSON.stringify(get12month))})
         
         list=calculateMonthly(list)
         
