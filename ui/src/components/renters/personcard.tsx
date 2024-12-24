@@ -13,6 +13,8 @@ export default function PersonCard(props: PersonType) {
   const announceContext = useContext(AnnounceContext)
   const toastifyContext = useContext(ToastifyContext);
 
+  const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
+
   async function HandleDelete() {
     const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa " + props.renter_name + " khong ?")
     if (!result) return
@@ -39,10 +41,12 @@ export default function PersonCard(props: PersonType) {
   }
   return (
     <div className="card">
-      <img src="/images/person.png" alt="person-demo" />
+      <img src={props.img_font? publicUrl+ props.img_font:"/images/person.png"} alt="person-demo" />
+      <div className="mask-card">{props.room_name}</div>
       <p>{props.renter_name}</p>
       <p>{props.room_name}</p>
-      <p>{props.trang_thai}</p>
+      <p>{props.trang_thai? "Đã đăng kí":"Chưa đăng kí"}</p>
+      <p>tạm trú</p>
       <div className="btn" onClick={HandleDelete}>chuyen di</div>
     </div>
   );

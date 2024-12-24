@@ -60,10 +60,10 @@ export default function ServiceList() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Ten dich vu</th>
-                            <th>Follow</th>
-                            <th>Gia</th>
-                            <th>Thao tac</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Tính theo</th>
+                            <th>Giá</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,9 +72,9 @@ export default function ServiceList() {
                                 return (
                                     <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'service')}>
                                         <td>{item.name}</td>
-                                        <td>{item.follow ? 'lan' : 'thang'}</td>
+                                        <td>{item.follow ? 'Lượt sử dụng' : 'tháng'}</td>
                                         <td>{item.price}</td>
-                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xoa</button></td>
+                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xóa</button></td>
                                     </tr>
                                 )
                             }) : <Loader />

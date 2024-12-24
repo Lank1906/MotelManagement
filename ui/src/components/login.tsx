@@ -32,7 +32,7 @@ export default function Login(){
                 <input className="search" type='text' value={name} onChange={(e)=>setName(e.target.value)}/>
                 <input className="search" type='password' value={pass} onChange={(e)=>setPass(e.target.value)}/>
                 <button className="btn" onClick={HandleLogin}>Đăng Nhập</button>
-                <p>Bạn chưa có tài khoản rồi ? Hãy đăng kí ngay </p>
+                <p>Bạn chưa có tài khoản rồi ? <a href="https://zaloapp.com/qr/p/nl01nsmzd8dc">Hãy đăng kí ngay</a>  </p>
             </div>
         </div>
     )

@@ -62,12 +62,12 @@ export default function TypeList() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Ten Loai</th>
-                            <th>Gia /thang</th>
-                            <th>So dien</th>
-                            <th>Nuoc</th>
-                            <th>Nuoc tinh theo</th>
-                            <th>Thao tac</th>
+                            <th>Tên Loại</th>
+                            <th>Giá/tháng</th>
+                            <th>Giá điện</th>
+                            <th>Giá Nước</th>
+                            <th>Nước tính theo</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>

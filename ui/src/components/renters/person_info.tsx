@@ -58,6 +58,7 @@ export default function PersonInfo() {
             id: object2.id as number,
             renter_name: object2.renter_name as string,
             room_name: object?.room_name as string,
+            img_font:object?.img_font as string,
             trang_thai: object?.trang_thai as boolean,
         }
 
@@ -121,7 +122,7 @@ export default function PersonInfo() {
                 <input type="text" name="cccd" value={object?.cccd} onChange={(e) => setObject({ ...object, cccd: e.target.value })} />
             </div>
             <div className="input">
-                <label htmlFor="que_quan">Que</label><br />
+                <label htmlFor="que_quan">Quê</label><br />
                 <input type="text" name="que_quan" value={object?.que_quan} onChange={(e) => setObject({ ...object, que_quan: e.target.value })} />
             </div>
             <div className="input">
@@ -133,11 +134,11 @@ export default function PersonInfo() {
                 <input type="radio" name="name" checked={object?.tctv} onChange={(e) => setObject({ ...object, tctv: e.target.checked })} />
             </div>
             <div className="input">
-                <label htmlFor="trang_thai">Trang thai {object?.trang_thai ? 'Khach' : 'Nguoi Thue'}</label><br />
+                <label htmlFor="trang_thai">Trạng thái {object?.trang_thai ? 'Khách chơi' : 'Người thuê'}</label><br />
                 <input type="radio" name="trang_thai" checked={object?.trang_thai} onChange={(e) => setObject({ ...object, trang_thai: e.target.checked })} />
             </div>
             <div className="input">
-                <label htmlFor="electric">Hình ảnh</label><br />
+                <label htmlFor="electric">Mặt trước CCCD</label><br />
                 <div id="preview">
                     {cccdF && <img src={cccdF} alt="Preview" style={{ width: "100%", height: "auto" }} />}
                 </div>
@@ -157,7 +158,7 @@ export default function PersonInfo() {
                 }} />
             </div>
             <div className="input">
-                <label htmlFor="electric">Hình ảnh</label><br />
+                <label htmlFor="electric">Mặt sau CCCD</label><br />
                 <div id="preview">
                     {cccdB && <img src={cccdB} alt="Preview" style={{ width: "100%", height: "auto" }} />}
                 </div>

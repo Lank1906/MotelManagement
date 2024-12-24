@@ -94,7 +94,6 @@ export default function RoomCaculate() {
                     <label htmlFor="name">So nuoc: </label><br />
                     <input type="number" name="name" value={water} onChange={(e) => setWater(parseInt(e.target.value))} readOnly={object?.water_follow ? true : false} />
                 </div>
-                <div className="btn">Cap nhat</div>
             </div>
             <div className="service-action">
                 <div className="btn" onClick={()=>calculate(2)}>Chuyen di</div>

@@ -13,6 +13,8 @@ export default function RoomCard(props: RoomType) {
   const announceContext = useContext(AnnounceContext)
   const toastifyContext = useContext(ToastifyContext);
 
+  const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
+
   async function handleDelete() {
     const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name)
     if (!result) return
@@ -40,7 +42,7 @@ export default function RoomCard(props: RoomType) {
 
   return (
     <div className="card">
-      <img src={"/images/home.png"} alt="home-demo" />
+      <img src={props.img_room? publicUrl+ props.img_room:"/images/home.png"} alt="home-demo" />
       <p>{props.name}</p>
       <p>{props.type_name}</p>
       <p>{props.check_in?props.check_in:"trong"}</p>
