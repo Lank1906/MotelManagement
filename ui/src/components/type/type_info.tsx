@@ -75,26 +75,26 @@ export default function TypeInfo() {
     return (
         <div className="form">
             <div className="input">
-                <label htmlFor="name">Ten loai</label><br />
+                <label htmlFor="name">Tên Loại</label><br />
                 <input type="text" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
             </div>
             <div className="input">
-                <label htmlFor="price">Gia phong</label><br />
+                <label htmlFor="price">Giá phòng</label><br />
                 <input type="number" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
             </div>
             <div className="input">
-                <label htmlFor="electric">So dien</label><br />
+                <label htmlFor="electric">Số điện</label><br />
                 <input type="number" name="electric" value={object?.electric} onChange={(e) => setObject({ ...object, electric: parseInt(e.target.value) })} />
             </div>
             <div className="input">
-                <label htmlFor="water">So nuoc</label><br />
+                <label htmlFor="water">Số nước</label><br />
                 <input type="text" name="water" value={object?.water} onChange={(e) => setObject({ ...object, water: parseInt(e.target.value) })} />
             </div>
             <div className="input">
-                <label htmlFor="water-follow">Nuoc tinh theo </label><br />
+                <label htmlFor="water-follow">Nước tính theo</label><br />
                 <select name="water-follow" id="" value={object?.water_follow||0} onChange={(e) => setObject({ ...object, water_follow: parseInt(e.target.value) })}>
-                    <option value="0">Nguoi</option>
-                    <option value="1">So</option>
+                    <option value="0">Người</option>
+                    <option value="1">Số</option>
                 </select>
             </div>
             <div className="action">
