@@ -14,17 +14,18 @@ export default function Container() {
       <div id="body">
 
         <div className="arrow" onClick={() => {
-          if (window.innerWidth < 860 && leftStatus == '350px') {
+          if (window.innerWidth < 860 && leftStatus == '300px') {
             setLeftStatus('')
           }
           else {
-            setLeftStatus('350px')
+            setLeftStatus('300px')
+            setRightStatus('')
           }
         }}>
           <i className="fa-solid fa-angles-right" ></i>
         </div>
         <DataContextProvider>
-          <section id="menu-left" style={{ width: leftStatus }}>
+          <section id="menu-left" className={leftStatus=='300px'?'menu-left-active':''} style={{ width: leftStatus }}>
             <Menu widthE={leftStatus} />
           </section>
           <Outlet />
@@ -36,6 +37,7 @@ export default function Container() {
           }
           else {
             setRightStatus('350px')
+            setLeftStatus('')
           }
         }}>
           <i className="fa-solid fa-angles-left"></i>

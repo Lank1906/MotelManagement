@@ -8,9 +8,9 @@ export default function RoomRedirect() {
     return (
         <div className="room-redirect">
             <div className="room-nav">
-                <div className={target == 0 ? 'active' : ''} onClick={() => setTarget(0)}>Thông tin</div>
-                <div className={target == 1 ? 'active' : ''} onClick={() => setTarget(1)}>Dịch vụ</div>
-                <div className={target == 2 ? 'active' : ''} onClick={() => setTarget(2)}>Tính tiền</div>
+                <div className={target == 0 ? 'active-nav' : ''} onClick={() => setTarget(0)}>Thông tin</div>
+                <div className={target == 1 ? 'active-nav' : ''} onClick={() => setTarget(1)}>Dịch vụ</div>
+                <div className={target == 2 ? 'active-nav' : ''} onClick={() => setTarget(2)}>Tính tiền</div>
             </div>
             <div className="room-content">
                 {
