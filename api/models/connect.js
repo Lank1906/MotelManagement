@@ -132,15 +132,15 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
         }
         console.log('Connected to the MySQL database');
     });
-    
+    //console.log(sql);
     return new Promise((resolve,reject)=>{
         connection.query(sql, (err, result) => {
             if (err) {
-                console.error('Error deleting:', err);
+                console.error('Error updated:', err);
                 reject(err.message);
             }
             else{
-                resolve(jsonCondition.id);
+                resolve(true);
             }
         });
         connection.end()

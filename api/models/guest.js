@@ -11,8 +11,15 @@ async function SignUp(jsonData){
 }
 async function Login(jsonData){
     try{
+        password=jsonData.password;
+        jsonData.is_active=1;
+        delete jsonData.password;
         const result= await GetQuery('users',['id','username','password'],jsonData,{});
-        return result;
+        if(result.length==1 && result[0].password==password)
+            return 1;
+        else if(result.length==1)
+            return -1;
+        return 0;
     }
     catch(err){
         return err;
