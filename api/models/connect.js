@@ -140,7 +140,7 @@ function UpdateQuery(tableName,jsonChange,jsonCondition){
                 reject(err.message);
             }
             else{
-                resolve(true);
+                resolve(result.affectedRows);
             }
         });
         connection.end()

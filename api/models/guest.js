@@ -16,7 +16,7 @@ async function Login(jsonData){
         delete jsonData.password;
         const result= await GetQuery('users',['id','username','password'],jsonData,{});
         if(result.length==1 && result[0].password==password)
-            return 1;
+            return result[0].id;
         else if(result.length==1)
             return -1;
         return 0;

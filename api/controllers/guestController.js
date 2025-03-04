@@ -19,8 +19,8 @@ async function LoginCon(req,res){
     console.log(req.body);
     const result=await Login(req.body);
     
-    if(result==1){
-        const token = jwt.sign({ id:req.body.id,username:req.body.username }, 'Lank1906', { expiresIn: '6h' });
+    if(result>=1){
+        const token = jwt.sign({ id:result,username:req.body.username }, 'Lank1906', { expiresIn: '6h' });
         console.log("Login success!")
         return res.status(200).json({ "message":"Đăng nhập thành công !","token":token });
     }
@@ -36,7 +36,7 @@ async function LoginCon(req,res){
 
 async function UpdateInfoCon(req,res){
     const result=await UpdateInfo(req.body,{'username':req.user.username});
-    if(result){
+    if(result>1){
         return res.status(200).json({"message":"Cập nhật thành công!"});
     }
     else{
