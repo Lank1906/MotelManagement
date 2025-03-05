@@ -5,26 +5,26 @@ async function List(req,res){
     if(result.length>0){
         return res.status(200).json(result);
     }
-    return res.status(400).json({"message":"Lay dữ liệu thất bại !"});
+    return res.status(400).json({"message":"Phòng chưa có dịch vụ nào!"});
 }
 
 async function Add(req,res){
     const result=await AddObject({...req.body,'room_id':req.params.id,"user_id":req.user.id})
     if(result>0){
-        return res.status(200).json({"message":"Đã thêm dữ liệu thành công!","id":result});
+        return res.status(200).json({"message":"Đã thêm dịch vụ cho phòng thành công!","id":result});
     }
     else{
-        return res.status(401).json({"message":"Thêm dữ liệu thất bại !"});
+        return res.status(401).json({"message":"Thêm dịch vụ của phòng thất bại !"});
     }
 }
 
 async function Delete(req,res){
     const result=await DeleteObject({'id':req.params.id});
     if(result>0){
-        return res.status(200).json({"message":"Đã xóa dữ liệu","id":result});
+        return res.status(200).json({"message":"Đã xóa dịch vụ phòng này!","id":result});
     }
     else{
-        return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
+        return res.status(400).json({"message":"Dịch vụ phòng chưa được loại bỏ"})
     }
 }
 

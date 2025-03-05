@@ -98,7 +98,7 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
 
 function AddQuery(tableName,jsonData){
     const connection = mysql.createConnection(setupDB);
-    var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData).map(item=>typeof item=='string'?"'"+item+"'":item).join()+")";
+    var sql="INSERT INTO "+tableName+"("+Object.keys(jsonData).join()+") VALUES("+Object.values(jsonData).map(item=>typeof item=='string'?"'"+item+"'":item==null? "NULL":item).join()+")";
     //console.log(sql);
     connection.connect((err) => {
         if (err) {

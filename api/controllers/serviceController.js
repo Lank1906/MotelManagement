@@ -36,6 +36,9 @@ async function Add(req,res){
     if(result>0){
         return res.status(200).json({"message":"Đã thêm dịch vụ thành công!","id":result});
     }
+    else if(result.startsWith("Duplicate entry")){
+        return res.status(200).json({"message":"Tên dịch vụ bị trùng lặp!","id":result});
+    }
     else{
         return res.status(401).json({"message":"Thêm dịch vụ thất bại!"});
     }
@@ -48,6 +51,9 @@ async function Update(req,res){
     }
     else if(result==0){
         return res.status(400).json({"message":"Không tồn tại dịch vụ này!"})
+    }
+    else if(result.includes("Duplicate entry")){
+        return res.status(200).json({"message":"Tên dịch vụ bị trùng lặp!","name":req.body.name});
     }
     else{
         return res.status(401).json({"message":"Cập nhật dịch vụ thất bại !"});
