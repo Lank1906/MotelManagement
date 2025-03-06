@@ -49,7 +49,7 @@ CREATE TABLE renters (
     room_id INT,
     user_id INT,
     name VARCHAR(30) NOT NULL,
-    cccd VARCHAR(12),
+    cccd VARCHAR(12) UNIQUE,
     que_quan VARCHAR(100),
     sdt VARCHAR(10),
     img_font VARCHAR(40), -- ảnh mặt trước cccd
@@ -116,14 +116,14 @@ insert into rooms(user_id,name,type,person_limit,electric_number,water_number,ch
                                                                                                 (1,'P9',2,3,1419,3,'2024-1-21');
 
 insert into renters(user_id,room_id,name,cccd,que_quan,sdt,tctv,trang_thai) values (1,1,'Lu van Cong','033203302930','hy-vl-nd','0348765478',1,0),
-																					(1,2,'Dinh thi Hoan','033203302930','hy-vl-nd','0348766478',1,0),
-                                                                                    (1,3,'Nguyen van Viet','033203302930','hy-vl-nd','0348465478',1,0),
-                                                                                    (1,4,'Sung a La','033203302930','hy-vl-nd','0348765477',1,0),
-                                                                                    (1,5,'Ha thi Hang','033203302930','hy-vl-nd','0348765378',1,0),
-                                                                                    (1,6,'Ha thi Hong','033203302930','hy-vl-nd','0348765678',1,0),
-                                                                                    (1,7,'Dinh van Hiep','033203302930','hy-vl-nd','0348735478',1,0),
-                                                                                    (1,8,'Li chi Ngan','033203302930','hy-vl-nd','0348765878',1,0),
-                                                                                    (1,9,'Va ba Ly','033203302930','hy-vl-nd','0348765428',1,0);
+																					(1,2,'Dinh thi Hoan','033203302931','hy-vl-nd','0348766478',1,0),
+                                                                                    (1,3,'Nguyen van Viet','033203302932','hy-vl-nd','0348465478',1,0),
+                                                                                    (1,4,'Sung a La','033203302933','hy-vl-nd','0348765477',1,0),
+                                                                                    (1,5,'Ha thi Hang','033203302934','hy-vl-nd','0348765378',1,0),
+                                                                                    (1,6,'Ha thi Hong','033203302935','hy-vl-nd','0348765678',1,0),
+                                                                                    (1,7,'Dinh van Hiep','033203302936','hy-vl-nd','0348735478',1,0),
+                                                                                    (1,8,'Li chi Ngan','033203302937','hy-vl-nd','0348765878',1,0),
+                                                                                    (1,9,'Va ba Ly','033203302938','hy-vl-nd','0348765428',1,0);
 
 insert into services(user_id,name,follow,price) values (1,'internet',0,30),(1,'sac xe',1,50);
 

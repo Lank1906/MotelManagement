@@ -1,4 +1,4 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject}=require("../models/renter");
+const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId}=require("../models/renter");
 
 async function List(req,res){
     const result=await GetList({"rooms.user_id":req.user.id},req.query)
@@ -6,7 +6,7 @@ async function List(req,res){
         return res.status(200).json(result);
     }
     else{
-        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
+        return res.status(400).json({"message":"Không tồn tại người thuê có sẵn"})
     }
 }
 
@@ -16,19 +16,31 @@ async function One(req,res){
         return res.status(200).json(result);
     }
     else{
-        return res.status(400).json({"message":"Không tồn tại dữ liệu có sẵn"})
+        return res.status(400).json({"message":"Không tồn tại người thuê có sẵn"})
     }
 }
 
 async function Add(req,res){
     req.body.name=req.body.renter_name
     delete req.body.renter_name
+    
+    const id_rooms=await ListRoomId(req.user.id);
+    console.log(id_rooms)
+    if(!id_rooms.some(item => item.id === req.body.room_id)){
+        return res.status(400).json({"message":"Mã phòng này không thuộc quyền sở quản lý của bạn! Vui lòng nghiêm chỉnh chấp hành luật an toàn mạng!"})
+    }
+    
     const result=await AddObject({...req.body,"user_id":req.user.id});
     if(result>0){
-        return res.status(200).json({"message":"Đã thêm dữ liệu thành công!","id":result});
+        return res.status(200).json({"message":"Đã thêm dữ liệu người thuê thành công!","id":result});
+    }
+    else if(result.startsWith("Duplicate entry")){
+        const id=await GetOne({"cccd":req.body.cccd});
+        const result2=await UpdateObject({"room_id":req.body.room_id,"sdt":req.body.sdt,"trang_thai":req.body.trang_thai,"user_id":req.user.id},{"cccd":req.body.cccd})
+        return res.status(200).json({"message":"Đã thêm dữ liệu người thuê thành công!","id":id[0].id});
     }
     else{
-        return res.status(401).json({"message":"Thêm dữ liệu thất bại !"});
+        return res.status(401).json({"message":"Thêm dữ liệu người thuê thất bại !"});
     }
 }
 
@@ -38,20 +50,29 @@ async function Update(req,res){
     delete req.body.renter_name
     const result = await UpdateObject(req.body,{"id":req.params.id});
     if(result>0){
-        return res.status(200).json({"message":"Cập nhật thành công!","id":result});
+        return res.status(200).json({"message":"Cập nhật dữ liệu người thuê thành công!","id":result});
+    }
+    else if(result==0){
+        return res.status(400).json({"message":"Không tồn tại dữ liệu người thuê này!"})
+    }
+    else if(result.includes("Duplicate entry")){
+        return res.status(200).json({"message":"Số CCCD bị trùng lặp!","name":req.body.name});
     }
     else{
-        return res.status(401).json({"message":"Cập nhật thất bại !"});
+        return res.status(401).json({"message":"Cập nhật dữ liệu người thuê thất bại !"});
     }
 }
 
 async function Delete(req,res){
-    const result=await DeleteObject({"user_id":req.user.id,"id":req.params.id})
+    const result=await UpdateObject({"is_active":0},{"user_id":req.user.id,"id":req.params.id})
     if(result>0){
-        return res.status(200).json({"message":"Đã xóa dữ liệu","id":result});
+        return res.status(200).json({"message":"Đã xóa dữ liệu người thuê","id":result});
+    }
+    else if(result==0){
+        return res.status(400).json({"message":"Không tồn tại dữ liệu người thuê này!"})
     }
     else{
-        return res.status(400).json({"message":"Dữ liệu chưa được loại bỏ"})
+        return res.status(400).json({"message":"Dữ liệu người thuê chưa được loại bỏ"})
     }
 }
 module.exports={List,One,Add,Update,Delete};
