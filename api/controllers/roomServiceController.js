@@ -1,11 +1,15 @@
-const {GetList,AddObject,DeleteObject}=require('../models/roomService');
+const {GetListCurrently,AddObject,DeleteObject}=require('../models/roomService');
 
-async function List(req,res){
-    const result=await GetList({'user_id':req.user.id,'room_id':req.params.id})
+async function ListCurrently(req,res){
+    const result=await GetListCurrently({'user_id':req.user.id,'room_id':req.params.id})
     if(result.length>0){
         return res.status(200).json(result);
     }
     return res.status(400).json({"message":"Phòng chưa có dịch vụ nào!"});
+}
+
+async function ListDate(req,res){
+    
 }
 
 async function Add(req,res){
@@ -28,4 +32,4 @@ async function Delete(req,res){
     }
 }
 
-module.exports={List,Add,Delete};
+module.exports={ListCurrently,ListDate,Add,Delete};
