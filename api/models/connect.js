@@ -73,7 +73,7 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
     }
     
     sql+=condition+ (groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
-    console.log(sql)
+    //console.log(sql)
     connection.connect((err) => {
         if (err) {
             console.error('Error connecting to the database:', err);

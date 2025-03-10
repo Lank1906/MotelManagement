@@ -23,14 +23,14 @@ async function GetListCurrently(jsonData){
     }
 }
 
-async function GetListByDate(date){
+async function GetListByDate(date,jsonData){
     try{
         const result=GetJoinQuery('room_services',
-                                    ['bill_rooms','services'],
+                                    ['services'],
                                     ['room_services.id as id','room_id','service_id','services.name','day','times'],
-                                    ['room_services.service_id=services.id','room_services.room_id=bill_rooms.room_id'],
-                                    {},{},
-                                    [])
+                                    ['room_services.service_id=services.id'],
+                                    jsonData,{},
+                                    ["room_services.day>DATE_SUB('"+date+"',INTERVAL 1 MONTH)","room_services.day<DATE_ADD('"+date+"',INTERVAL 1 MONTH)"])
         return result
     }
     catch(err){
@@ -39,23 +39,57 @@ async function GetListByDate(date){
 }
 
 async function AddObject(jsonData){
-    // console.log(jsonData)
+    //console.log(jsonData)
     try{
-        const list=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_id','service_id','day','times','follow'],['room_services.service_id=services.id'],{"room_id":jsonData.room_id,"user_id":jsonData.user_id},{});
-        let element=list.find(item=>item.service_id==jsonData.service_id)
+        checkIn=await GetQuery('rooms',['check_in'],{"user_id":jsonData.user_id,'id':jsonData.room_id},{})
+        checkIn=checkIn[0].check_in.split('-')[2]
+        now=(new Date()).getDate()
+        extendCon=[checkIn<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)),'-', DAY(rooms.check_in)),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY(rooms.check_in)),'%Y-%m-%d')",
+                    checkIn<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY(rooms.check_in)),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),'-', DAY(rooms.check_in)),'%Y-%m-%d')"]
+        const list=await GetJoinQuery('room_services',
+                                        ['services','rooms'],
+                                        ['room_services.id as id','room_id','service_id','services.name','day','times'],
+                                        ['room_services.service_id=services.id','room_services.room_id=rooms.id'],
+                                        {"room_id":jsonData.room_id,"rooms.user_id":jsonData.user_id},
+                                        {},
+                                        extendCon);
+        let element=list.filter(item=>item.service_id===jsonData.service_id)
+        //console.log(list)
         let result=''
-        if(element===undefined){
+        if(element.length==0){
+            //console.log('add')
             delete jsonData.user_id;
             result=await AddQuery('room_services',jsonData)
             return result
         }
-        else if(!element.follow && element.day.split(',').includes(new Date().getDate().toString())){
-            // console.log("you are here")
+        else if(element.length==1 && !element[0].follow){
+            //console.log('cannot add')
             return 0;
         }
-        else{
-            result=await UpdateQuery('room_services',{'day':element.day+',' + new Date().getDate().toString(),'times':element.times+1},{'id':element.id});
-            return result;
+        else if(element.length==1 && element[0].follow && element[0].day===jsonData.day){
+            //console.log('update 0 element')
+            result=await UpdateQuery('room_services',{'times':element[0].times+1},{'id':element[0].id});
+            return element[0].id;
+        }
+        else if(element.length==1 && element[0].follow && element[0].day!==jsonData.day){
+            //console.log('add 2')
+            delete jsonData.user_id;
+            result=await AddQuery('room_services',jsonData)
+            return result
+        }
+        else if(element.length>1){
+            let ele=element.find(item=>item.day==jsonData.day)
+            if(ele){
+                //console.log('update 0 element')
+                result=await UpdateQuery('room_services',{'times':ele.times+1},{'id':ele.id});
+                return ele.id;
+            }
+            else{
+                //console.log('add 2')
+                delete jsonData.user_id;
+                result=await AddQuery('room_services',jsonData)
+                return result
+            }
         }
     }
     catch(err){

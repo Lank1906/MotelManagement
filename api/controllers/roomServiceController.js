@@ -1,4 +1,4 @@
-const {GetListCurrently,AddObject,DeleteObject}=require('../models/roomService');
+const {GetListCurrently,GetListByDate,AddObject,DeleteObject}=require('../models/roomService');
 
 async function ListCurrently(req,res){
     const result=await GetListCurrently({'user_id':req.user.id,'room_id':req.params.id})
@@ -9,7 +9,11 @@ async function ListCurrently(req,res){
 }
 
 async function ListDate(req,res){
-    
+    const result=await GetListByDate(req.params.date,{'services.user_id':req.user.id,'room_id':req.params.id})
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    return res.status(400).json({'message':'Không thể truy xuất dịch vụ của tháng này!'})
 }
 
 async function Add(req,res){
