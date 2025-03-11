@@ -1,4 +1,4 @@
-const {GetList,Calculate,History}=require('../models/calculate');
+const {GetList,Calculate,AddBill}=require('../models/calculate');
 
 async function List(req,res){
     const result=await GetList({"rooms.user_id":req.user.id,"rooms.id":req.params.id});
@@ -18,7 +18,7 @@ async function Bill(req,res){
 
 async function Pay(req,res){
     try{
-        const result=await History({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
+        const result=await AddBill({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
         if(result)
             res.status(200).json({"message":"Đã thanh toan thành công!","id":result});
         else
