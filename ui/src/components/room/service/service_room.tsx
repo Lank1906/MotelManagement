@@ -86,7 +86,7 @@ export default function RoomService() {
     }
 
     async function handleDelete(id: number) {
-        const result = await toastifyContext?.confirmResult("Ban co chac muon xoa dich vu nay ko ?")
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ này không ?")
         if (!result || !id)
             return
         DeleteFetch('room-service/' + id,
@@ -116,9 +116,9 @@ export default function RoomService() {
             <table id="list-service">
                 <thead>
                     <tr>
-                        <th>Ten</th>
-                        <th>So luong</th>
-                        <th>hanh dong</th>
+                        <th>Tên</th>
+                        <th>Số lượng</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,12 +127,12 @@ export default function RoomService() {
 
             </table>
             <div className="service-action">
-                <select value={object?.service_id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
+                <select className="input" value={object?.service_id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
                     {list ? list.map(
-                        (item: ServiceType) => <option value={item?.id} key={item.id}>{item.name + ' => ' + item.price + ' / ' + (item.follow ? 'lan' : 'thang')}</option>
-                    ) : 'Dang tai'}
+                        (item: ServiceType) => <option value={item?.id} key={item.id}>{item.name + ' => ' + item.price + ' / ' + (item.follow ? 'Lần' : 'Tháng')}</option>
+                    ) : 'Đang tải'}
                 </select>
-                <button className="btn" onClick={handleAdd}>Thêm Mới</button>
+                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
             </div>
         </>
     )

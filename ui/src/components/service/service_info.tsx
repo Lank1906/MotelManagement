@@ -46,7 +46,7 @@ export default function ServiceInfo() {
     }
 
     async function handleUpdate() {
-        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loai phòng " + object?.name)
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa dịch vụ " + object?.name+" ?")
         if (!result)
             return
         PutFetch('service/' + dataContext?.id,
@@ -73,24 +73,24 @@ export default function ServiceInfo() {
 
     return (
         <div className="form">
-            <div className="input">
-                <label htmlFor="name">Ten loai</label><br />
-                <input type="text" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
+            <div className="component">
+                <label htmlFor="name">Tên dịch vụ</label><br />
+                <input className="input" type="text" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
             </div>
-            <div className="input">
-                <label htmlFor="price">Gia thanh</label><br />
-                <input type="number" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
+            <div className="component">
+                <label htmlFor="price">Giá thành</label><br />
+                <input className="input" type="number" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
-                <label htmlFor="water-follow">Tien tinh theo </label><br />
-                <select name="water-follow" id="" value={object?.follow ? 'true' : 'false'} onChange={(e) => setObject({ ...object, follow: e.target.value === "true" })}>
-                    <option value="false">Thang</option>
-                    <option value="true">So lan su dung</option>
+            <div className="component">
+                <label htmlFor="water-follow">Tiền tính theo</label><br />
+                <select className="input" name="water-follow" id="" value={object?.follow ? 'true' : 'false'} onChange={(e) => setObject({ ...object, follow: e.target.value === "true" })}>
+                    <option value="false">Tháng</option>
+                    <option value="true">Số lần sử dụng</option>
                 </select>
             </div>
             <div className="action">
-                <button className="btn" onClick={handleAdd}>Thêm Mới</button>
-                <button className="btn" onClick={handleUpdate}>Sửa đổi</button>
+                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
+                <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
         </div>
     )

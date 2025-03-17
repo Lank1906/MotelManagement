@@ -4,6 +4,7 @@ import Login from './components/login';
 import Container from './Container';
 
 import "./styles.css";
+import "./libs.css";
 import Announce from './components/base/announce';
 import { AnnounceContext } from './libs/announce_context';
 import NotFound from './components/base/notfound';

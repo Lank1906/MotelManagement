@@ -76,9 +76,9 @@ export default function RoomCaculate() {
             <table id="list-service">
                 <thead>
                     <tr>
-                        <th>Ten</th>
-                        <th>Gia Thanh</th>
-                        <th>Hanh dong</th>
+                        <th>Tên</th>
+                        <th>Giá thành</th>
+                        <th>Số lượng</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,21 +87,21 @@ export default function RoomCaculate() {
             </table>
             <div className="service-action">
                 <div className="block">
-                    <label htmlFor="name">So dien: </label><br />
-                    <input type="number" name="name" value={electric} onChange={(e) => setEletric(parseInt(e.target.value))} />
+                    <label htmlFor="name">Số điện: </label><br />
+                    <input type="number" className="input" name="name" value={electric} onChange={(e) => setEletric(parseInt(e.target.value))} />
                 </div>
                 <div className="block">
-                    <label htmlFor="name">So nuoc: </label><br />
-                    <input type="number" name="name" value={water} onChange={(e) => setWater(parseInt(e.target.value))} readOnly={object?.water_follow ? true : false} />
+                    <label htmlFor="name">Số nước: </label><br />
+                    <input type="number" className="input" name="name" value={water} onChange={(e) => setWater(parseInt(e.target.value))} readOnly={object?.water_follow ? true : false} />
                 </div>
             </div>
             <div className="service-action">
-                <div className="btn" onClick={()=>calculate(2)}>Chuyen di</div>
-                <div className="btn" onClick={()=>calculate(1)}>Thanh toán</div>
-                <div className="btn" onClick={()=>calculate(0)}>Chuyen den</div>
+                <div className="btn delete" onClick={()=>calculate(2)}><i className="fa-solid fa-arrow-right-from-bracket"></i> Chuyển đi</div>
+                <div className="btn add" onClick={()=>calculate(1)}><i className="fa-solid fa-rotate"></i> Thanh toán</div>
+                <div className="btn update" onClick={()=>calculate(0)}><i className="fa-solid fa-arrow-left"></i> Chuyển đến</div>
             </div>
             <div className="service-action">
-                <div className="btn" onClick={payed}>Xac Nhan Thanh toán</div>
+                <div className="btn add" onClick={payed}><i className="fa-solid fa-money-bill"></i> Xác nhận thanh toán</div>
             </div>
         </>
     )

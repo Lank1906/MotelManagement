@@ -16,7 +16,7 @@ export default function RoomCard(props: RoomType) {
   const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
 
   async function handleDelete() {
-    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name)
+    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name+" ?")
     if (!result) return
     DeleteFetch('room/' + props.id,
       (data: any) => {
@@ -46,7 +46,7 @@ export default function RoomCard(props: RoomType) {
       <p>{props.name}</p>
       <p>{props.type_name}</p>
       <p>{props.check_in?props.check_in:"trong"}</p>
-      <div className="btn" onClick={handleDelete}> Xoa</div>
+      <div className="btn delete" onClick={handleDelete}><i className="fa-solid fa-trash"></i></div>
     </div>
   );
 }

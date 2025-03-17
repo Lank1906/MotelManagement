@@ -121,13 +121,13 @@ export default function RoomInfo() {
 
     return (
         <div className="form">
-            <div className="input">
+            <div className="component">
                 <label htmlFor="name">Tên Phòng</label><br />
-                <input type="text" name="name" value={object?.name || ''} onChange={(e) => setObject({ ...object, name: e.target.value })} />
+                <input type="text" className="input" name="name" value={object?.name || ''} onChange={(e) => setObject({ ...object, name: e.target.value })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="type">Loại Phòng</label><br />
-                <select value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.options[e.target.selectedIndex].text, type: parseInt(e.target.value) })}>
+                <select className="input" value={object?.type || 0} onChange={(e) => setObject({ ...object, type_name: e.target.options[e.target.selectedIndex].text, type: parseInt(e.target.value) })}>
                     {
                         types ? types.map((item: TypeType) => {
                             return (<option value={item.id} key={item.id}>{item.name}</option>)
@@ -135,23 +135,23 @@ export default function RoomInfo() {
                     }
                 </select>
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="in">Ngày đến</label><br />
-                <input type="date" name="in"
+                <input type="date" className="input" name="in"
                     value={object?.check_in}
                     onChange={(e) => {
                         setObject({ ...object, check_in: e.target.value || undefined })
                     }} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="limit">Số người giới hạn</label><br />
-                <input type="number" name="limit" value={object?.person_limit} onChange={(e) => setObject({ ...object, person_limit: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="limit" value={object?.person_limit} onChange={(e) => setObject({ ...object, person_limit: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="electric">Số điện</label><br />
-                <input type="number" name="electric" value={object?.electric_number} onChange={(e) => setObject({ ...object, electric_number: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="electric" value={object?.electric_number} onChange={(e) => setObject({ ...object, electric_number: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="electric">Hình ảnh</label><br />
                 <div id="preview">
                     {image && <img src={image} alt="Preview" style={{ width: "100%", height: "auto" }} />}
@@ -172,8 +172,8 @@ export default function RoomInfo() {
                 }} />
             </div>
             <div className="action">
-                <button className="btn" onClick={handleAdd}>Thêm Mới</button>
-                <button className="btn" onClick={handleUpdate}>Sửa đổi</button>
+                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
+                <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
         </div>
     )

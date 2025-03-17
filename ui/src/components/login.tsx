@@ -31,7 +31,7 @@ export default function Login(){
                 <h3>Đăng Nhập</h3>
                 <input className="search" type='text' value={name} onChange={(e)=>setName(e.target.value)}/>
                 <input className="search" type='password' value={pass} onChange={(e)=>setPass(e.target.value)}/>
-                <button className="btn" onClick={HandleLogin}>Đăng Nhập</button>
+                <button className="btn add" onClick={HandleLogin}><i className="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập</button>
                 <p>Bạn chưa có tài khoản rồi ? <a href="https://zaloapp.com/qr/p/nl01nsmzd8dc">Hãy đăng kí ngay</a>  </p>
             </div>
         </div>

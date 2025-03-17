@@ -103,13 +103,13 @@ export default function PersonInfo() {
 
     return (
         <div className="form">
-            <div className="input">
+            <div className="component">
                 <label htmlFor="name">Họ Tên</label><br />
-                <input type="text" name="name" value={object?.renter_name || ''} onChange={(e) => setObject({ ...object, renter_name: e.target.value })} />
+                <input type="text" className="input" name="name" value={object?.renter_name || ''} onChange={(e) => setObject({ ...object, renter_name: e.target.value })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="room_id">Phòng</label><br />
-                <select name="room_id" value={object?.room_id} onChange={(e) => setObject({ ...object, room_id: parseInt(e.target.value), room_name: e.target.options[e.target.selectedIndex].text })}>
+                <select className="input" name="room_id" value={object?.room_id} onChange={(e) => setObject({ ...object, room_id: parseInt(e.target.value), room_name: e.target.options[e.target.selectedIndex].text })}>
                     {
                         rooms ? rooms.map((item: RoomType) => {
                             return (<option key={item.id} value={item.id}>{item.name}</option>)
@@ -117,32 +117,32 @@ export default function PersonInfo() {
                     }
                 </select>
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="cccd">CCCD</label><br />
-                <input type="text" name="cccd" value={object?.cccd} onChange={(e) => setObject({ ...object, cccd: e.target.value })} />
+                <input type="text" className="input" name="cccd" value={object?.cccd} onChange={(e) => setObject({ ...object, cccd: e.target.value })} />
             </div>
-            <div className="input">
-                <label htmlFor="que_quan">Quê</label><br />
-                <input type="text" name="que_quan" value={object?.que_quan} onChange={(e) => setObject({ ...object, que_quan: e.target.value })} />
+            <div className="component">
+                <label htmlFor="que_quan">Quê quán</label><br />
+                <input type="text" className="input" name="que_quan" value={object?.que_quan} onChange={(e) => setObject({ ...object, que_quan: e.target.value })} />
             </div>
-            <div className="input">
-                <label htmlFor="sdt">SDT</label><br />
+            <div className="component">
+                <label htmlFor="sdt">SĐT</label><br />
                 <input type="text" name="sdt" value={object?.sdt} onChange={(e) => setObject({ ...object, sdt: e.target.value })} />
             </div>
-            <div className="input">
+            <div className="block">
                 <label htmlFor="tctv">TCTV</label><br />
-                <input type="radio" name="name" checked={object?.tctv} onChange={(e) => setObject({ ...object, tctv: e.target.checked })} />
+                <input type="checkbox" name="name" checked={object?.tctv} onChange={(e) => setObject({ ...object, tctv: e.target.checked })} />
             </div>
-            <div className="input">
+            <div className="block">
                 <label htmlFor="trang_thai">Trạng thái {object?.trang_thai ? 'Khách chơi' : 'Người thuê'}</label><br />
-                <input type="radio" name="trang_thai" checked={object?.trang_thai} onChange={(e) => setObject({ ...object, trang_thai: e.target.checked })} />
+                <input type="checkbox" name="trang_thai" checked={object?.trang_thai} onChange={(e) => setObject({ ...object, trang_thai: e.target.checked })} />
             </div>
-            <div className="input">
-                <label htmlFor="electric">Mặt trước CCCD</label><br />
+            <div className="component">
+                <label htmlFor="filefront">Mặt trước CCCD</label><br />
                 <div id="preview">
                     {cccdF && <img src={cccdF} alt="Preview" style={{ width: "100%", height: "auto" }} />}
                 </div>
-                <input type="file" name="file" id="fileinput" className="input" onChange={async (e) => {
+                <input type="file" className="input" name="filefront" id="fileinput" onChange={async (e) => {
                     const { files } = e.target;
                     if (files && files.length > 0) {
                         const file = files[0];
@@ -157,12 +157,12 @@ export default function PersonInfo() {
                     }
                 }} />
             </div>
-            <div className="input">
-                <label htmlFor="electric">Mặt sau CCCD</label><br />
+            <div className="component">
+                <label htmlFor="fileafter">Mặt sau CCCD</label><br />
                 <div id="preview">
                     {cccdB && <img src={cccdB} alt="Preview" style={{ width: "100%", height: "auto" }} />}
                 </div>
-                <input type="file" name="file" id="fileinput" className="input" onChange={async (e) => {
+                <input type="file" className="input" name="fileafter" id="fileinput" onChange={async (e) => {
                     const { files } = e.target;
                     if (files && files.length > 0) {
                         const file = files[0];
@@ -178,8 +178,8 @@ export default function PersonInfo() {
                 }} />
             </div>
             <div className="action">
-                <button className="btn" onClick={handleAdd}>Thêm Mới</button>
-                <button className="btn" onClick={handleUpdate}>Sửa đổi</button>
+                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
+                <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
         </div>
     )

@@ -47,7 +47,7 @@ export default function TypeInfo() {
     }
 
     async function handleUpdate() {
-        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loai phòng " + object?.name)
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loại phòng " + object?.name +" ?")
         if (!result)
             return
         PutFetch('type/' + dataContext?.id,
@@ -74,32 +74,32 @@ export default function TypeInfo() {
 
     return (
         <div className="form">
-            <div className="input">
+            <div className="component">
                 <label htmlFor="name">Tên Loại</label><br />
-                <input type="text" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
+                <input type="text" className="input" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="price">Giá phòng</label><br />
-                <input type="number" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="electric">Số điện</label><br />
-                <input type="number" name="electric" value={object?.electric} onChange={(e) => setObject({ ...object, electric: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="electric" value={object?.electric} onChange={(e) => setObject({ ...object, electric: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="water">Số nước</label><br />
-                <input type="text" name="water" value={object?.water} onChange={(e) => setObject({ ...object, water: parseInt(e.target.value) })} />
+                <input type="text" className="input" name="water" value={object?.water} onChange={(e) => setObject({ ...object, water: parseInt(e.target.value) })} />
             </div>
-            <div className="input">
+            <div className="component">
                 <label htmlFor="water-follow">Nước tính theo</label><br />
-                <select name="water-follow" id="" value={object?.water_follow||0} onChange={(e) => setObject({ ...object, water_follow: parseInt(e.target.value) })}>
+                <select name="water-follow" className="input" id="" value={object?.water_follow||0} onChange={(e) => setObject({ ...object, water_follow: parseInt(e.target.value) })}>
                     <option value="0">Người</option>
                     <option value="1">Số</option>
                 </select>
             </div>
             <div className="action">
-                <button className="btn" onClick={handleAdd}>Thêm Mới</button>
-                <button className="btn" onClick={handleUpdate}>Sửa đổi</button>
+                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
+                <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
         </div>
     )

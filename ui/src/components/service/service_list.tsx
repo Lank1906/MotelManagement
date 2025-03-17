@@ -31,7 +31,7 @@ export default function ServiceList() {
     }, [])
 
     async function handleDelete(id: number | undefined, name: string | undefined) {
-        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa loai " + name)
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name+" ?")
         if (!result || id == undefined) return
         DeleteFetch('service/' + id,
             (data: any) => {
@@ -74,7 +74,7 @@ export default function ServiceList() {
                                         <td>{item.name}</td>
                                         <td>{item.follow ? 'Lượt sử dụng' : 'tháng'}</td>
                                         <td>{item.price}</td>
-                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xóa</button></td>
+                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
                                     </tr>
                                 )
                             }) : <Loader />

@@ -23,8 +23,8 @@ export default function Toastify() {
             <div id="toastify" style={{width:width+"px",height:height+"px"}}>
                 <p>{toastifyContext?.message}</p>
                 <div>
-                    <div className="btn" onClick={()=>returnResult(true)}>Ok</div>
-                    <div className="btn" onClick={()=>returnResult(false)}>Huy</div>
+                    <div className="btn delete" onClick={()=>returnResult(true)}> Ok</div>
+                    <div className="btn add" onClick={()=>returnResult(false)}>Hủy</div>
                 </div>
             </div>
         </div>

@@ -66,7 +66,6 @@ export default function TypeList() {
                             <th>Giá/tháng</th>
                             <th>Giá điện</th>
                             <th>Giá Nước</th>
-                            <th>Nước tính theo</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
@@ -78,9 +77,8 @@ export default function TypeList() {
                                         <td>{item.name}</td>
                                         <td>{item.price}</td>
                                         <td>{item.electric}</td>
-                                        <td>{item.water}</td>
-                                        <td>{item.water_follow ? 'nguoi' : 'so'}</td>
-                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}>Xoa</button></td>
+                                        <td>{item.water}{item.water_follow ? '/người' : '/số'}</td>
+                                        <td><button className="btn delete" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
                                     </tr>
                                 )
                             }) : <Loader />

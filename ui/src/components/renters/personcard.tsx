@@ -16,7 +16,7 @@ export default function PersonCard(props: PersonType) {
   const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
 
   async function HandleDelete() {
-    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa " + props.renter_name + " khong ?")
+    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa " + props.renter_name + " không ?")
     if (!result) return
     DeleteFetch('renter/' + props.id,
       (data: any) => {
@@ -46,8 +46,7 @@ export default function PersonCard(props: PersonType) {
       <p>{props.renter_name}</p>
       <p>{props.room_name}</p>
       <p>{props.trang_thai? "Đã đăng kí":"Chưa đăng kí"}</p>
-      <p>tạm trú</p>
-      <div className="btn" onClick={HandleDelete}>chuyen di</div>
+      <div className="btn delete" onClick={HandleDelete}><i className="fa-solid fa-trash"></i></div>
     </div>
   );
 }
