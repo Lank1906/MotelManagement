@@ -1,7 +1,7 @@
 export default function Loader(){
     return(
         <div className="loader">
-            Loading .....
+            <div id="circle"></div>
         </div>
     )
 }
