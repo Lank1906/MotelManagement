@@ -5,6 +5,8 @@ import { AnnounceContext } from "../../../libs/announce_context"
 import { GetFetch, PostFetch, PutFetch } from "../../../libs/fetch"
 import BillType from "../../../interface/bill_type"
 import BillDetailType from "../../../interface/bill_details_type"
+import { LoadingContext } from "../../../libs/loading_context"
+import Loader from "../../base/loader"
 
 export default function RoomCaculate() {
     const [object, setObject] = useState<BillType>()
@@ -15,9 +17,9 @@ export default function RoomCaculate() {
     const context = useContext(MyContext)
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
+    const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
-        console.log(dataContext?.id)
         if(dataContext?.id==-1)
             return
         GetFetch('calculate/' + dataContext?.id,
@@ -29,12 +31,14 @@ export default function RoomCaculate() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     },[dataContext?.id])
 
     function calculate(typez:number) {
         if(water<0||electric<=0||typez <0||typez>2||dataContext?.id==-1)
             return
+        loadingContext?.setStatus(true)
         setType(typez)
         PostFetch("calculate/" + dataContext?.id,
             {
@@ -47,6 +51,7 @@ export default function RoomCaculate() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }
         )
     }
@@ -54,6 +59,7 @@ export default function RoomCaculate() {
     function payed(){
         if(water<0||electric<=0||type <0||type>2||dataContext?.id==-1)
             return
+        loadingContext?.setStatus(true)
         PutFetch("calculate/" + dataContext?.id,
             {
                 water_number: water,
@@ -63,10 +69,12 @@ export default function RoomCaculate() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }, context?.data, (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }
         )
     }
@@ -103,6 +111,7 @@ export default function RoomCaculate() {
             <div className="service-action">
                 <div className="btn add" onClick={payed}><i className="fa-solid fa-money-bill"></i> Xác nhận thanh toán</div>
             </div>
+            {loadingContext?.status?<Loader/>:''}
         </>
     )
 }

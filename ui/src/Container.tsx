@@ -4,6 +4,7 @@ import Info from "./components/base/info";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DataContextProvider } from "./libs/data_handling_context";
+import { LoadingContextProvider } from "./libs/loading_context";
 
 export default function Container() {
   const [leftStatus, setLeftStatus] = useState('');
@@ -25,11 +26,13 @@ export default function Container() {
           <i className="fa-solid fa-angles-right" ></i>
         </div>
         <DataContextProvider>
-          <section id="menu-left" className={leftStatus=='300px'?'menu-left-active':''} style={{ width: leftStatus }}>
+          <section id="menu-left" className={leftStatus == '300px' ? 'menu-left-active' : ''} style={{ width: leftStatus }}>
             <Menu widthE={leftStatus} />
           </section>
-          <Outlet />
-          <Info widthE={rightStatus} />
+          <LoadingContextProvider>
+            <Outlet />
+            <Info widthE={rightStatus} />
+          </LoadingContextProvider>
         </DataContextProvider>
         <div className="arrow2" onClick={() => {
           if (window.innerWidth < 860 && rightStatus == '350px') {

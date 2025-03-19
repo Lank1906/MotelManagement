@@ -10,12 +10,14 @@ import { TypeType } from "../../interface/type_type";
 import { RoomType } from "../../interface/room_type";
 import { PersonType } from "../../interface/person_type";
 import Loader from "../base/loader";
+import { LoadingContext } from "../../libs/loading_context";
 
 export default function ServiceList() {
     const dataContext = useContext(DataContext);
     const toastifyContext = useContext(ToastifyContext)
     const announceContext = useContext(AnnounceContext)
     const context = useContext(MyContext)
+    const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
         GetFetch('service',
@@ -27,12 +29,14 @@ export default function ServiceList() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [])
 
     async function handleDelete(id: number | undefined, name: string | undefined) {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name+" ?")
         if (!result || id == undefined) return
+        loadingContext?.setStatus(true)
         DeleteFetch('service/' + id,
             (data: any) => {
                 let tam = (dataContext?.list as ServiceType[]).filter((item: ServiceType) => item.id !== id)
@@ -40,12 +44,14 @@ export default function ServiceList() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -77,10 +83,11 @@ export default function ServiceList() {
                                         <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
                                     </tr>
                                 )
-                            }) : <Loader />
+                            }) : ''
                         }
                     </tbody>
                 </table>
+                {loadingContext?.status?<Loader/>:''}
             </div>
         </div>
     )

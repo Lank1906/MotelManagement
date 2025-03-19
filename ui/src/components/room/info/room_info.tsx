@@ -8,6 +8,8 @@ import { RoomType } from "../../../interface/room_type";
 import { AnnounceContext } from "../../../libs/announce_context";
 import { ToastifyContext } from "../../../libs/toastify_context";
 import { uploadImage } from "../../../libs/libs";
+import { LoadingContext } from "../../../libs/loading_context";
+import Loader from "../../base/loader";
 
 export default function RoomInfo() {
     const [image, setImage] = useState<string | null>(null)
@@ -18,6 +20,7 @@ export default function RoomInfo() {
     const context = useContext(MyContext)
     const announceContext = useContext(AnnounceContext)
     const toastifyContext = useContext(ToastifyContext)
+    const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
         if (dataContext?.id == -1)
@@ -25,12 +28,14 @@ export default function RoomInfo() {
         GetFetch(dataContext?.type + '/' + dataContext?.id,
             (data: RoomDetailType[]) => {
                 setObject(data[0])
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [dataContext?.id])
 
@@ -48,6 +53,8 @@ export default function RoomInfo() {
     }, [])
 
     async function handleAdd() {
+        loadingContext?.setStatus(true)
+
         let object2 = { ...object }
         delete object2.person_limit;
         delete object2.electric_number;
@@ -68,12 +75,14 @@ export default function RoomInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             });
     }
 
@@ -81,6 +90,7 @@ export default function RoomInfo() {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa phòng " + object?.name)
         if (!result)
             return
+        loadingContext?.setStatus(true)
         PutFetch('room/' + object?.id,
             object,
             (data: any) => {
@@ -94,12 +104,14 @@ export default function RoomInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -175,6 +187,7 @@ export default function RoomInfo() {
                 <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
                 <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
+            {loadingContext?.status?<Loader/>:''}
         </div>
     )
 }

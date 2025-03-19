@@ -5,10 +5,13 @@ import { DataContext } from "../../libs/data_handling_context"
 import { AnnounceContext } from "../../libs/announce_context"
 import { ToastifyContext } from "../../libs/toastify_context"
 import { GetFetch, PostFetch, PutFetch } from "../../libs/fetch"
+import { LoadingContext } from "../../libs/loading_context"
+import Loader from "../base/loader"
 
 export default function ServiceInfo() {
     const [object, setObject] = useState<ServiceType | undefined>(undefined)
     const context = useContext(MyContext)
+    const loadingContext=useContext(LoadingContext)
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
     const toastifyContext = useContext(ToastifyContext)
@@ -19,6 +22,7 @@ export default function ServiceInfo() {
         GetFetch('service/' + dataContext?.id,
             (data: ServiceType[]) => {
                 setObject(data[0])
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
@@ -29,6 +33,7 @@ export default function ServiceInfo() {
     }, [dataContext?.id])
 
     function handleAdd() {
+        loadingContext?.setStatus(true)
         PostFetch('service',
             object,
             (data: any) => {
@@ -36,16 +41,19 @@ export default function ServiceInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
     async function handleUpdate() {
+        loadingContext?.setStatus(true)
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa dịch vụ " + object?.name+" ?")
         if (!result)
             return
@@ -62,12 +70,14 @@ export default function ServiceInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -92,6 +102,7 @@ export default function ServiceInfo() {
                 <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
                 <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
+            {loadingContext?.status?<Loader/>:''}
         </div>
     )
 }

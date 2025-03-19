@@ -9,11 +9,13 @@ import { PersonType } from "../../../interface/person_type";
 import Loader from "../../base/loader";
 import { TypeType } from "../../../interface/type_type";
 import { AnnounceContext } from "../../../libs/announce_context";
+import { LoadingContext } from "../../../libs/loading_context";
 
 export default function RoomList() {
   const context = useContext(MyContext)
   const dataContext = useContext(DataContext)
   const announceContext = useContext(AnnounceContext)
+  const loadingContext=useContext(LoadingContext)
   
   useEffect(() => {
     GetFetch('room',
@@ -25,6 +27,7 @@ export default function RoomList() {
         announceContext?.setMessage(data.message)
         announceContext?.setType("danger")
         announceContext?.setClose(true)
+        loadingContext?.setStatus(false)
       })
   }, [])
 
@@ -37,7 +40,7 @@ export default function RoomList() {
         <div className="like-search"></div>
       </div>
       <div className="body-content">
-        {isRoomArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: RoomType) => {
+        {isRoomArray(dataContext?.list) && dataContext?.list && !loadingContext?.status ? dataContext.list.map((item: RoomType) => {
           return (
             <div onClick={() => { dataContext?.setData(item.id, 'room') }} key={item.id} style={{ height: "fit-content" }}>
               <RoomCard {...item} />

@@ -10,12 +10,14 @@ import { RoomType } from "../../interface/room_type";
 import { ToastifyContext } from "../../libs/toastify_context";
 import { AnnounceContext } from "../../libs/announce_context";
 import ServiceType from "../../interface/service_type";
+import { LoadingContext } from "../../libs/loading_context";
 
 export default function TypeList() {
     const dataContext = useContext(DataContext);
     const toastifyContext = useContext(ToastifyContext)
     const announceContext = useContext(AnnounceContext)
     const context = useContext(MyContext)
+    const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
         GetFetch('type',
@@ -27,6 +29,7 @@ export default function TypeList() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [])
 
@@ -41,12 +44,14 @@ export default function TypeList() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -81,10 +86,11 @@ export default function TypeList() {
                                         <td><button className="btn delete" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
                                     </tr>
                                 )
-                            }) : <Loader />
+                            }) : ''
                         }
                     </tbody>
                 </table>
+                {loadingContext?.status?<Loader/>:''}
             </div>
         </div>
     )

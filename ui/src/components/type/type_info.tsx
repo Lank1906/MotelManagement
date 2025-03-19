@@ -5,12 +5,15 @@ import { TypeType } from "../../interface/type_type"
 import { MyContext } from "../../libs/context"
 import { AnnounceContext } from "../../libs/announce_context"
 import { ToastifyContext } from "../../libs/toastify_context"
+import { LoadingContext } from "../../libs/loading_context"
+import Loader from "../base/loader"
 
 export default function TypeInfo() {
     const context = useContext(MyContext)
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
     const toastifyContext = useContext(ToastifyContext)
+    const loadingContext=useContext(LoadingContext)
     const [object, setObject] = useState<TypeType | undefined>(undefined)
 
     useEffect(() => {
@@ -25,11 +28,12 @@ export default function TypeInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [dataContext?.id])
 
     function handleAdd() {
-        console.log(object)
+        loadingContext?.setStatus(true)
         PostFetch('type',
             object,
             (data: any) => {
@@ -37,12 +41,14 @@ export default function TypeInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -50,6 +56,7 @@ export default function TypeInfo() {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loại phòng " + object?.name +" ?")
         if (!result)
             return
+        loadingContext?.setStatus(true)
         PutFetch('type/' + dataContext?.id,
             object,
             (data: any) => {
@@ -63,12 +70,14 @@ export default function TypeInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -101,6 +110,7 @@ export default function TypeInfo() {
                 <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
                 <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
+            {loadingContext?.status?<Loader/>:''}
         </div>
     )
 }

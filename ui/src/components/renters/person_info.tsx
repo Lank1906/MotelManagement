@@ -7,11 +7,14 @@ import { DataContext } from "../../libs/data_handling_context";
 import { GetFetch, PostFetch, PutFetch } from "../../libs/fetch";
 import { RoomType } from "../../interface/room_type";
 import { PersonType } from "../../interface/person_type";
+import { LoadingContext } from "../../libs/loading_context";
+import Loader from "../base/loader";
 
 export default function PersonInfo() {
     const announceContext = useContext(AnnounceContext)
     const dataContext = useContext(DataContext)
     const context = useContext(MyContext)
+    const loadingContext=useContext(LoadingContext)
 
     const [cccdF, setCCCDF] = useState<string | null>(null)
     const [cccdB, setCCCDB] = useState<string | null>(null)
@@ -30,6 +33,7 @@ export default function PersonInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [dataContext?.id])
 
@@ -48,6 +52,7 @@ export default function PersonInfo() {
     }, [])
 
     function handleAdd() {
+        loadingContext?.setStatus(true);
         let object2 = { ...object }
 
         delete object2.room_name;
@@ -69,16 +74,19 @@ export default function PersonInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             });
     }
 
     function handleUpdate() {
+        loadingContext?.setStatus(true)
         PutFetch('renter/' + object?.id,
             object,
             (data: any) => {
@@ -92,12 +100,14 @@ export default function PersonInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -181,6 +191,7 @@ export default function PersonInfo() {
                 <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
                 <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
             </div>
+            {loadingContext?.status?<Loader/>:''}
         </div>
     )
 }

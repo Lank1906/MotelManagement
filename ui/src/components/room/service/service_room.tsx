@@ -6,6 +6,8 @@ import RoomServiceType from "../../../interface/room_service_type"
 import { DataContext } from "../../../libs/data_handling_context"
 import { AnnounceContext } from "../../../libs/announce_context"
 import { ToastifyContext } from "../../../libs/toastify_context"
+import { LoadingContext } from "../../../libs/loading_context"
+import Loader from "../../base/loader"
 
 export default function RoomService() {
     const [list, setList] = useState<ServiceType[] | undefined>(undefined)
@@ -16,6 +18,7 @@ export default function RoomService() {
     const dataContext = useContext(DataContext)
     const announceContext = useContext(AnnounceContext)
     const toastifyContext = useContext(ToastifyContext)
+    const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
         GetFetch('service',
@@ -39,14 +42,16 @@ export default function RoomService() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }
         )
     }, [dataContext?.id])
 
     async function handleAdd() {
-        const result = await toastifyContext?.confirmResult("Ban co chac muon them dich vu nay ko ?")
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn thêm dịch vụ này không ?")
         if (!result)
             return
+        loadingContext?.setStatus(true)
         const newObject: RoomServiceType = {
             id: object?.id as number,
             room_id: object?.room_id as number,
@@ -76,11 +81,13 @@ export default function RoomService() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }, context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             }
         )
     }
@@ -89,6 +96,7 @@ export default function RoomService() {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ này không ?")
         if (!result || !id)
             return
+        loadingContext?.setStatus(true)
         DeleteFetch('room-service/' + id,
             (data: any) => {
                 let tam = (list2 as RoomServiceType[]).filter(
@@ -102,12 +110,14 @@ export default function RoomService() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }
 
@@ -130,10 +140,11 @@ export default function RoomService() {
                 <select className="input" value={object?.service_id || (list && list[0]?.id)} onChange={(e) => setObject({ ...object, room_id: dataContext?.id, service_id: parseInt(e.target.value),name:e.target.options[e.target.selectedIndex].text.split(' =>')[0]})}>
                     {list ? list.map(
                         (item: ServiceType) => <option value={item?.id} key={item.id}>{item.name + ' => ' + item.price + ' / ' + (item.follow ? 'Lần' : 'Tháng')}</option>
-                    ) : 'Đang tải'}
+                    ) : <Loader/>}
                 </select>
                 <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
             </div>
+            {loadingContext?.status?<Loader/>:''}       
         </>
     )
 }
