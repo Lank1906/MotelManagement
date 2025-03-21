@@ -19,6 +19,7 @@ export default function TypeInfo() {
     useEffect(() => {
         if (dataContext?.id == -1)
             return
+        loadingContext?.setStatus(true)
         GetFetch('type/' + dataContext?.id,
             (data: TypeType[]) => {
                 setObject(data[0])
@@ -88,8 +89,12 @@ export default function TypeInfo() {
                 <input type="text" className="input" name="name" value={object?.name} onChange={(e) => setObject({ ...object, name: e.target.value })} />
             </div>
             <div className="component">
-                <label htmlFor="price">Giá phòng</label><br />
-                <input type="number" className="input" name="price" value={object?.price} onChange={(e) => setObject({ ...object, price: parseInt(e.target.value) })} />
+                <label htmlFor="price">Giá phòng/tháng</label><br />
+                <input type="number" className="input" name="price" value={object?.priceFM} onChange={(e) => setObject({ ...object, priceFM: parseInt(e.target.value) })} />
+            </div>
+            <div className="component">
+                <label htmlFor="price">Giá phòng/ngày</label><br />
+                <input type="number" className="input" name="price" value={object?.priceFD} onChange={(e) => setObject({ ...object, priceFD: parseInt(e.target.value) })} />
             </div>
             <div className="component">
                 <label htmlFor="electric">Số điện</label><br />

@@ -20,6 +20,7 @@ export default function TypeList() {
     const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
+        loadingContext?.setStatus(true)
         GetFetch('type',
             (data: TypeType[]) => {
                 dataContext?.setList(data)
@@ -80,7 +81,7 @@ export default function TypeList() {
                                 return (
                                     <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'type')}>
                                         <td>{item.name}</td>
-                                        <td>{item.price}</td>
+                                        <td>{item.priceFM}</td>
                                         <td>{item.electric}</td>
                                         <td>{item.water}{item.water_follow ? '/người' : '/số'}</td>
                                         <td><button className="btn delete" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>

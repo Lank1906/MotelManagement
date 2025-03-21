@@ -18,9 +18,11 @@ export default function RoomList() {
   const loadingContext=useContext(LoadingContext)
   
   useEffect(() => {
+    loadingContext?.setStatus(true)
     GetFetch('room',
       (data: RoomType[]) => {
         dataContext?.setList(data)
+        loadingContext?.setStatus(false)
       },
       context?.data,
       (data: any) => {

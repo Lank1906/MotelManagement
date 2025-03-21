@@ -25,6 +25,7 @@ export default function RoomInfo() {
     useEffect(() => {
         if (dataContext?.id == -1)
             return
+        loadingContext?.setStatus(true)
         GetFetch(dataContext?.type + '/' + dataContext?.id,
             (data: RoomDetailType[]) => {
                 setObject(data[0])

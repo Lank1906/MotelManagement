@@ -79,14 +79,14 @@ body {
 }
 
 .loader{
-    width: 100%;
-    height:100%;
     display:flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.12);
-    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.63);
+    z-index: 10;
     border-radius: 12px;
+    position: absolute;
+    inset: 0;
   }
 
   .loader>#circle{
@@ -94,7 +94,7 @@ body {
     width: 20%;
     aspect-ratio: 1;
     border-radius: 50%;
-    border: #0d6efd 4px solid;
+    border: #839cc2 4px solid;
     border-top: none;
     animation: identifierRotate .5s cubic-bezier(0.68,1,0.85, 0.29) infinite;
   }

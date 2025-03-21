@@ -24,9 +24,11 @@ export default function PersonInfo() {
     useEffect(() => {
         if (dataContext?.id == -1)
             return
+        loadingContext?.setStatus(true)
         GetFetch(dataContext?.type + '/' + dataContext?.id,
             (data: PersonDetailType[]) => {
                 setObject(data[0])
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {

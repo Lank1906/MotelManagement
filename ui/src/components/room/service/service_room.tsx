@@ -34,6 +34,7 @@ export default function RoomService() {
     useEffect(() => {
         if (dataContext?.id === -1)
             return
+        loadingContext?.setStatus(true)
         GetFetch('room-service/' + dataContext?.id,
             (data: RoomServiceType[]) => setList2(data),
             context?.data,

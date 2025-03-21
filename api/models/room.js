@@ -12,7 +12,7 @@ async function GetShortList(jsonData){
 
 async function GetList(jsonEqual,jsonLike){
     try{
-        jsonEqual.is_active=1
+        jsonEqual["rooms.is_active"]=1
         const result=await GetJoinQuery('rooms',['types'],['rooms.id','rooms.name','types.name as type_name','check_in','img_room'],['rooms.type=types.id'],jsonEqual,jsonLike)
         return result;
     }catch (err){
@@ -22,7 +22,7 @@ async function GetList(jsonEqual,jsonLike){
 
 async function GetOne(jsonData){
     try{
-        jsonData.is_active=1
+        jsonData["rooms.is_active"]=1
         const result=await GetJoinQuery('rooms',['types'],['rooms.id','rooms.name','types.name as type_name','person_limit','electric_number','check_in','img_room','type'],['rooms.type=types.id'],jsonData,{})
         return result;
     }catch (err){

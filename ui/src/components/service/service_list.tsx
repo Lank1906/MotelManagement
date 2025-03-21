@@ -20,9 +20,11 @@ export default function ServiceList() {
     const loadingContext=useContext(LoadingContext)
 
     useEffect(() => {
+        loadingContext?.setStatus(true)
         GetFetch('service',
             (data: any) => {
                 dataContext?.setList(data)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {

@@ -19,6 +19,7 @@ export default function ServiceInfo() {
     useEffect(() => {
         if (dataContext?.id === -1)
             return
+        loadingContext?.setStatus(true)
         GetFetch('service/' + dataContext?.id,
             (data: ServiceType[]) => {
                 setObject(data[0])
@@ -29,6 +30,7 @@ export default function ServiceInfo() {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
             })
     }, [dataContext?.id])
 

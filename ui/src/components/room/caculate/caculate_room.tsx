@@ -22,6 +22,7 @@ export default function RoomCaculate() {
     useEffect(() => {
         if(dataContext?.id==-1)
             return
+        loadingContext?.setStatus(false)
         GetFetch('calculate/' + dataContext?.id,
             (data: BillType) => {
                 setObject(data)
