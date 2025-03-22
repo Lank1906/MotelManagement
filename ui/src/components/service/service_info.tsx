@@ -40,6 +40,7 @@ export default function ServiceInfo() {
             object,
             (data: any) => {
                 object ? dataContext?.setList([...dataContext.list as ServiceType[], {...object,id:data.id}]) : ''
+                setObject({...object,id:data.id})
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)

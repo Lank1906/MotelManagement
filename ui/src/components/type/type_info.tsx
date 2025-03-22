@@ -23,6 +23,7 @@ export default function TypeInfo() {
         GetFetch('type/' + dataContext?.id,
             (data: TypeType[]) => {
                 setObject(data[0])
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {
@@ -39,6 +40,7 @@ export default function TypeInfo() {
             object,
             (data: any) => {
                 object ? dataContext?.setList([...dataContext.list as TypeType[], {...object,id:data.id}]) : ''
+                setObject({...object,id:data.id})
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
                 announceContext?.setClose(true)
@@ -55,7 +57,7 @@ export default function TypeInfo() {
 
     async function handleUpdate() {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa loại phòng " + object?.name +" ?")
-        if (!result)
+        if (result)
             return
         loadingContext?.setStatus(true)
         PutFetch('type/' + dataContext?.id,
@@ -90,11 +92,11 @@ export default function TypeInfo() {
             </div>
             <div className="component">
                 <label htmlFor="price">Giá phòng/tháng</label><br />
-                <input type="number" className="input" name="price" value={object?.priceFM} onChange={(e) => setObject({ ...object, priceFM: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="price" value={object?.priceFM} onChange={(e) => setObject({ ...object, priceFM: parseInt(e.target.value),priceFD:Math.round(parseInt(e.target.value)/30) })} />
             </div>
             <div className="component">
                 <label htmlFor="price">Giá phòng/ngày</label><br />
-                <input type="number" className="input" name="price" value={object?.priceFD} onChange={(e) => setObject({ ...object, priceFD: parseInt(e.target.value) })} />
+                <input type="number" className="input" name="price" value={object?.priceFD} />
             </div>
             <div className="component">
                 <label htmlFor="electric">Số điện</label><br />

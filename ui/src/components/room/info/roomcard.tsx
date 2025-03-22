@@ -48,10 +48,9 @@ export default function RoomCard(props: RoomType) {
   return (
     <div className="card">
       <img src={props.img_room? publicUrl+ props.img_room:"/images/home.png"} alt="home-demo" />
-      <p>{props.name}</p>
-      <p>{props.type_name}</p>
-      <p>{props.check_in?props.check_in:"trong"}</p>
-      <div className="btn delete" onClick={handleDelete}><i className="fa-solid fa-trash"></i></div>
+      <p>{props.name} - {props.type_name}</p>
+      <p>{props.check_in?props.check_in:"phòng trống"}</p>
+      <div className="btn delete" onClick={handleDelete}><i className="fa-solid fa-trash"></i> Xóa Phòng</div>
     </div>
   );
 }

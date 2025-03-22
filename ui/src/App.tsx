@@ -15,6 +15,7 @@ import { ToastifyContext } from './libs/toastify_context';
 import TypeList from './components/type/type_list';
 import Dashboard from './components/dashboard/dashboard';
 import ServiceList from './components/service/service_list';
+import Content from './components/base/content';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)
@@ -24,11 +25,11 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} index />
                 <Route path="/home" element={<Container />}>
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="type" element={<TypeList />}/>
-                    <Route path="service" element={<ServiceList/>}/>
-                    <Route path="room" element={<RoomList />} />
-                    <Route path="renter" element={<PersonList />} />
+                    <Route path="dashboard" element={<Content><Dashboard /></Content>} />
+                    <Route path="type" element={<Content><TypeList /></Content>}/>
+                    <Route path="service" element={<Content><ServiceList/></Content>}/>
+                    <Route path="room" element={<Content><RoomList /></Content>} />
+                    <Route path="renter" element={<Content><PersonList /></Content>} />
                     <Route path="setting" element={<NotFound />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

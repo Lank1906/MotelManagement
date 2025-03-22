@@ -32,19 +32,6 @@ header {
   border: 1px solid black;
 }
 
-table{
-  width:100%;
-}
-table tr:hover td{
-  background-color: #bdbdbd;
-  
-}
-table tr td{
-  text-align: center;
-  cursor: pointer;
-  padding:8px;
-}
-
 .logo {
   color: blue;
   font-weight: 800;
@@ -195,6 +182,13 @@ table tr td{
   flex: 1;
   height: 40px;
   border-radius: 24px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+}
+.like-search-content{
+  animation: marquee 8s linear infinite;
 }
 
 .body-content {
@@ -210,7 +204,7 @@ table tr td{
 
 .card {
   width: 200px;
-  height: 260px;
+  height: fit-content;
   background-color: #dbdbdb;
   border-radius: 40px;
   display: flex;
@@ -218,8 +212,9 @@ table tr td{
   justify-content: flex-start;
   align-items: center;
   gap: 4px;
-  padding: 4px;
+  padding: 18px;
   position: relative;
+  cursor: pointer;
 }
 
 .card>img {
@@ -533,4 +528,13 @@ table tr td{
 .display-grid{
   display: grid;
   grid-template-columns: 2fr 1fr;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
 }

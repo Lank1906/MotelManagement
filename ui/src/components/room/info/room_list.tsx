@@ -15,8 +15,8 @@ export default function RoomList() {
   const context = useContext(MyContext)
   const dataContext = useContext(DataContext)
   const announceContext = useContext(AnnounceContext)
-  const loadingContext=useContext(LoadingContext)
-  
+  const loadingContext = useContext(LoadingContext)
+
   useEffect(() => {
     loadingContext?.setStatus(true)
     GetFetch('room',
@@ -36,20 +36,14 @@ export default function RoomList() {
   const isRoomArray = (arr: TypeType[] | RoomType[] | PersonType[] | undefined): arr is RoomType[] => { return true }
 
   return (
-    <div className="content">
-      <div className="top-content">
-        <Search />
-        <div className="like-search"></div>
-      </div>
-      <div className="body-content">
-        {isRoomArray(dataContext?.list) && dataContext?.list && !loadingContext?.status ? dataContext.list.map((item: RoomType) => {
-          return (
-            <div onClick={() => { dataContext?.setData(item.id, 'room') }} key={item.id} style={{ height: "fit-content" }}>
-              <RoomCard {...item} />
-            </div>
-          )
-        }) : <Loader />}
-      </div>
+    <div className="body-content">
+      {isRoomArray(dataContext?.list) && dataContext?.list && !loadingContext?.status ? dataContext.list.map((item: RoomType) => {
+        return (
+          <div onClick={() => { dataContext?.setData(item.id, 'room') }} key={item.id} style={{ height: "fit-content" }}>
+            <RoomCard {...item} />
+          </div>
+        )
+      }) : <Loader />}
     </div>
   );
 }

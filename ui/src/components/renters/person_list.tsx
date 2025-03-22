@@ -15,7 +15,7 @@ export default function PersonList() {
     const context = useContext(MyContext);
     const dataContext = useContext(DataContext);
     const announceContext = useContext(AnnounceContext);
-    const loadingContext=useContext(LoadingContext);
+    const loadingContext = useContext(LoadingContext);
 
     useEffect(() => {
         GetFetch('renter',
@@ -33,19 +33,13 @@ export default function PersonList() {
     const isPersonArray = (arr: TypeType[] | RoomType[] | PersonType[] | undefined): arr is PersonType[] => { return true }
 
     return (
-        <div className="content">
-            <div className="top-content">
-                <Search />
-                <div className="like-search"></div>
-            </div>
-            <div className="body-content">
-                {isPersonArray(dataContext?.list) && dataContext?.list && !loadingContext?.status ? dataContext.list.map((item: PersonType) => {
-                    return (
-                        <div onClick={() => { dataContext?.setData(item.id, 'renter') }} key={item.id}>
-                            <PersonCard {...item} /></div>
-                    )
-                }) : <Loader/>}
-            </div>
+        <div className="body-content">
+            {isPersonArray(dataContext?.list) && dataContext?.list && !loadingContext?.status ? dataContext.list.map((item: PersonType) => {
+                return (
+                    <div onClick={() => { dataContext?.setData(item.id, 'renter') }} key={item.id}>
+                        <PersonCard {...item} /></div>
+                )
+            }) : <Loader />}
         </div>
     )
 }

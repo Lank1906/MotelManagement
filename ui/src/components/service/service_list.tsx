@@ -17,7 +17,7 @@ export default function ServiceList() {
     const toastifyContext = useContext(ToastifyContext)
     const announceContext = useContext(AnnounceContext)
     const context = useContext(MyContext)
-    const loadingContext=useContext(LoadingContext)
+    const loadingContext = useContext(LoadingContext)
 
     useEffect(() => {
         loadingContext?.setStatus(true)
@@ -36,7 +36,7 @@ export default function ServiceList() {
     }, [])
 
     async function handleDelete(id: number | undefined, name: string | undefined) {
-        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name+" ?")
+        const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name + " ?")
         if (!result || id == undefined) return
         loadingContext?.setStatus(true)
         DeleteFetch('service/' + id,
@@ -59,38 +59,32 @@ export default function ServiceList() {
 
     const isServiceArray = (arr: ServiceType[] | TypeType[] | RoomType[] | PersonType[] | undefined): arr is ServiceType[] => { return true };
     return (
-        <div className="content">
-            <div className="top-content">
-                <Search />
-                <div className="like-search"></div>
-            </div>
-            <div className="body-content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tên dịch vụ</th>
-                            <th>Tính theo</th>
-                            <th>Giá</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            isServiceArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: ServiceType) => {
-                                return (
-                                    <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'service')}>
-                                        <td>{item.name}</td>
-                                        <td>{item.follow ? 'Lượt sử dụng' : 'tháng'}</td>
-                                        <td>{item.price}</td>
-                                        <td><button className="btn" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
-                                    </tr>
-                                )
-                            }) : ''
-                        }
-                    </tbody>
-                </table>
-                {loadingContext?.status?<Loader/>:''}
-            </div>
+        <div className="body-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên dịch vụ</th>
+                        <th>Tính theo</th>
+                        <th>Giá</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        isServiceArray(dataContext?.list) && dataContext?.list ? dataContext.list.map((item: ServiceType) => {
+                            return (
+                                <tr key={item.id} onClick={() => dataContext.setData(item.id || -1, 'service')}>
+                                    <td>{item.name}</td>
+                                    <td>{item.follow ? 'Lượt sử dụng' : 'tháng'}</td>
+                                    <td>{item.price}</td>
+                                    <td><button className="btn delete" onClick={() => handleDelete(item.id, item.name)}><i className="fa-solid fa-trash"></i></button></td>
+                                </tr>
+                            )
+                        }) : ''
+                    }
+                </tbody>
+            </table>
+            {loadingContext?.status ? <Loader /> : ''}
         </div>
     )
 }
