@@ -106,15 +106,15 @@ insert into users(username,password,email,phone,per) VALUES ('admin','admin','ad
 
 insert into types(user_id,name,priceFM,priceFD,electric,water,water_follow) values(1,'T1','1200',50,'3.5',50,0),(1,'T2','1000',null,'3.5',50,0);
 
-insert into rooms(user_id,name,type,person_limit,electric_number,water_number,check_in) values (1,'P1',1,3,10631,3,'2024-1-15'),
-																								(1,'P2',1,3,9742,3,'2024-1-30'),
-                                                                                                (1,'P3',1,3,8422,3,'2024-1-9'),
-                                                                                                (1,'P4',1,3,8478,3,'2024-1-11'),
-                                                                                                (1,'P5',1,3,2116,3,'2024-1-27'),
-                                                                                                (1,'P6',2,3,1106,3,'2024-1-13'),
-                                                                                                (1,'P7',2,3,993,3,'2024-1-8'),
-                                                                                                (1,'P8',2,3,2637,3,'2024-1-26'),
-                                                                                                (1,'P9',2,3,1419,3,'2024-1-21');
+insert into rooms(user_id,name,type,person_limit,electric_number,water_number,check_in,bill_at) values (1,'P1',1,3,10631,3,'2024-1-15','2024-1-15'),
+																								(1,'P2',1,3,9742,3,'2024-1-30','2024-1-30'),
+                                                                                                (1,'P3',1,3,8422,3,'2024-1-9','2024-1-9'),
+                                                                                                (1,'P4',1,3,8478,3,'2024-1-11','2024-1-11'),
+                                                                                                (1,'P5',1,3,2116,3,'2024-1-27','2024-1-27'),
+                                                                                                (1,'P6',2,3,1106,3,'2024-1-13','2024-1-13'),
+                                                                                                (1,'P7',2,3,993,3,'2024-1-8','2024-1-8'),
+                                                                                                (1,'P8',2,3,2637,3,'2024-1-26','2024-1-26'),
+                                                                                                (1,'P9',2,3,1419,3,'2024-1-21','2024-1-21');
 
 insert into renters(user_id,room_id,name,cccd,que_quan,sdt,tctv,trang_thai) values (1,1,'Lu van Cong','033203302930','hy-vl-nd','0348765478',1,0),
 																					(1,2,'Dinh thi Hoan','033203302931','hy-vl-nd','0348766478',1,0),

@@ -3,7 +3,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 async function GetShortList(jsonData){
     try{
         jsonData.is_active=1
-        const result=await GetQuery('rooms',['rooms.id','name'],jsonData,{})
+        const result=await GetQuery('rooms',['rooms.id','name','bill_at'],jsonData,{})
         return result;
     }catch (err){
         return err;

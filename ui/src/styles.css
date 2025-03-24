@@ -112,7 +112,7 @@ header {
   cursor: pointer;
   position: relative;
 }
-#menu-left>.menu .btn::before{
+#menu-left>.menu .btn::before,.active::after{
   content: '';
   width:0%;
   position: absolute;
@@ -123,7 +123,7 @@ header {
   left:-4px;
   transition: all .3s ease-in-out;
 }
-#menu-left>.menu .btn:hover::before{
+#menu-left>.menu .btn:hover::before,.active::after{
   width:90%;
 }
 
