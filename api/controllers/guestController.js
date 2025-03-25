@@ -18,19 +18,15 @@ async function SignUpCon(req,res){
 async function LoginCon(req,res){
     console.log(req.body);
     const result=await Login(req.body);
-    
-    if(result>=1){
-        const token = jwt.sign({ id:result,username:req.body.username }, 'Lank1906', { expiresIn: '6h' });
+    if(typeof result=='object'){
+        const token = jwt.sign({ id:result.id,username:req.body.username,per:result.per }, 'Lank1906', { expiresIn: '6h' });
+        delete result.id;
         console.log("Login success!")
-        return res.status(200).json({ "message":"Đăng nhập thành công !","token":token });
-    }
-    else if(result==-1){
-        console.log("Password error!")
-        return res.status(401).json({ "message":"Mật khẩu bị sai vui lòng kiểm tra lại mật khẩu !"});
+        return res.status(200).json({ "message":"Đăng nhập thành công !","token":token,"info":result });
     }
     else{
-        console.log("Infomation error!")
-        return res.status(401).json({"message":"Tài khoản không tồn tại !"})
+        console.log("Password error!")
+        return res.status(401).json({ "message":"Tài khoản hoặc mật khẩu không đúng !"});
     }
 }
 
