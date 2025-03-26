@@ -18,7 +18,7 @@ async function Login(jsonData){
         jsonData.is_active=1;
         delete jsonData.password;
         result= await GetQuery('users',['id','username','password','per'],jsonData,{});
-        if(result.length==1 && await bcrypt.compare(result[0].password,password)){
+        if(result.length==1 && await bcrypt.compare(password,result[0].password)){
             result=result[0];
             delete result.password
             return result;

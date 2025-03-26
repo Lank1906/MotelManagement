@@ -223,6 +223,14 @@ header {
   display: block;
 }
 
+.card-tag{
+  position: absolute;
+  right: -14px;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: medium;
+}
+
 .mask-card {
   position: absolute;
   right: -12px;

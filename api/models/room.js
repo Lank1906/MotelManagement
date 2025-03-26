@@ -3,7 +3,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 async function GetShortList(jsonData){
     try{
         jsonData.is_active=1
-        const result=await GetQuery('rooms',['rooms.id','name','bill_at'],jsonData,{})
+        const result=await GetQuery('rooms',['rooms.id','name'],jsonData,{})
         return result;
     }catch (err){
         return err;
@@ -13,7 +13,7 @@ async function GetShortList(jsonData){
 async function GetList(jsonEqual,jsonLike){
     try{
         jsonEqual["rooms.is_active"]=1
-        const result=await GetJoinQuery('rooms',['types'],['rooms.id','rooms.name','types.name as type_name','check_in','img_room'],['rooms.type=types.id'],jsonEqual,jsonLike)
+        const result=await GetJoinQuery('rooms',['types'],['rooms.id','rooms.name','types.name as type_name','check_in','img_room','bill_at'],['rooms.type=types.id'],jsonEqual,jsonLike)
         return result;
     }catch (err){
         return err;

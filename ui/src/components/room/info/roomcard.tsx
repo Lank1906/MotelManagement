@@ -13,12 +13,27 @@ export default function RoomCard(props: RoomType) {
   const dataContext = useContext(DataContext)
   const announceContext = useContext(AnnounceContext)
   const toastifyContext = useContext(ToastifyContext);
-  const loadingContext=useContext(LoadingContext)
+  const loadingContext = useContext(LoadingContext)
 
-  const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
+  const publicUrl = "https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
+
+  function getDaysLeftUntilOneMonthAfterBillAt(billAt: Date): number {
+    const oneMonthLater = new Date(billAt);
+    oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+  
+    const today = new Date();
+    // Đặt giờ về 0 để tránh sai lệch do giờ
+    today.setHours(0, 0, 0, 0);
+    oneMonthLater.setHours(0, 0, 0, 0);
+  
+    const diffTime = oneMonthLater.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+    return diffDays;
+  }
 
   async function handleDelete() {
-    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name+" ?")
+    const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa phòng " + props.name + " ?")
     if (!result) return
     loadingContext?.setStatus(true)
     DeleteFetch('room/' + props.id,
@@ -45,12 +60,14 @@ export default function RoomCard(props: RoomType) {
       })
   }
 
+  const dayleft=props.bill_at ? getDaysLeftUntilOneMonthAfterBillAt(props.bill_at): 0
+
   return (
     <div className="card">
-      <img src={props.img_room? publicUrl+ props.img_room:"/images/home.png"} alt="home-demo" />
-      <p>{props.bill_at ? props.bill_at.toString() : 'Phòng trống'}</p>
+      <img src={props.img_room ? publicUrl + props.img_room : "/images/home.png"} alt="home-demo" />
+      <div className="card-tag" style={{background:dayleft > 0 ? "lightblue" : dayleft < 0 ? "darkorange" : ""}}>{dayleft > 0 ? "Còn " + dayleft + " ngày" : dayleft < 0 ? "Trễ " + Math.abs(dayleft) + " ngày" : ""}</div>
       <p>{props.name} - {props.type_name}</p>
-      <p>{props.check_in?props.check_in:"phòng trống"}</p>
+      <p>{props.check_in ? props.check_in : "Phòng trống"}</p>
       <div className="btn delete" onClick={handleDelete}><i className="fa-solid fa-trash"></i> Xóa Phòng</div>
     </div>
   );

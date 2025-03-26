@@ -101,20 +101,48 @@ CREATE TABLE bill_rooms (
 );
 
 
-insert into users(username,password,email,phone) VALUES ('lank','lank','lank@gmail.com','0349852986');
-insert into users(username,password,email,phone,per) VALUES ('admin','admin','admin@gmail.com','0349852986',0);
+insert into users(username,password,email,phone) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986');
+insert into users(username,password,email,phone,per) VALUES ('admin','$2b$12$rUsjgfVR.SIf2XEjDIy6Zu.D5OKe5AIvYuHXBLM6MIrct8RMzMrSa','admin@gmail.com','0349852986',0);
 
 insert into types(user_id,name,priceFM,priceFD,electric,water,water_follow) values(1,'T1','1200',50,'3.5',50,0),(1,'T2','1000',null,'3.5',50,0);
 
-insert into rooms(user_id,name,type,person_limit,electric_number,water_number,check_in,bill_at) values (1,'P1',1,3,10631,3,'2024-1-15','2024-1-15'),
-																								(1,'P2',1,3,9742,3,'2024-1-30','2024-1-30'),
-                                                                                                (1,'P3',1,3,8422,3,'2024-1-9','2024-1-9'),
-                                                                                                (1,'P4',1,3,8478,3,'2024-1-11','2024-1-11'),
-                                                                                                (1,'P5',1,3,2116,3,'2024-1-27','2024-1-27'),
-                                                                                                (1,'P6',2,3,1106,3,'2024-1-13','2024-1-13'),
-                                                                                                (1,'P7',2,3,993,3,'2024-1-8','2024-1-8'),
-                                                                                                (1,'P8',2,3,2637,3,'2024-1-26','2024-1-26'),
-                                                                                                (1,'P9',2,3,1419,3,'2024-1-21','2024-1-21');
+
+SET @month_now := MONTH(CURDATE());
+SET @year_now := YEAR(CURDATE());
+
+SET @target_month := IF(@month_now = 1, 12, @month_now - 1);
+SET @target_year := IF(@month_now = 1, @year_now - 1, @year_now);
+
+INSERT INTO rooms(user_id, name, type, person_limit, electric_number, water_number, check_in, bill_at)
+VALUES 
+(1, 'P1', 1, 3, 10631, 3, '2024-01-15',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-15'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P2', 1, 3, 9742, 3, '2024-01-30',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-30'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P3', 1, 3, 8422, 3, '2024-01-09',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-09'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P4', 1, 3, 8478, 3, '2024-01-11',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-11'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P5', 1, 3, 2116, 3, '2024-01-27',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-27'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P6', 2, 3, 1106, 3, '2024-01-13',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-13'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P7', 2, 3, 993, 3, '2024-01-08',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-08'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P8', 2, 3, 2637, 3, '2024-01-26',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-26'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d')),
+
+(1, 'P9', 2, 3, 1419, 3, '2024-01-21',
+ STR_TO_DATE(CONCAT(@target_year, '-', @target_month, '-', LEAST(DAY('2024-01-21'), DAY(LAST_DAY(CONCAT(@target_year,'-',@target_month,'-01'))))), '%Y-%m-%d'));
+
+
 
 insert into renters(user_id,room_id,name,cccd,que_quan,sdt,tctv,trang_thai) values (1,1,'Lu van Cong','033203302930','hy-vl-nd','0348765478',1,0),
 																					(1,2,'Dinh thi Hoan','033203302931','hy-vl-nd','0348766478',1,0),

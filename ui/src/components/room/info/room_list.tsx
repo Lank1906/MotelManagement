@@ -22,6 +22,7 @@ export default function RoomList() {
     GetFetch('room',
       (data: RoomType[]) => {
         dataContext?.setList(data)
+        console.log(data)
         loadingContext?.setStatus(false)
       },
       context?.data,
