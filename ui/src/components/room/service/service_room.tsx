@@ -36,7 +36,10 @@ export default function RoomService() {
             return
         loadingContext?.setStatus(true)
         GetFetch('room-service/' + dataContext?.id,
-            (data: RoomServiceType[]) => setList2(data),
+            (data: RoomServiceType[]) => {
+                setList2(data)
+                loadingContext?.setStatus(false)
+            },
             context?.data,
             (data: any) => {
                 setList2([])
@@ -57,9 +60,10 @@ export default function RoomService() {
             id: object?.id as number,
             room_id: object?.room_id as number,
             service_id: object?.service_id as number,
-            day: object?.day ? object.day + ',' + new Date().getDate() : new Date().getDate().toString(),
+            day: new Date().toLocaleDateString('en-CA'),
             times:object?.times ? object.times+1:1
         };
+        console.log(newObject)
         PostFetch('room-service/' + dataContext?.id,
             newObject,
             (data: any) => {
@@ -129,11 +133,12 @@ export default function RoomService() {
                     <tr>
                         <th>Tên</th>
                         <th>Số lượng</th>
+                        <th>Ngày</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {list2 ? list2.map(item => <tr key={item.id}><td>{item.name}</td><td>{item.times}</td><td className="btn" onClick={() => handleDelete(item.id || -1)}>Xoa</td></tr>) : 'dang tai'}
+                    {list2 ? list2.map(item => <tr key={item.id}><td>{item.name}</td><td>{item.times}</td><td>{item.day}</td><td className="btn delete" onClick={() => handleDelete(item.id || -1)}><i className="fa-solid fa-trash"></i> </td></tr>) : 'dang tai'}
                 </tbody>
 
             </table>
