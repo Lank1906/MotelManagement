@@ -1,15 +1,15 @@
-import { useContext } from "react";
 import { PostImage } from "./fetch";
-import { AnnounceContext } from "./announce_context";
-import { MyContext } from "./context";
 import { AnnounceContextType } from "../interface/announce_context_type";
 import { MyContextType } from "../interface/my_context_type";
 
+function YMDtoDMY(date: string | undefined): string | undefined {
+    if (!date)
+        return;
+    let x = date.split('-')
+    return x[2] + '-' + x[1] + '-' + x[0]
+}
 
-
-async function uploadImage(element:HTMLInputElement,announceContext:AnnounceContextType|undefined,context:MyContextType|undefined) {
-    // const announceContext=useContext(AnnounceContext)
-    // const context=useContext(MyContext)
+async function uploadImage(element: HTMLInputElement, announceContext: AnnounceContextType | undefined, context: MyContextType | undefined) {
     const fileInput = element
     const formData = new FormData();
     let filename = "";
@@ -20,12 +20,12 @@ async function uploadImage(element:HTMLInputElement,announceContext:AnnounceCont
             filename = data
         }, context?.data);
     }
-    if(filename != ""){
+    if (filename != "") {
         announceContext?.setMessage(filename + "has been uploaded")
         announceContext?.setType("success")
         announceContext?.setClose(true)
     }
-    else{
+    else {
         announceContext?.setMessage(filename + "has been failed")
         announceContext?.setType("danger")
         announceContext?.setClose(true)
@@ -33,4 +33,4 @@ async function uploadImage(element:HTMLInputElement,announceContext:AnnounceCont
     return filename;
 }
 
-export {uploadImage}
+export { uploadImage, YMDtoDMY }

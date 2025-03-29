@@ -24,11 +24,18 @@ i {
 table {
     width: 100%;
     height: fit-content;
+    margin-top: 16px;
+}
+
+table th{
+    background-color: #0d6efd;
+    color: #bdbdbd;
+    padding: 12px;
+    border-radius: 4px;
 }
 
 table tr:hover td {
     background-color: #bdbdbd;
-
 }
 
 table tr td {
