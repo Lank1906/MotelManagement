@@ -35,7 +35,7 @@ export default function Container() {
           </LoadingContextProvider>
         </DataContextProvider>
         <div className="arrow2" onClick={() => {
-          if (window.innerWidth < 1200 && rightStatus == '400px') {
+          if (window.innerWidth < 1400 && rightStatus == '400px') {
             setRightStatus('')
           }
           else {

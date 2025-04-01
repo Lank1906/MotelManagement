@@ -5,12 +5,13 @@ async function GetList(jsonData){
         let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
         roomDetail=roomDetail[0]
         now=(new Date()).getDate()
-        extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
-                    roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
-        const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_services.day','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon)
-
+        extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
+                    roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
+        
+        const roomService=await GetJoinQuery('room_services',['services'],['service_id','name','follow','services.price','sum(times) as times'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon,'service_id,name,follow,services.price')
+        
         let arr=[]
-        arr.push({"category":"Tiền phòng","price":roomDetail.price,"times":1,"sum":roomDetail.price})
+        arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.priceFM})
         roomDetail.water_follow?'':arr.push({"category":"Tiền nước","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
         
         roomService.forEach(item=>{
@@ -44,8 +45,8 @@ async function Calculate(jsonData){
         let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
         roomDetail=roomDetail[0]
         now=(new Date()).getDate()
-        extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
-                    roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(CURDATE()), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
+        extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
+                    roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
         const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_services.day','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon)
 
         let arr=[]

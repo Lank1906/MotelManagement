@@ -165,8 +165,6 @@ export default function RoomService() {
 
     async function filterRefresh(){
         setFilter(undefined)
-        if (dataContext?.id === -1)
-            return
         loadingContext?.setStatus(true)
         GetFetch('room-service/' + dataContext?.id,
             (data: RoomServiceType[]) => {
