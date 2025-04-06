@@ -51,6 +51,7 @@ export default function RoomCaculate() {
                 type: typez
             }, (data: BillType) => {
                 setObject(data)
+                loadingContext?.setStatus(false)
             }, context?.data, (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
@@ -120,6 +121,7 @@ export default function RoomCaculate() {
         GetFetch('calculate/' + dataContext?.id,
             (data: BillType) => {
                 setObject(data)
+                loadingContext?.setStatus(false)
             },
             context?.data,
             (data: any) => {

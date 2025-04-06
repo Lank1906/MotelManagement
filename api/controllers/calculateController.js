@@ -1,4 +1,4 @@
-const {GetList,Calculate,AddBill}=require('../models/calculate');
+const {GetList,Calculate,CalculateByDate,AddBill}=require('../models/calculate');
 
 async function List(req,res){
     const result=await GetList({"rooms.user_id":req.user.id,"rooms.id":req.params.id});
@@ -10,6 +10,14 @@ async function List(req,res){
 
 async function Bill(req,res){
     const result=await Calculate({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
+    if(result)
+        return res.status(200).json(result)
+    else
+        return res.status(400).json({"message":"Tính toán thất bại"})
+}
+
+async function BillByDate(req,res){
+    const result=await CalculateByDate(req.params.date,{"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
     if(result)
         return res.status(200).json(result)
     else
@@ -29,4 +37,4 @@ async function Pay(req,res){
     }
 }
 
-module.exports={List,Bill,Pay}
+module.exports={List,Bill,BillByDate,Pay}

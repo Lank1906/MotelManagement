@@ -47,7 +47,7 @@ async function Calculate(jsonData){
         now=(new Date()).getDate()
         extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
                     roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
-        const roomService=await GetJoinQuery('room_services',['services'],['room_services.id as id','room_services.day','service_id','name','times','follow','services.price'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon)
+        const roomService=await GetJoinQuery('room_services',['services'],['service_id','name','follow','services.price','sum(times) as times'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon,'service_id,name,follow,services.price')
 
         let arr=[]
         
@@ -62,7 +62,7 @@ async function Calculate(jsonData){
             })
         }
         else if(type==0){
-            arr.push({"category":"Tiền phòng","price":roomDetail.price,"times":1,"sum":roomDetail.priceFM})
+            arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.priceFM})
         }
         else if(type==2){
             let day =await GetQuery('bill_rooms',['day'],{"room_id":jsonData['rooms.id']},{},null,null,null,'day DESC',null,1);
@@ -85,6 +85,22 @@ async function Calculate(jsonData){
     }
     catch (err){
         return err;
+    }
+}
+
+async function CalculateByDate(date,jsonData){
+    try{
+        let roomDetail=GetQuery('rooms',['id','name','check_in'],{"room_id":jsonData['rooms.id']});
+        let bill=GetQuery('bill_rooms',['id','room_id','day','room_price','electric_number','electric_price','water_number','water_price','service_price','more_price'])
+        now=(new Date()).getDate()
+        extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
+                    roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
+        const roomService=await GetJoinQuery('room_services',['services'],['service_id','name','follow','services.price','sum(times) as times'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon,'service_id,name,follow,services.price')
+    
+        return "ok;"
+    }
+    catch(err){
+        return err
     }
 }
 
@@ -164,4 +180,4 @@ function getMonthDistance(dateStart){
     return months.toFixed(2); // Giữ 2 số thập phân
 }
 
-module.exports={GetList,Calculate,AddBill}
+module.exports={GetList,Calculate,CalculateByDate,AddBill}
