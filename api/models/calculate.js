@@ -52,13 +52,13 @@ async function Calculate(jsonData){
         let arr=[]
         
         if(type==1){
-            arr.push({"category":"Tiền phòng","price":roomDetail.price,"times":1,"sum":roomDetail.price})
+            arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.price})
             roomDetail.water_follow?arr.push({"category":"Tiền nước","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
                                 :arr.push({"category":"Tiền nước","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
             arr.push({"category":"Tiền điện","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
         
             roomService.forEach(item=>{
-                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times,"day":item.day})
+                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
             })
         }
         else if(type==0){
@@ -72,7 +72,7 @@ async function Calculate(jsonData){
             arr.push({"category":"Tiền điện","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
             day>1?arr.push({"category":"Tiền phòng","price":roomDetail.priceFD,"times":Math.floor((day-1)*30.4375),"sum":roomDetail.priceFD*Math.floor((day-1)*30.4375)}):''
             roomService.forEach(item=>{
-                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times,"day":item.day})
+                arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
             })
         }
         result={
@@ -90,14 +90,29 @@ async function Calculate(jsonData){
 
 async function CalculateByDate(date,jsonData){
     try{
-        let roomDetail=GetQuery('rooms',['id','name','check_in'],{"room_id":jsonData['rooms.id']});
-        let bill=GetQuery('bill_rooms',['id','room_id','day','room_price','electric_number','electric_price','water_number','water_price','service_price','more_price'])
+        let roomDetail=await GetQuery('rooms',['id','name','check_in'],{"id":jsonData['rooms.id']},{});
+        roomDetail=roomDetail[0];
+        let bill=await GetQuery('bill_rooms',['id','room_id','day','room_price','electric_number','electric_price','water_number','water_price','service_price','more_price'],{"room_id":jsonData['rooms.id']},{},["day > '"+date+"'"],undefined,undefined,'day DESC',undefined,1)
+        bill=bill[0]
         now=(new Date()).getDate()
         extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
                     roomDetail.check_in<now?"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_ADD(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day < STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')"]
         const roomService=await GetJoinQuery('room_services',['services'],['service_id','name','follow','services.price','sum(times) as times'],['room_services.service_id=services.id'],{"room_id":jsonData["rooms.id"]},{},extendCon,'service_id,name,follow,services.price')
-    
-        return "ok;"
+        
+        let arr = []
+        arr.push({"category":"Tiền phòng","price":bill.room_price,"times":"1","sum":bill.room_price})
+        arr.push({"category":"Tiền nước","price":bill.water_price/bill.water_number,"times":bill.water_number,"sum":bill.water_price})
+        arr.push({"category":"Tiền điện","price":bill.electric_price/bill.electric_number,"times":bill.electric_number,"sum":bill.electric_price})
+        roomService.forEach(item=>{
+            arr.push({"category":item.name,"price":item.price,"times":item.times,"sum":item.price*item.times})
+        })
+        result={
+                "id":roomDetail.id,
+                "name":roomDetail.name,
+                "check_in":roomDetail.check_in,
+                "data":arr
+            };
+        return result;
     }
     catch(err){
         return err

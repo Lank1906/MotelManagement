@@ -104,6 +104,7 @@ export default function RoomCaculate() {
             GetFetch('calculate/' +`${filter.getFullYear()}-${filter.getMonth() + 1}-${filter.getDate()}`+'/' + dataContext?.id,
                 (data: BillType) => {
                     setObject(data)
+                    loadingContext?.setStatus(false)
                 },
                 context?.data,
                 (data: any) => {

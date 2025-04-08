@@ -93,6 +93,7 @@ CREATE TABLE bill_rooms (
     room_price FLOAT DEFAULT 0,
     electric_price FLOAT DEFAULT 0,
     electric_number int default 0,
+    electric_number_final int default 0,
     water_price FLOAT DEFAULT 0,
     water_number int default 0,
     service_price FLOAT DEFAULT 0,
@@ -166,16 +167,16 @@ insert into room_services(room_id,service_id,day,times) values(1,1,'2024-1-15',1
                                                                 (8,1,'2024-1-11',1),
                                                                 (9,1,'2024-1-21',1);
 
-insert into bill_rooms(room_id,day,room_price,electric_number,electric_price,water_price,water_number,service_price)
-values (1,'2024-02-15',1200,10641,35,50,0,30),
-		(2,'2024-02-28',1200,9752,35,50,0,30),
-        (3,'2024-02-9',1200,8432,35,50,0,30),
-        (4,'2024-02-11',1200,8488,35,50,0,30),
-        (5,'2024-02-27',1200,2126,35,50,0,30),
-        (6,'2024-02-13',1100,1116,35,50,0,30),
-        (7,'2024-02-8',1100,1003,35,50,0,30),
-        (8,'2024-02-26',1100,2647,35,50,0,30),
-        (9,'2024-02-21',1100,1429,35,50,0,30);
+insert into bill_rooms(room_id,day,room_price,electric_number,electric_number_final,electric_price,water_price,water_number,service_price)
+values (1,'2024-02-15',1200,10,10641,35,50,1,30),
+		(2,'2024-02-28',1200,10,9752,35,50,1,30),
+        (3,'2024-02-9',1200,10,8432,35,50,1,30),
+        (4,'2024-02-11',1200,10,8488,35,50,1,30),
+        (5,'2024-02-27',1200,10,2126,35,50,1,30),
+        (6,'2024-02-13',1100,10,1116,35,50,1,30),
+        (7,'2024-02-8',1100,10,1003,35,50,1,30),
+        (8,'2024-02-26',1100,10,2647,35,50,1,30),
+        (9,'2024-02-21',1100,10,1429,35,50,1,30);
 
 -- Thêm dữ liệu cho dịch vụ "internet" hàng tháng
 INSERT INTO room_services (room_id, service_id, day, times)
@@ -226,7 +227,7 @@ FROM (
 WHERE DATE_ADD('2024-03-01', INTERVAL seq MONTH) <= CURDATE();-- '2025-08-01';
 
 -- Bước 4: Thêm dữ liệu vào bảng bill_rooms
-INSERT INTO bill_rooms (room_id, day, room_price, electric_number, electric_price, water_price, water_number, service_price)
+INSERT INTO bill_rooms (room_id, day, room_price, electric_number_final,electric_number, electric_price, water_price, water_number, service_price)
 SELECT 
     r.id AS room_id,
 
@@ -247,8 +248,8 @@ SELECT
     @prev:=COALESCE(
         (SELECT electric_number FROM bill_rooms WHERE room_id = r.id ORDER BY day DESC LIMIT 1),
         r.electric_number
-    ) + FLOOR(10 + RAND() * 40) AS electric_number,
-
+    ) + FLOOR(10 + RAND() * 40) AS electric_number_final,
+    @prev,
     -- Tính tiền điện đúng logic
     (
         @prev
@@ -262,7 +263,7 @@ SELECT
     COALESCE((SELECT COUNT(*) FROM renters WHERE room_id = r.id AND trang_thai = 0), 0) * 50 AS water_price,
 
     -- Lấy số nước tháng trước và cộng thêm tiêu thụ ngẫu nhiên (10-40)
-    0,
+    1,
 
     -- Tính tiền dịch vụ của phòng trong tháng này
     COALESCE(
