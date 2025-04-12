@@ -49,9 +49,8 @@ export default function PersonCard(props: PersonType) {
       <img src={props.img_font? publicUrl+ props.img_font:"/images/person.png"} alt="person-demo" />
       <div className="mask-card">{props.room_name}</div>
       <p>{props.renter_name}</p>
-      <p>{props.room_name}</p>
       <p>{props.trang_thai? "Đã đăng kí":"Chưa đăng kí"}</p>
-      <div className="btn delete" onClick={HandleDelete}><i className="fa-solid fa-trash"></i></div>
+      <div className="btn delete" onClick={HandleDelete}><i className="fa-solid fa-trash"></i> Xóa người</div>
     </div>
   );
 }

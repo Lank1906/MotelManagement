@@ -53,64 +53,68 @@ export default function PersonInfo() {
             })
     }, [])
 
-    function handleAdd() {
-        loadingContext?.setStatus(true);
-        let object2 = { ...object }
+    // function handleAdd() {
+    //     loadingContext?.setStatus(true);
+    //     let object2 = { ...object }
 
-        delete object2.room_name;
+    //     delete object2.room_name;
 
-        //console.log(object2)
+    //     //console.log(object2)
 
-        let newObject: PersonType = {
-            id: object2.id as number,
-            renter_name: object2.renter_name as string,
-            room_name: object?.room_name as string,
-            img_font:object?.img_font as string,
-            trang_thai: object?.trang_thai as boolean,
-        }
+    //     let newObject: PersonType = {
+    //         id: object2.id as number,
+    //         renter_name: object2.renter_name as string,
+    //         room_name: object?.room_name as string,
+    //         img_font:object?.img_font as string,
+    //         trang_thai: object?.trang_thai as boolean,
+    //     }
 
-        PostFetch('renter',
-            object2,
-            (data: any) => {
-                dataContext?.setList([...dataContext.list as PersonType[], {...newObject,id:data.id}]);
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("success")
-                announceContext?.setClose(true)
-                loadingContext?.setStatus(false)
-            },
-            context?.data,
-            (data: any) => {
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("danger")
-                announceContext?.setClose(true)
-                loadingContext?.setStatus(false)
-            });
-    }
+    //     PostFetch('renter',
+    //         object2,
+    //         (data: any) => {
+    //             dataContext?.setList([...dataContext.list as PersonType[], {...newObject,id:data.id}]);
+    //             announceContext?.setMessage(data.message)
+    //             announceContext?.setType("success")
+    //             announceContext?.setClose(true)
+    //             loadingContext?.setStatus(false)
+    //         },
+    //         context?.data,
+    //         (data: any) => {
+    //             announceContext?.setMessage(data.message)
+    //             announceContext?.setType("danger")
+    //             announceContext?.setClose(true)
+    //             loadingContext?.setStatus(false)
+    //         });
+    // }
 
-    function handleUpdate() {
-        loadingContext?.setStatus(true)
-        PutFetch('renter/' + object?.id,
-            object,
-            (data: any) => {
-                let tam = [...dataContext?.list as PersonType[]].map((item: any) => {
-                    if (item.id == object?.id) {
-                        item = object;
-                    }
-                    return item;
-                });
-                dataContext?.setList(tam);
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("success")
-                announceContext?.setClose(true)
-                loadingContext?.setStatus(false)
-            },
-            context?.data,
-            (data: any) => {
-                announceContext?.setMessage(data.message)
-                announceContext?.setType("danger")
-                announceContext?.setClose(true)
-                loadingContext?.setStatus(false)
-            })
+    // function handleUpdate() {
+    //     loadingContext?.setStatus(true)
+    //     PutFetch('renter/' + object?.id,
+    //         object,
+    //         (data: any) => {
+    //             let tam = [...dataContext?.list as PersonType[]].map((item: any) => {
+    //                 if (item.id == object?.id) {
+    //                     item = object;
+    //                 }
+    //                 return item;
+    //             });
+    //             dataContext?.setList(tam);
+    //             announceContext?.setMessage(data.message)
+    //             announceContext?.setType("success")
+    //             announceContext?.setClose(true)
+    //             loadingContext?.setStatus(false)
+    //         },
+    //         context?.data,
+    //         (data: any) => {
+    //             announceContext?.setMessage(data.message)
+    //             announceContext?.setType("danger")
+    //             announceContext?.setClose(true)
+    //             loadingContext?.setStatus(false)
+    //         })
+    // }
+
+    function requestInfo(){
+
     }
 
     return (
@@ -190,8 +194,7 @@ export default function PersonInfo() {
                 }} />
             </div>
             <div className="action">
-                <button className="btn add" onClick={handleAdd}><i className="fa-solid fa-plus"></i> Thêm Mới</button>
-                <button className="btn update" onClick={handleUpdate}><i className="fa-solid fa-rotate"></i> Sửa đổi</button>
+                <button className="btn add" onClick={requestInfo}><i className="fa-solid fa-plus"></i> Yêu cầu cập nhật thông tin</button>
             </div>
             {loadingContext?.status?<Loader/>:''}
         </div>

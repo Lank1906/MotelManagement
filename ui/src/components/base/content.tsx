@@ -6,7 +6,7 @@ export default function Content({children}:ContentProps) {
     <div className="content">
       <div className="top-content">
         <Search />
-        <div className="like-search"><div className="like-search-content">This is like search</div></div>
+        <div className="like-search"><div className="like-search-content">This is an announce</div></div>
       </div>
       {children}
     </div>
