@@ -4,8 +4,8 @@ const bcrypt=require('bcryptjs')
 async function SignUp(jsonData){
     try{
         jsonData.password= await bcrypt.hash(jsonData.password,12)
-        console.log(jsonData)
         const result=await AddQuery('users',jsonData);
+        const re=await AddQuery('room_rents',{'user_id':result})
         return result;
     }
     catch (err){

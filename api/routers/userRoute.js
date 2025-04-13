@@ -1,5 +1,5 @@
 const express=require("express");
-const {SignUpCon,LoginCon,UpdateInfoCon}=require('../controllers/guestController');
+const {SignUpCon,LoginCon,UpdateInfoCon}=require('../controllers/userController');
 const authenticateToken=require("../authen");
 const router=express.Router();
 

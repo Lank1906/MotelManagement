@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetList(jsonData){
     try{
-        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
+        let roomDetail=await GetJoinQuery('rooms',['types','room_rents'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(room_rents.user_id) as CountPeople'],['rooms.type=types.id','rooms.id=room_rents.room_id'],jsonData,{},undefined,'rooms.id')
         roomDetail=roomDetail[0]
         now=(new Date()).getDate()
         extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
@@ -42,7 +42,7 @@ async function Calculate(jsonData){
     //console.log(jsonData)
     let result={};
     try{
-        let roomDetail=await GetJoinQuery('rooms',['types','renters'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(renters.id) as CountPeople'],['rooms.type=types.id','rooms.id=renters.room_id'],jsonData,{},undefined,'rooms.id')
+        let roomDetail=await GetJoinQuery('rooms',['types','room_rents'],['rooms.id','rooms.name','types.name as type_name','types.water','types.water_follow','types.electric','rooms.electric_number','rooms.water_number','types.priceFM','types.priceFD','check_in','count(room_rents.user_id) as CountPeople'],['rooms.type=types.id','rooms.id=room_rents.room_id'],jsonData,{},undefined,'rooms.id')
         roomDetail=roomDetail[0]
         now=(new Date()).getDate()
         extendCon=[roomDetail.check_in<now ?"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-',MONTH(CURDATE()),'-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')":"room_services.day > STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)), '-', DAY('"+roomDetail.check_in+"')),'%Y-%m-%d')",
@@ -52,7 +52,7 @@ async function Calculate(jsonData){
         let arr=[]
         
         if(type==1){
-            arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.price})
+            arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.priceFM})
             roomDetail.water_follow?arr.push({"category":"Tiền nước","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
                                 :arr.push({"category":"Tiền nước","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
             arr.push({"category":"Tiền điện","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})

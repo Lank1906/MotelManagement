@@ -1,5 +1,5 @@
 const express=require("express");
-const {List,One,Add,Update,Delete}=require('../controllers/renterController');
+const {List,One,Add,Update,Delete}=require('../controllers/roomRentController');
 const router=express.Router();
 
 router.route("/").get(List);

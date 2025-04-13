@@ -1,4 +1,4 @@
-const {SignUp,Login,UpdateInfo}=require('../models/guest');
+const {SignUp,Login,UpdateInfo}=require('../models/user');
 const jwt = require('jsonwebtoken');
 
 

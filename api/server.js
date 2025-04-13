@@ -13,7 +13,7 @@ const port = 5000;
 
 app.use(cors()); // Sử dụng middleware CORS
 
-app.use("/",express.json(),require("./routers/guestRoute"));
+app.use("/",express.json(),require("./routers/userRoute"));
 
 //ap dung xac thuc
 app.use(authenticateToken);
@@ -49,7 +49,7 @@ app.use("/type",require("./routers/typeRoute"));
 app.use("/service",require("./routers/serviceRoute"));
 app.use("/room",require("./routers/roomRoute"));
 app.use("/room-service",require("./routers/roomServiceRoute"));
-app.use("/renter",require("./routers/renterRoute"));
+app.use("/room-rent",require("./routers/roomRentRoute"));
 app.use("/history",require("./routers/historyRoute"));
 app.use("/calculate",require("./routers/calculateRoute"))
 
