@@ -104,11 +104,11 @@ CREATE TABLE bill_rooms (
 CREATE TABLE announces(
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id int NOT NULL,
-    room_id int NOT NULL,
+    for_id int NOT NULL,
     message TEXT,
-    viewed bit default 0,
+    viewed TINYINT default 0,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE NO ACTION,
-    FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE NO ACTION ON UPDATE CASCADE
+    FOREIGN KEY (for_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE CASCADE
 )
 
 insert into users(username,password,email,phone) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1);

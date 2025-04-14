@@ -2,7 +2,7 @@ const {GetQuery,AddQuery,UpdateQuery,DeleteQuery,GetJoinQuery}=require("./connec
 
 async function GetListByMe(jsonData){
     try{
-        const result=await GetQuery('announces',['id','room_id','message','viewed'],jsonData,{})
+        const result=await GetJoinQuery('announces',['users'],['announces.id','for_id','message','viewed','username'],['announces.for_id=users.id'],jsonData,{})
         return result;
     }
     catch (err){
@@ -12,7 +12,17 @@ async function GetListByMe(jsonData){
 
 async function GetListForMe(jsonData){
     try{
-        const result=await GetJoinQuery('announces',['rooms'],['id','room_id','message','viewed','name'],['announces.room_id=rooms.id'],jsonData,{})
+        const result=await GetJoinQuery('announces',['users'],['announces.id','user_id','message','viewed','username'],['announces.user_id=users.id'],jsonData,{})
+        return result;
+    }
+    catch (err){
+        return err
+    }
+}
+
+async function GetIdsByRoom(jsonCondition){
+    try{
+        const result=await GetQuery('room_rents',['user_id'],jsonCondition,{})
         return result;
     }
     catch (err){
@@ -40,4 +50,4 @@ async function DeleteObject(jsonCondition){
     }
 }
 
-module.exports={GetListByMe,GetListForMe,AddObject,DeleteObject}
+module.exports={GetListByMe,GetListForMe,AddObject,DeleteObject,GetIdsByRoom}
