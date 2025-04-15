@@ -94,6 +94,7 @@ CREATE TABLE bill_rooms (
     electric_number_final int default 0,
     water_price FLOAT DEFAULT 0,
     water_number int default 0,
+    water_number_final int default 0,
     service_price FLOAT DEFAULT 0,
     more_price TEXT,
     img_bill TEXT,
@@ -109,20 +110,20 @@ CREATE TABLE announces(
     viewed TINYINT default 0,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE NO ACTION,
     FOREIGN KEY (for_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE CASCADE
-)
+);
 
-insert into users(username,password,email,phone) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1);
+insert into users(username,password,email,phone,per) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1);
 insert into users(username,password,email,phone,per) VALUES ('admin','$2b$12$rUsjgfVR.SIf2XEjDIy6Zu.D5OKe5AIvYuHXBLM6MIrct8RMzMrSa','admin@gmail.com','0349852986',0);
-insert into users(username,password,email,phone) VALUES ('Lu van Cong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Dinh thi Hoan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Nguyen van Viet','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Sung a La','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Ha thi Hang','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Ha thi Hong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Dinh van Hiep','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Li chi Ngan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('Va ba Ly','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone) VALUES ('lankrenter','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Lu van Cong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Dinh thi Hoan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Nguyen van Viet','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Sung a La','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Ha thi Hang','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Ha thi Hong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Dinh van Hiep','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Li chi Ngan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('Va ba Ly','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per) VALUES ('lankrenter','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
 
 insert into types(user_id,name,priceFM,priceFD,electric,water,water_follow) values(1,'T1','1200',50,'3.5',50,0),(1,'T2','1000',null,'3.5',50,0);
 
@@ -164,15 +165,15 @@ VALUES
 
 
 
-insert into room_rents(user_id,room_id,cccd,country,tctv,status) values (1,1,'033203302930','hy-vl-nd',1,0),
-																					(1,2,'033203302931','hy-vl-nd',1,0),
-                                                                                    (1,3,'033203302932','hy-vl-nd',1,0),
-                                                                                    (1,4,'033203302933','hy-vl-nd',1,0),
-                                                                                    (1,5,'033203302934','hy-vl-nd',1,0),
-                                                                                    (1,6,'033203302935','hy-vl-nd',1,0),
-                                                                                    (1,7,'033203302936','hy-vl-nd',1,0),
-                                                                                    (1,8,'033203302937','hy-vl-nd',1,0),
-                                                                                    (1,9,'033203302938','hy-vl-nd',1,0);
+insert into room_rents(user_id,room_id,cccd,country,tctv,status) values (11,1,'033203302930','hy-vl-nd',1,0),
+																					(10,2,'033203302931','hy-vl-nd',1,0),
+                                                                                    (3,3,'033203302932','hy-vl-nd',1,0),
+                                                                                    (4,4,'033203302933','hy-vl-nd',1,0),
+                                                                                    (5,5,'033203302934','hy-vl-nd',1,0),
+                                                                                    (6,6,'033203302935','hy-vl-nd',1,0),
+                                                                                    (7,7,'033203302936','hy-vl-nd',1,0),
+                                                                                    (8,8,'033203302937','hy-vl-nd',1,0),
+                                                                                    (9,9,'033203302938','hy-vl-nd',1,0);
 
 insert into services(user_id,name,follow,price) values (1,'internet',0,30),(1,'sac xe',1,50);
 
@@ -187,8 +188,8 @@ insert into room_services(room_id,service_id,day,times) values(1,1,'2024-1-15',1
                                                                 (9,1,'2024-1-21',1);
 
 insert into bill_rooms(room_id,day,room_price,electric_number,electric_number_final,electric_price,water_price,water_number,service_price)
-values (10,'2024-02-15',1200,10,10641,35,50,1,30),
-		(11,'2024-02-28',1200,10,9752,35,50,1,30),
+values (1,'2024-02-15',1200,10,10641,35,50,1,30),
+		(2,'2024-02-28',1200,10,9752,35,50,1,30),
         (3,'2024-02-9',1200,10,8432,35,50,1,30),
         (4,'2024-02-11',1200,10,8488,35,50,1,30),
         (5,'2024-02-27',1200,10,2126,35,50,1,30),
@@ -279,7 +280,7 @@ SELECT
     ) * 3.5 AS electric_price,
 
     -- Tính tiền nước theo số người thuê phòng
-    COALESCE((SELECT COUNT(*) FROM renters WHERE room_id = r.id AND trang_thai = 0), 0) * 50 AS water_price,
+    COALESCE((SELECT COUNT(*) FROM room_rents WHERE room_id = r.id), 0) * 50 AS water_price,
 
     -- Lấy số nước tháng trước và cộng thêm tiêu thụ ngẫu nhiên (10-40)
     1,
