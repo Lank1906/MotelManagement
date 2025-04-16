@@ -65,7 +65,7 @@ export default function RoomCard(props: RoomType) {
   return (
     <div className="card">
       <img src={props.img_room ? publicUrl + props.img_room : "/images/home.png"} alt="home-demo" />
-      <div className="card-tag" style={{background:dayleft > 0 ? "lightblue" : dayleft < 0 ? "darkorange" : ""}}>{dayleft > 0 ? "Còn " + dayleft + " ngày" : dayleft < 0 ? "Trễ " + Math.abs(dayleft) + " ngày" : ""}</div>
+      <div className="card-tag" style={{background:dayleft > 0 ? "lightblue" : dayleft < 0 ? "darkorange" : "green"}}>{dayleft > 0? `Còn ${dayleft} ngày`: dayleft < 0? `Trễ ${Math.abs(dayleft)} ngày`: 'Hôm nay'}</div>
       <p>{props.name} - {props.type_name}</p>
       <p>{props.check_in ? props.check_in : "Phòng trống"}</p>
       <div className="btn delete" onClick={handleDelete}><i className="fa-solid fa-trash"></i> Xóa Phòng</div>

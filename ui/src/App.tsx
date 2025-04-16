@@ -16,6 +16,7 @@ import TypeList from './components/type/type_list';
 import Dashboard from './components/dashboard/dashboard';
 import ServiceList from './components/service/service_list';
 import Content from './components/base/content';
+import AnnounceList from './components/announce/anounce';
 
 export default function App() {
     const announceContext = useContext(AnnounceContext)
@@ -29,7 +30,8 @@ export default function App() {
                     <Route path="type" element={<Content><TypeList /></Content>}/>
                     <Route path="service" element={<Content><ServiceList/></Content>}/>
                     <Route path="room" element={<Content><RoomList /></Content>} />
-                    <Route path="renter" element={<Content><PersonList /></Content>} />
+                    <Route path="room-rent" element={<Content><PersonList /></Content>} />
+                    <Route path="announce" element={<Content><AnnounceList/></Content>}/>
                     <Route path="setting" element={<NotFound />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

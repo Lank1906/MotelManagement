@@ -22,6 +22,7 @@ export default function PersonInfo() {
     const [rooms, setRooms] = useState<RoomType[]>([])
 
     useEffect(() => {
+        console.log(dataContext?.type)
         if (dataContext?.id == -1)
             return
         loadingContext?.setStatus(true)
@@ -32,6 +33,7 @@ export default function PersonInfo() {
             },
             context?.data,
             (data: any) => {
+                console.log(data.message)
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
@@ -114,7 +116,21 @@ export default function PersonInfo() {
     // }
 
     function requestInfo(){
-
+        if (dataContext?.id == -1)
+            return
+        loadingContext?.setStatus(true)
+        GetFetch(dataContext?.type + '/info/' + dataContext?.id,
+            (data: PersonDetailType[]) => {
+                setObject(data[0])
+                loadingContext?.setStatus(false)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
+            })
     }
 
     return (
@@ -139,19 +155,23 @@ export default function PersonInfo() {
             </div>
             <div className="component">
                 <label htmlFor="que_quan">Quê quán</label><br />
-                <input type="text" className="input" name="que_quan" value={object?.que_quan} onChange={(e) => setObject({ ...object, que_quan: e.target.value })} />
+                <input type="text" className="input" name="que_quan" value={object?.country} onChange={(e) => setObject({ ...object, country: e.target.value })} />
+            </div>
+            <div className="component">
+                <label htmlFor="email">Email</label><br />
+                <input type="text" name="email" value={object?.email} onChange={(e) => setObject({ ...object, email: e.target.value })} />
             </div>
             <div className="component">
                 <label htmlFor="sdt">SĐT</label><br />
-                <input type="text" name="sdt" value={object?.sdt} onChange={(e) => setObject({ ...object, sdt: e.target.value })} />
+                <input type="text" name="sdt" value={object?.phone} onChange={(e) => setObject({ ...object, phone: e.target.value })} />
             </div>
             <div className="block">
                 <label htmlFor="tctv">TCTV</label><br />
                 <input type="checkbox" name="name" checked={object?.tctv} onChange={(e) => setObject({ ...object, tctv: e.target.checked })} />
             </div>
             <div className="block">
-                <label htmlFor="trang_thai">Trạng thái {object?.trang_thai ? 'Khách chơi' : 'Người thuê'}</label><br />
-                <input type="checkbox" name="trang_thai" checked={object?.trang_thai} onChange={(e) => setObject({ ...object, trang_thai: e.target.checked })} />
+                <label htmlFor="trang_thai">Trạng thái {object?.status ? 'Khách chơi' : 'Người thuê'}</label><br />
+                <input type="checkbox" name="trang_thai" checked={object?.status} onChange={(e) => setObject({ ...object, status: e.target.checked })} />
             </div>
             <div className="component">
                 <label htmlFor="filefront">Mặt trước CCCD</label><br />

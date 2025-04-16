@@ -65,4 +65,14 @@ async function DeleteObject(jsonChange,jsonCondition){
         return err;
     }
 }
-module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId};
+
+async function RequestInfo(jsonData){
+    try{
+        const result=await AddQuery('announces',jsonData);
+        return result
+    }
+    catch(err){
+        return err;
+    }
+}
+module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo};

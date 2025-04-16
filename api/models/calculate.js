@@ -65,8 +65,8 @@ async function Calculate(jsonData){
             arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.priceFM})
         }
         else if(type==2){
-            let day =await GetQuery('bill_rooms',['day'],{"room_id":jsonData['rooms.id']},{},null,null,null,'day DESC',null,1);
-            day=getMonthDistance(day[0].day)
+            let day =await GetQuery('rooms',['bill_at'],{"id":jsonData['rooms.id']},{});
+            day=getMonthDistance(day[0].bill_at.split(' ')[0])
             roomDetail.water_follow?arr.push({"category":"Tiền nước","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
                                 :arr.push({"category":"Tiền nước","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
             arr.push({"category":"Tiền điện","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
@@ -154,8 +154,8 @@ async function AddBill(jsonData){
             arr.push({"category":"Tiền phòng","price":roomDetail.priceFM,"times":1,"sum":roomDetail.priceFM})
         }
         else if(type==2){
-            let day =await GetQuery('bill_rooms',['day'],{"room_id":jsonData['rooms.id']},{},null,null,null,'day DESC',null,1);
-            day=getMonthDistance(day[0].day)
+            let day =await GetQuery('rooms',['bill_at'],{"id":jsonData['rooms.id']},{});
+            day=getMonthDistance(day[0].bill_at.split(' ')[0])
             roomDetail.water_follow?arr.push({"category":"Tiền nước","price":roomDetail.water,"times":water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number,"sum":roomDetail.water*(water_number<roomDetail.water_number?water_number*10-roomDetail.water_number:water_number-roomDetail.water_number)})
                                 :arr.push({"category":"Tiền nước","price":roomDetail.water,"times":roomDetail.CountPeople,"sum":roomDetail.water*roomDetail.CountPeople})
             arr.push({"category":"Tiền điện","price":roomDetail.electric,"times":electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number,"sum":roomDetail.electric*(electric_number<roomDetail.electric_number?electric_number*10-roomDetail.electric_number:electric_number-roomDetail.electric_number)})
@@ -165,9 +165,6 @@ async function AddBill(jsonData){
                 sum+=item.price*item.times
             })
         }
-        
-        console.log(roomDetail);
-        console.log(arr);
         
         const result={
             "room_id":roomDetail.id,
@@ -184,7 +181,6 @@ async function AddBill(jsonData){
             "img_bill":null,
             "img_sign":null
         };
-        console.log(result)
         let re= await AddQuery('bill_rooms',result);
         re =await UpdateQuery('rooms',{'electric_number':electric_number,'water_number':water_number},{"id":roomDetail.id})
         for (const item of ids) {
@@ -209,12 +205,11 @@ async function AddBill(jsonData){
 
 function getMonthDistance(dateStart){
     const start = new Date(dateStart);
-    const end =(new Date()).getDate();// new Date('2025-09-20')
-
+    const end =(new Date());
     const diffInDays = (end - start) / (1000 * 60 * 60 * 24);
     
     const months = diffInDays / 30.4375;
-    return months.toFixed(2); // Giữ 2 số thập phân
+    return months.toFixed(2);
 }
 
 module.exports={GetList,Calculate,CalculateByDate,AddBill}

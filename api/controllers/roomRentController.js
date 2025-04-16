@@ -1,4 +1,4 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId}=require("../models/roomRent");
+const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo}=require("../models/roomRent");
 
 async function List(req,res){
     const result=await GetList({"rooms.user_id":req.user.id},req.query)
@@ -11,6 +11,7 @@ async function List(req,res){
 }
 
 async function One(req,res){
+    console.log('here')
     const result=await GetOne({"room_rents.id":req.params.id,"rooms.user_id":req.user.id});
     if(result.length>0){
         return res.status(200).json(result);
@@ -59,4 +60,14 @@ async function Delete(req,res){
         return res.status(400).json({"message":"Dữ liệu người thuê chưa được loại bỏ"})
     }
 }
-module.exports={List,One,Add,Update,Delete};
+
+async function Info(req,res){
+    const result=await RequestInfo({'user_id':req.user.id,'for_id':req.params.id,'message':'Bạn cần phải cập nhật thông tin cá nhân để có thể đăng tạm trú một cách nhanh chóng!'});
+    if(result>0){
+        return res.status(200).json({"message":"Đã gửi yêu cầu thành công!","id":result});
+    }
+    else{
+        return res.status(401).json({"message":"Yêu cầu thất bại !"});
+    }
+}
+module.exports={List,One,Add,Update,Delete,Info};

@@ -14,7 +14,8 @@ export default function Menu(props:menuProps) {
       <li className={dataContext?.type=='type'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'type')}><i className="fa-solid fa-square-h"></i><Link to="type">Loại Phòng</Link></li>
       <li className={dataContext?.type=='service'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'service')}><i className="fa-brands fa-servicestack"></i> <Link to="service">Dịch vụ</Link></li>
       <li className={dataContext?.type=='room'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'room')}><i className="fa-solid fa-list-check"></i><Link to="room">Danh sách phòng</Link></li>
-      <li className={dataContext?.type=='renter'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'renter')}><i className="fa-solid fa-person"></i><Link to="renter">Danh sách người thuê</Link></li>
+      <li className={dataContext?.type=='room-rent'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'room-rent')}><i className="fa-solid fa-person"></i><Link to="room-rent">Danh sách người thuê</Link></li>
+      <li className={dataContext?.type=='announce'?'btn active':'btn'} onClick={()=>dataContext?.setData(-1,'announce')}><i className="fa-solid fa-bell"></i><Link to="announce">Danh sách thông báo</Link></li>
       {/* <li className="btn" >Tính tiền</li> */}
     </ul>
   );
