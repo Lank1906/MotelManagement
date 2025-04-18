@@ -42,7 +42,7 @@ async function AddObject(jsonData){
 
 async function DeleteObject(jsonCondition){
     try{
-        const result= await DeleteQuery('services',jsonCondition);
+        const result= await DeleteQuery('announces',jsonCondition);
         return result
     }
     catch(err){

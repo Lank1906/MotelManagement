@@ -20,8 +20,10 @@ export default function ServiceList() {
     const loadingContext = useContext(LoadingContext)
 
     useEffect(() => {
+        if(!dataContext?.type)
+            return
         loadingContext?.setStatus(true)
-        GetFetch('service',
+        GetFetch(dataContext.type,
             (data: any) => {
                 dataContext?.setList(data)
                 loadingContext?.setStatus(false)
@@ -39,7 +41,7 @@ export default function ServiceList() {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name + " ?")
         if (!result || id == undefined) return
         loadingContext?.setStatus(true)
-        DeleteFetch('service/' + id,
+        DeleteFetch(dataContext?.type + '/' + id,
             (data: any) => {
                 let tam = (dataContext?.list as ServiceType[]).filter((item: ServiceType) => item.id !== id)
                 dataContext?.setList(tam)

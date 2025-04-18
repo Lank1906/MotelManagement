@@ -39,7 +39,6 @@ async function GetListByDate(date,jsonData){
 }
 
 async function AddObject(jsonData){
-    console.log(jsonData)
     try{
         checkIn=await GetQuery('rooms',['check_in'],{"user_id":jsonData.user_id,'id':jsonData.room_id},{})
         checkIn=checkIn[0].check_in.split('-')[2]

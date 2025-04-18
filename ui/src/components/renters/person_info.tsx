@@ -14,7 +14,7 @@ export default function PersonInfo() {
     const announceContext = useContext(AnnounceContext)
     const dataContext = useContext(DataContext)
     const context = useContext(MyContext)
-    const loadingContext=useContext(LoadingContext)
+    const loadingContext = useContext(LoadingContext)
 
     const [cccdF, setCCCDF] = useState<string | null>(null)
     const [cccdB, setCCCDB] = useState<string | null>(null)
@@ -22,7 +22,6 @@ export default function PersonInfo() {
     const [rooms, setRooms] = useState<RoomType[]>([])
 
     useEffect(() => {
-        console.log(dataContext?.type)
         if (dataContext?.id == -1)
             return
         loadingContext?.setStatus(true)
@@ -33,7 +32,6 @@ export default function PersonInfo() {
             },
             context?.data,
             (data: any) => {
-                console.log(data.message)
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("danger")
                 announceContext?.setClose(true)
@@ -115,13 +113,15 @@ export default function PersonInfo() {
     //         })
     // }
 
-    function requestInfo(){
-        if (dataContext?.id == -1)
+    function requestInfo(id:number|undefined) {
+        if (!id)
             return
         loadingContext?.setStatus(true)
-        GetFetch(dataContext?.type + '/info/' + dataContext?.id,
-            (data: PersonDetailType[]) => {
-                setObject(data[0])
+        GetFetch(dataContext?.type + '/info/' + id,
+            (data:any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("success")
+                announceContext?.setClose(true)
                 loadingContext?.setStatus(false)
             },
             context?.data,
@@ -214,9 +214,9 @@ export default function PersonInfo() {
                 }} />
             </div>
             <div className="action">
-                <button className="btn add" onClick={requestInfo}><i className="fa-solid fa-plus"></i> Yêu cầu cập nhật thông tin</button>
+                <button className="btn add" onClick={()=>requestInfo(object?.user_id||undefined)}><i className="fa-solid fa-plus"></i> Yêu cầu cập nhật thông tin</button>
             </div>
-            {loadingContext?.status?<Loader/>:''}
+            {loadingContext?.status ? <Loader /> : ''}
         </div>
     )
 }

@@ -3,6 +3,7 @@ export interface PersonDetailType{
     room_id?:number,
     room_name?:string,
     renter_name?:string,
+    user_id?:number,
     cccd?:string,
     country?:string,
     email?:string

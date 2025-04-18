@@ -11,7 +11,6 @@ async function List(req,res){
 }
 
 async function One(req,res){
-    console.log('here')
     const result=await GetOne({"room_rents.id":req.params.id,"rooms.user_id":req.user.id});
     if(result.length>0){
         return res.status(200).json(result);

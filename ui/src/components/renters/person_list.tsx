@@ -18,7 +18,9 @@ export default function PersonList() {
     const loadingContext = useContext(LoadingContext);
 
     useEffect(() => {
-        GetFetch(dataContext?.type??'room-rent',
+        if(!dataContext?.type)
+            return
+        GetFetch(dataContext.type,
             (data: PersonType[]) => {
                 dataContext?.setList(data)
             },

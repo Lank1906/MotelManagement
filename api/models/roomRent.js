@@ -13,7 +13,7 @@ async function ListRoomId(){
 async function GetList(jsonEqual,jsonLike){
     try{
         jsonEqual["room_rents.is_active"]=1
-        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','users.username as renter_name','status'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonEqual,jsonLike);
+        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','users.username as renter_name','status','room_rents.user_id'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonEqual,jsonLike);
         return result;
     }catch (err){
         return err;
@@ -23,7 +23,7 @@ async function GetList(jsonEqual,jsonLike){
 async function GetOne(jsonData){
     try{
         jsonData["room_rents.is_active"]=1
-        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','room_rents.room_id','users.username as renter_name','cccd','country','users.email','users.phone','img_font','img_back','tctv','status'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonData,{});
+        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','room_rents.room_id','room_rents.user_id','users.username as renter_name','cccd','country','users.email','users.phone','img_font','img_back','tctv','status'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonData,{});
         return result;
     }catch (err){
         return err;
@@ -33,11 +33,9 @@ async function GetOne(jsonData){
 async function AddObject(jsonData,jsonCondition){
     try{
         const result=await UpdateQuery('room_rents',jsonData,jsonCondition);
-        console.log(jsonCondition)
         return result;
     }
     catch (err){
-        console.log(err)
         return err;
     }
 }
