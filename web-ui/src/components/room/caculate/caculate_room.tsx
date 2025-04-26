@@ -40,8 +40,13 @@ export default function RoomCaculate() {
     }, [dataContext?.id])
 
     function calculate(typez: number) {
-        if (water < 0 || electric <= 0 || typez < 0 || typez > 2 || dataContext?.id == -1)
+        if (water < 0 || electric <= 0 || typez < 0 || typez > 2 || dataContext?.id == -1){
+            announceContext?.setMessage("Vui lòng điền số điện và số nước!")
+            announceContext?.setType("warning")
+            announceContext?.setClose(true)
             return
+        }
+           
         loadingContext?.setStatus(true)
         setType(typez)
         PostFetch("calculate/" + dataContext?.id,

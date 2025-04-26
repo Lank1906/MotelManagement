@@ -191,9 +191,12 @@ async function AddBill(jsonData){
         }
         else if(type==0){//den
             re=await UpdateQuery('room_rents',{"room_id":jsonData['rooms.id'],"is_active":1},{"user_id":ids.map(item => item.user_id).join(',')});
+            console.log(re)
+            re=await UpdateQuery('rooms',{"check_in":new Intl.DateTimeFormat('en-CA').format(new Date())},{"id":jsonData['rooms.id']});
         }
         else if(type==2){//di
             re=await UpdateQuery('room_rents',{"room_id":null,"is_active":0},{"user_id":ids.map(item => item.user_id).join(',')});
+            re=await UpdateQuery('rooms',{"check_in":null},{"id":jsonData['rooms.id']});
         }
         
         return re;

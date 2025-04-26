@@ -28,9 +28,9 @@ async function Pay(req,res){
     try{
         const result=await AddBill({"rooms.user_id":req.user.id,"rooms.id":req.params.id,...req.body})
         if(result)
-            res.status(200).json({"message":"Đã thanh toan thành công!","id":result});
+            res.status(200).json({"message":"Đã thanh toán thành công!","id":result});
         else
-            return res.status(400).json({"message":"Thanh toan that bai"})
+            return res.status(400).json({"message":"Thanh toán thất bại!"})
     }
     catch{
         return res.status(400).json({"message":"Loi"})
