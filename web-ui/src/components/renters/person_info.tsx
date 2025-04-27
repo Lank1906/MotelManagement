@@ -155,7 +155,7 @@ export default function PersonInfo() {
             </div>
             <div className="component">
                 <label htmlFor="que_quan">Quê quán</label><br />
-                <input type="text" className="input" name="que_quan" value={object?.country} onChange={(e) => setObject({ ...object, country: e.target.value })} />
+                <input type="text" className="input" name="que_quan" value={object?.address} onChange={(e) => setObject({ ...object, address: e.target.value })} />
             </div>
             <div className="component">
                 <label htmlFor="email">Email</label><br />

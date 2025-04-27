@@ -5,7 +5,7 @@ export interface PersonDetailType{
     renter_name?:string,
     user_id?:number,
     cccd?:string,
-    country?:string,
+    address?:string,
     email?:string
     phone?:string,
     img_font?:string,

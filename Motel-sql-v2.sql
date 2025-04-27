@@ -4,6 +4,10 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     phone VARCHAR(10),
     email VARCHAR(30),
+    cccd VARCHAR(12) UNIQUE,
+    address VARCHAR(100),
+    img_font VARCHAR(40), -- ảnh mặt trước cccd
+    img_back VARCHAR(40), -- ảnh mặt sau cccd
     per INT DEFAULT 1, -- 0 admin, 1 landlord, 2 renter
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -49,10 +53,6 @@ CREATE TABLE room_rents (
     id INT PRIMARY KEY AUTO_INCREMENT,
     room_id INT,
     user_id INT,
-    cccd VARCHAR(12) UNIQUE,
-    country VARCHAR(100),
-    img_font VARCHAR(40), -- ảnh mặt trước cccd
-    img_back VARCHAR(40), -- ảnh mặt sau cccd
     tctv TINYINT(1) DEFAULT 0, -- 0 chưa đăng ký tạm trú tạm vắng, 1 đã đăng ký
     status TINYINT(1) DEFAULT 0, -- 0 người ở, 1 khách đến chơi
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -112,18 +112,18 @@ CREATE TABLE announces(
     FOREIGN KEY (for_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-insert into users(username,password,email,phone,per) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1);
-insert into users(username,password,email,phone,per) VALUES ('admin','$2b$12$rUsjgfVR.SIf2XEjDIy6Zu.D5OKe5AIvYuHXBLM6MIrct8RMzMrSa','admin@gmail.com','0349852986',0);
-insert into users(username,password,email,phone,per) VALUES ('Lu van Cong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Dinh thi Hoan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Nguyen van Viet','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Sung a La','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Ha thi Hang','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Ha thi Hong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Dinh van Hiep','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Li chi Ngan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('Va ba Ly','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
-insert into users(username,password,email,phone,per) VALUES ('lankrenter','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2);
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1,'033203302930','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('admin','$2b$12$rUsjgfVR.SIf2XEjDIy6Zu.D5OKe5AIvYuHXBLM6MIrct8RMzMrSa','admin@gmail.com','0349852986',0,'033203302931','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Lu van Cong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302932','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Dinh thi Hoan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302933','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Nguyen van Viet','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302934','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Sung a La','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302935','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Ha thi Hang','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302936','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Ha thi Hong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302937','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Dinh van Hiep','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302938','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Li chi Ngan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302939','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('Va ba Ly','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302940','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address) VALUES ('lankrenter','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302941','hy-vl-nd');
 
 insert into types(user_id,name,priceFM,priceFD,electric,water,water_follow) values(1,'T1','1200',50,'3.5',50,0),(1,'T2','1000',null,'3.5',50,0);
 
@@ -165,15 +165,15 @@ VALUES
 
 
 
-insert into room_rents(user_id,room_id,cccd,country,tctv,status) values (11,1,'033203302930','hy-vl-nd',1,0),
-																					(10,2,'033203302931','hy-vl-nd',1,0),
-                                                                                    (3,3,'033203302932','hy-vl-nd',1,0),
-                                                                                    (4,4,'033203302933','hy-vl-nd',1,0),
-                                                                                    (5,5,'033203302934','hy-vl-nd',1,0),
-                                                                                    (6,6,'033203302935','hy-vl-nd',1,0),
-                                                                                    (7,7,'033203302936','hy-vl-nd',1,0),
-                                                                                    (8,8,'033203302937','hy-vl-nd',1,0),
-                                                                                    (9,9,'033203302938','hy-vl-nd',1,0);
+insert into room_rents(user_id,room_id,tctv,status) values (11,1,1,0),
+																					(10,2,1,0),
+                                                                                    (3,3,1,0),
+                                                                                    (4,4,1,0),
+                                                                                    (5,5,1,0),
+                                                                                    (6,6,1,0),
+                                                                                    (7,7,1,0),
+                                                                                    (8,8,1,0),
+                                                                                    (9,9,1,0);
 
 insert into services(user_id,name,follow,price) values (1,'internet',0,30),(1,'sac xe',1,50);
 

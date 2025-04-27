@@ -23,7 +23,7 @@ async function GetList(jsonEqual,jsonLike){
 async function GetOne(jsonData){
     try{
         jsonData["room_rents.is_active"]=1
-        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','room_rents.room_id','room_rents.user_id','users.username as renter_name','cccd','country','users.email','users.phone','img_font','img_back','tctv','status'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonData,{});
+        const result=await GetJoinQuery('room_rents',['users','rooms'],['room_rents.id','rooms.name as room_name','room_rents.room_id','room_rents.user_id','users.username as renter_name','users.cccd','users.address','users.email','users.phone','users.img_font','users.img_back','tctv','status'],['room_rents.user_id=users.id','room_rents.room_id=rooms.id'],jsonData,{});
         return result;
     }catch (err){
         return err;
