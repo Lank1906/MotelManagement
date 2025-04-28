@@ -53,6 +53,7 @@ app.use("/room-rent",require("./routers/roomRentRoute"));
 app.use("/history",require("./routers/historyRoute"));
 app.use("/calculate",require("./routers/calculateRoute"))
 app.use("/announce",require("./routers/announceRoute"))
+app.use("/mobile",require("./routers/mobileRoute"))
 
 // Lắng nghe trên cổng được xác định
 app.listen(port,'0.0.0.0', () => {

@@ -24,13 +24,13 @@ function GetQuery(tableName,columnList,jsonEqualCondition,jsonLikeCondition,exte
     const connection = mysql.createConnection(setupDB);
     let condition='';
     if(Object.keys(jsonEqualCondition).length){
-        condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+        condition+=(condition?" AND ":'')+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     }
     if(Object.keys(jsonLikeCondition).length){
-        condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
+        condition+=(condition?" AND ":'')+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
-    condition+= extendCondition? ' AND '+extendCondition.join(' AND '):'';
-    var sql="SELECT "+columnList.join()+" from "+tableName+condition +(groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
+    condition+= extendCondition? (condition?' AND ':'')+extendCondition.join(' AND '):'';
+    var sql="SELECT "+columnList.join()+" from "+tableName+(condition? ' Where '+condition:'' )+(groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
     // console.log(sql);
     connection.connect((err) => {
         if (err) {
@@ -58,12 +58,12 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
     const connection = mysql.createConnection(setupDB);
     let condition='';
     if(Object.keys(jsonEqualCondition).length){
-        condition+=" WHERE "+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
+        condition+=(condition?" AND ":'')+Object.entries(jsonEqualCondition).map(([key,value])=>key+"="+mysql.escape(value)).join(' AND ');
     }
     if(Object.keys(jsonLikeCondition).length){
-        condition+=" AND "+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
+        condition+=(condition?" AND ":'')+Object.entries(jsonLikeCondition).map(([key,value])=>key+" like '%"+value+"%' ").join(' AND ');
     }
-    condition+= extendCondition? ' AND '+extendCondition.join(' AND '):'';
+    condition+= extendCondition? (condition?' AND ':'')+extendCondition.join(' AND '):'';
     var sql="SELECT "+columnList.join()+" from "+mainTable;
     
     if(sideTable.length>0 && sideTable.length===onCondition.length){
@@ -72,7 +72,7 @@ function GetJoinQuery(mainTable,sideTable,columnList,onCondition,jsonEqualCondit
         }
     }
     
-    sql+=condition+ (groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
+    sql+=(condition?' where '+condition:'')+ (groupBy?' Group By '+groupBy:'') +(having?' Having '+having:'') + (orderBy?' Order By '+orderBy:'')+(offset?' offset '+offset:'')+ (limit?' Limit '+limit:'');
     //console.log(sql)
     connection.connect((err) => {
         if (err) {
