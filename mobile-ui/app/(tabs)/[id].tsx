@@ -1,20 +1,25 @@
 import { useLocalSearchParams } from 'expo-router';
 import { View, StyleSheet, Text, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RoomDetailType } from '@/interfaces/roomDetail';
-import { GetFetch } from '@/libs/fetch';
+import { GetFetch, PostFetch } from '@/libs/fetch';
 
 const Details = () => {
   const { id } = useLocalSearchParams();
   const [token, setToken] = useState<string>('');
   const [room, setRoom] = useState<RoomDetailType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const info = useRef<any | null>(null);
 
   const getToken = async () => {
     try {
       const storedToken = await AsyncStorage.getItem('token');
+      const storedInfo = await AsyncStorage.getItem('info');
+
+      info.current = storedInfo ? JSON.parse(storedInfo) : null;
+
       if (storedToken) {
         setToken(storedToken);
       } else {
@@ -26,7 +31,7 @@ const Details = () => {
   };
 
   const fetchRoomDetails = async () => {
-    GetFetch('mobile/' + 1,
+    GetFetch('mobile/' + id,
       (data: RoomDetailType) => {
         setRoom(data);
         setLoading(false);
@@ -34,20 +39,22 @@ const Details = () => {
       token,
       (err: any) => {
         alert(err.message);
+        console.log(err)
         setLoading(false);
       }
     );
   };
 
   useEffect(() => {
-    // if (!id || isNaN(Number(id))) {
-    //   router.replace('/(tabs)');
-    //   return;
-    // }
+    if (!id || isNaN(Number(id))) {
+      router.replace('/(tabs)');
+      return;
+    }
 
     getToken();
-    fetchRoomDetails();
-  }, []);
+    if(token)
+      fetchRoomDetails();
+  }, [token]);
 
   if (loading) {
     return (
@@ -68,8 +75,15 @@ const Details = () => {
   const canJoin = room.CountPeople < room.person_limit;
 
   const handleJoin = () => {
-    console.log('Đã tham gia phòng:', room.id);
-    // TODO: gọi API Join phòng ở đây
+    if (room.room_now) {
+      alert("Vui lòng thực hiện rời phòng cũ trước khi muốn thuê một phòng mới!")
+      return;
+    }
+    PostFetch('mobile',
+      { "message": info.current?.username || 'Người dùng' + " muốn thuê phòng " + room.name + "của bạn! Vui lòng phê duyệt hoặc tạo hóa đơn!" },
+      () => { },
+      token,
+      () => { })
   };
 
   return (

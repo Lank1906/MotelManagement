@@ -21,6 +21,7 @@ export default function LoginScreen() {
       (data: any) => {
         setLoading(false);
         AsyncStorage.setItem('token', data.token);
+        AsyncStorage.setItem('info', JSON.stringify(data.info));
         router.replace('/(tabs)');
       },
       undefined,

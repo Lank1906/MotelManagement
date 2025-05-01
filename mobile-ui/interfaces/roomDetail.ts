@@ -10,4 +10,6 @@ export interface RoomDetailType {
     electric_number?: number,
     person_limit: number,
     CountPeople:number,
+    room_now?:number,
+    name:string,
 }
