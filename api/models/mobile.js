@@ -2,7 +2,7 @@ const {GetQuery,GetJoinQuery,AddQuery,UpdateQuery,DeleteQuery}=require("./connec
 
 async function getRoomList(){
     try {
-        const result=await GetJoinQuery('rooms',['users','types'],['rooms.id','users.username','check_in','img_room','rooms.user_id','types.priceFM','users.address'],['rooms.user_id=users.id','rooms.type=types.id'],{},{},['check_in is null']);
+        const result=await GetJoinQuery('rooms',['users','types'],['rooms.name','rooms.id','users.username','check_in','img_room','rooms.user_id','types.priceFM','users.address'],['rooms.user_id=users.id','rooms.type=types.id'],{},{},['check_in is null']);
         return result;
     }
     catch(err){
@@ -12,7 +12,7 @@ async function getRoomList(){
 
 async function getRoomByLandlord(jsonData){
     try {
-        const result=await GetQuery('rooms',['id','name','check_in','image_room','user_id'],jsonData,{});
+        const result=await GetJoinQuery('rooms',['users','types'],['rooms.name','rooms.id','users.username','check_in','img_room','rooms.user_id','types.priceFM','users.address'],['rooms.user_id=users.id','rooms.type=types.id'],jsonData,{});
         return result;
     }
     catch(err){
@@ -70,4 +70,4 @@ async function Calculate(){
 async function UpdateProfile(){
     
 }
-module.exports={getRoomList,getDetailRoom,AddAnnounce}
+module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord}

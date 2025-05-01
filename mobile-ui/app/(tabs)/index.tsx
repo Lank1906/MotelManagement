@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { GetFetch } from "@/libs/fetch";
@@ -15,8 +15,9 @@ export default function Index() {
   const [priceMax, setPriceMax] = useState(0);
   const [searchText, setSearchText] = useState('');
   const [token, setToken] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
-  
+
   const getToken = async () => {
     try {
       const storedToken = await AsyncStorage.getItem('token');
@@ -47,15 +48,31 @@ export default function Index() {
     }
   };
 
+  const fetchDataByLandlord = async (id: number) => {
+    setLoading(true)
+    GetFetch(
+      'mobile/landlord/' + id,
+      (data: RoomType[]) => {
+        setRooms(data);
+      },
+      token,
+      (err: any) => {
+        console.error("Fetch rooms error", err);
+      }
+    );
+    setLoading(false)
+  };
 
   useEffect(() => {
+    console.log("Loading ...")
     fetchData();
+    setLoading(false)
   }, []);
 
-  if (!token) {
+  if (loading) {
     return (
       <View style={styles.container}>
-        <Text>Đang tải dữ liệu...</Text>
+        <ActivityIndicator size="large" color="#00aa00" />
       </View>
     );
   }
@@ -72,11 +89,11 @@ export default function Index() {
         />
       </View>
 
-      <FlatList
+      <FlatList style={{ borderRadius: 16 }}
         data={rooms}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <RoomCard room={item} />
+          <RoomCard room={item} onLandlordClick={fetchDataByLandlord} />
         )}
       />
     </View>

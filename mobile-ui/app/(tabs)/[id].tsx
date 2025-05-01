@@ -31,6 +31,7 @@ const Details = () => {
   };
 
   const fetchRoomDetails = async () => {
+    setLoading(true)
     GetFetch('mobile/' + id,
       (data: RoomDetailType) => {
         setRoom(data);
@@ -54,7 +55,7 @@ const Details = () => {
     getToken();
     if(token)
       fetchRoomDetails();
-  }, [token]);
+  }, [token,id]);
 
   if (loading) {
     return (

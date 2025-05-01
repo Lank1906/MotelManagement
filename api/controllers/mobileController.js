@@ -1,4 +1,4 @@
-const {getRoomList,getDetailRoom,AddAnnounce}=require("../models/mobile");
+const {getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord}=require("../models/mobile");
 
 async function RoomList(req,res){
     const result=await getRoomList();
@@ -12,12 +12,21 @@ async function RoomList(req,res){
 
 async function RoomDetail(req,res){
     const result=await getDetailRoom(req.params.id,req.user.id);
-    console.log(result)
     if(result){
         return res.status(200).json(result);
     }
     else{
         return res.status(400).json({"message":"Phòng này không có trên hệ thống!"})
+    }
+}
+
+async function RoomByLandLord(req,res){
+    const result=await getRoomByLandlord({'rooms.user_id':req.params.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"Chủ này chưa có phòng nào trông trên hệ thống!"})
     }
 }
 
@@ -31,4 +40,4 @@ async function RequestJoin(req,res){
     }
 }
 
-module.exports={RoomList,RoomDetail};
+module.exports={RoomList,RoomDetail,RoomByLandLord};
