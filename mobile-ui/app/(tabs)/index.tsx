@@ -39,10 +39,12 @@ export default function Index() {
         'mobile',
         (data: RoomType[]) => {
           setRooms(data);
+          setLoading(false)
         },
         token,
         (err: any) => {
           console.error("Fetch rooms error", err);
+          setLoading(false)
         }
       );
     }
@@ -54,13 +56,14 @@ export default function Index() {
       'mobile/landlord/' + id,
       (data: RoomType[]) => {
         setRooms(data);
+        setLoading(false)
       },
       token,
       (err: any) => {
         console.error("Fetch rooms error", err);
+        setLoading(false)
       }
     );
-    setLoading(false)
   };
 
   useEffect(() => {

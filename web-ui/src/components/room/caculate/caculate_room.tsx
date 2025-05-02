@@ -12,8 +12,10 @@ export default function RoomCaculate() {
     const [object, setObject] = useState<BillType>()
     const [electric, setEletric] = useState<number>(0)
     const [water, setWater] = useState<number>(0)
-    const [type, setType] = useState<number>(0)
+    const [type, setType] = useState<number>(-1)
     const [filter, setFilter] = useState<Date | undefined>(undefined)
+    const [suggest, setSuggest] = useState<any[]>([])
+    const [id,setId]=useState<number>(0)
 
     const context = useContext(MyContext)
     const dataContext = useContext(DataContext)
@@ -40,19 +42,28 @@ export default function RoomCaculate() {
     }, [dataContext?.id])
 
     function calculate(typez: number) {
-        if (water < 0 || electric <= 0 || typez < 0 || typez > 2 || dataContext?.id == -1){
-            announceContext?.setMessage("Vui lòng điền số điện và số nước!")
-            announceContext?.setType("warning")
-            announceContext?.setClose(true)
-            return
+        if (dataContext?.id === -1) {
+            announceContext?.setMessage("Vui lòng chọn phòng dể thực hiện thao tác!");
+            announceContext?.setType("warning");
+            announceContext?.setClose(true);
+            return;
+        } else if (typez === 0) {
+            getSuggest()
+        } else if (typez === 1 || typez === 2) {
+            if (water <= 0 || electric <= 0) {
+                announceContext?.setMessage("Vui lòng điền số điện và số nước hợp lệ!");
+                announceContext?.setType("warning");
+                announceContext?.setClose(true);
+                return;
+            }
         }
-           
+
         loadingContext?.setStatus(true)
         setType(typez)
         PostFetch("calculate/" + dataContext?.id,
             {
-                water_number: water,
-                electric_number: electric,
+                water_number: water || 0,
+                electric_number: electric || 0,
                 type: typez
             }, (data: BillType) => {
                 setObject(data)
@@ -67,14 +78,32 @@ export default function RoomCaculate() {
     }
 
     function payed() {
-        if (water < 0 || electric <= 0 || type < 0 || type > 2 || dataContext?.id == -1)
+        if (dataContext?.id === -1) {
+            announceContext?.setMessage("Vui lòng chọn phòng dể thực hiện thao tác!");
+            announceContext?.setType("warning");
+            announceContext?.setClose(true);
+            return;
+        } else if (id === 0) {
+            console.log(id)
+            announceContext?.setMessage("Vui lòng chọn loại thanh toán để tạo hóa đơn!");
+            announceContext?.setType("warning");
+            announceContext?.setClose(true);
             return
+        } else if (type === 1 || type === 2) {
+            if (water <= 0 || electric <= 0) {
+                announceContext?.setMessage("Vui lòng điền số điện và số nước hợp lệ!");
+                announceContext?.setType("warning");
+                announceContext?.setClose(true);
+                return;
+            }
+        }
         loadingContext?.setStatus(true)
         PutFetch("calculate/" + dataContext?.id,
             {
                 water_number: water,
                 electric_number: electric,
-                type: type
+                type: type,
+                id:id
             }, (data: any) => {
                 announceContext?.setMessage(data.message)
                 announceContext?.setType("success")
@@ -106,7 +135,7 @@ export default function RoomCaculate() {
             if (dataContext?.id === -1 || !filter)
                 return
             loadingContext?.setStatus(true)
-            GetFetch('calculate/' +`${filter.getFullYear()}-${filter.getMonth() + 1}-${filter.getDate()}`+'/' + dataContext?.id,
+            GetFetch('calculate/' + `${filter.getFullYear()}-${filter.getMonth() + 1}-${filter.getDate()}` + '/' + dataContext?.id,
                 (data: BillType) => {
                     setObject(data)
                     loadingContext?.setStatus(false)
@@ -136,6 +165,24 @@ export default function RoomCaculate() {
                 announceContext?.setClose(true)
                 loadingContext?.setStatus(false)
             })
+    }
+
+    async function getSuggest() {
+        loadingContext?.setStatus(true);
+        GetFetch('room-rent/suggest',
+            (data: any[]) => {
+                setSuggest(data)
+                setId(data[0].id)
+                loadingContext?.setStatus(false)
+            },
+            context?.data,
+            (data: any) => {
+                announceContext?.setMessage(data.message)
+                announceContext?.setType("danger")
+                announceContext?.setClose(true)
+                loadingContext?.setStatus(false)
+            }
+        )
     }
 
     return (
@@ -172,8 +219,19 @@ export default function RoomCaculate() {
                 <div className="btn add" onClick={() => calculate(1)}><i className="fa-solid fa-rotate"></i> Thanh toán</div>
                 <div className="btn update" onClick={() => calculate(0)}><i className="fa-solid fa-arrow-left"></i> Chuyển đến</div>
             </div>
+            {type===0?<div className="component">
+                <label htmlFor="type">Tên</label><br />
+                <select className="input" value={id} onChange={(e)=>setId(parseInt(e.target.value))}>
+                    {
+                        suggest ? suggest.map((item: any) => {
+                            return (<option value={item.id} key={item.id}>{item.username} - {item.phone}</option>)
+                        }) : ''
+                    }
+                </select>
+            </div>:''}
+            
             <div className="service-action" style={{ display: filter ? 'none' : 'block' }}>
-                <div className="btn add" onClick={payed}><i className="fa-solid fa-money-bill"></i> Xác nhận thanh toán</div>
+                <div className="btn add" onClick={payed}><i className="fa-solid fa-money-bill"></i> Xác nhận tạo hóa đơn</div>
             </div>
             {loadingContext?.status ? <Loader /> : ''}
         </>

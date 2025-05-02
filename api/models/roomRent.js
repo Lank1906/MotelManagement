@@ -30,6 +30,15 @@ async function GetOne(jsonData){
     }
 }
 
+async function GetSuggest(id){
+    try{
+        const result=await GetJoinQuery('users',['announces'],['distinct users.id','users.username','users.phone'],['users.id=announces.user_id'],{'for_id':id},{});
+        return result;
+    }catch (err){
+        return err;
+    }
+}
+
 async function AddObject(jsonData,jsonCondition){
     try{
         const result=await UpdateQuery('room_rents',jsonData,jsonCondition);
@@ -73,4 +82,4 @@ async function RequestInfo(jsonData){
         return err;
     }
 }
-module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo};
+module.exports={GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo,GetSuggest};

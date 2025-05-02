@@ -53,9 +53,9 @@ const Details = () => {
     }
 
     getToken();
-    if(token)
+    if (token)
       fetchRoomDetails();
-  }, [token,id]);
+  }, [token, id]);
 
   if (loading) {
     return (
@@ -76,15 +76,28 @@ const Details = () => {
   const canJoin = room.CountPeople < room.person_limit;
 
   const handleJoin = () => {
+    console.log("here")
     if (room.room_now) {
       alert("Vui lòng thực hiện rời phòng cũ trước khi muốn thuê một phòng mới!")
       return;
     }
-    PostFetch('mobile',
-      { "message": info.current?.username || 'Người dùng' + " muốn thuê phòng " + room.name + "của bạn! Vui lòng phê duyệt hoặc tạo hóa đơn!" },
-      () => { },
+    if (room.CountPeople == room.person_limit) {
+      alert("Phòng này đã kín người vui lòng tìm phòng khác!")
+      return;
+    }
+    PostFetch('mobile/request-join',
+      {
+        "message": (info.current?.username || 'Người dùng') + " muốn thuê phòng " + room.name + " của bạn! Vui lòng " + (room.CountPeople == 0 ? "tạo hóa đơn " : "phê duyệt ") + "cho người này!",
+        "for_id": room.user_id
+      },
+      (data: any) => {
+        alert(data.message)
+      },
       token,
-      () => { })
+      (err: any) => {
+        console.log(err)
+        alert(err.message)
+      })
   };
 
   return (

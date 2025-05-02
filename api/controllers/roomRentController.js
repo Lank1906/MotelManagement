@@ -1,4 +1,4 @@
-const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo}=require("../models/roomRent");
+const {GetList,GetOne,AddObject,UpdateObject,DeleteObject,ListRoomId,RequestInfo,GetSuggest}=require("../models/roomRent");
 
 async function List(req,res){
     const result=await GetList({"rooms.user_id":req.user.id},req.query)
@@ -12,6 +12,16 @@ async function List(req,res){
 
 async function One(req,res){
     const result=await GetOne({"room_rents.id":req.params.id,"rooms.user_id":req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"Không tồn tại người thuê có sẵn"})
+    }
+}
+
+async function Suggest(req,res){
+    const result=await GetSuggest({"for_id":req.user.id});
     if(result.length>0){
         return res.status(200).json(result);
     }
@@ -69,4 +79,4 @@ async function Info(req,res){
         return res.status(401).json({"message":"Yêu cầu thất bại !"});
     }
 }
-module.exports={List,One,Add,Update,Delete,Info};
+module.exports={List,One,Add,Update,Delete,Info,Suggest};

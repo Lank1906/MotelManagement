@@ -40,4 +40,4 @@ async function RequestJoin(req,res){
     }
 }
 
-module.exports={RoomList,RoomDetail,RoomByLandLord};
+module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin};
