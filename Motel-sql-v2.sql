@@ -2,16 +2,19 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(30) NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    phone VARCHAR(10),
-    email VARCHAR(30),
+    phone VARCHAR(15),
+    email VARCHAR(100),
     cccd VARCHAR(12) UNIQUE,
-    address VARCHAR(100),
-    img_font VARCHAR(40), -- ảnh mặt trước cccd
-    img_back VARCHAR(40), -- ảnh mặt sau cccd
-    per INT DEFAULT 1, -- 0 admin, 1 landlord, 2 renter
+    address VARCHAR(255),
+    img_font VARCHAR(255), -- ảnh mặt trước CCCD
+    img_back VARCHAR(255), -- ảnh mặt sau CCCD
+    per TINYINT DEFAULT 1, -- 0: admin, 1: landlord, 2: renter
+    bank VARCHAR(100),
+    account_no VARCHAR(30),
+    account_name VARCHAR(100),
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    is_active BIT DEFAULT 1
+    is_active BOOLEAN DEFAULT 1
 );
 
 CREATE TABLE types (
@@ -98,7 +101,6 @@ CREATE TABLE bill_rooms (
     service_price FLOAT DEFAULT 0,
     more_price TEXT,
     img_bill TEXT,
-    img_sign TEXT,
     FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
@@ -112,7 +114,7 @@ CREATE TABLE announces(
     FOREIGN KEY (for_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-insert into users(username,password,email,phone,per,cccd,address) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1,'033203302930','hy-vl-nd');
+insert into users(username,password,email,phone,per,cccd,address,bank,account_no,account_name) VALUES ('lank','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',1,'033203302930','hy-vl-nd','MB','89696996696699','BUI XUAN HOANG');
 insert into users(username,password,email,phone,per,cccd,address) VALUES ('admin','$2b$12$rUsjgfVR.SIf2XEjDIy6Zu.D5OKe5AIvYuHXBLM6MIrct8RMzMrSa','admin@gmail.com','0349852986',0,'033203302931','hy-vl-nd');
 insert into users(username,password,email,phone,per,cccd,address) VALUES ('Lu van Cong','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302932','hy-vl-nd');
 insert into users(username,password,email,phone,per,cccd,address) VALUES ('Dinh thi Hoan','$2b$12$n4uiS1KYzZDrr0lDwuSjGOQ06Xxr0Hfu6v.OGHz1xcgP7HcTVR/cy','lank@gmail.com','0349852986',2,'033203302933','hy-vl-nd');

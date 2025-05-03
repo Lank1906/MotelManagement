@@ -1,4 +1,4 @@
-const {getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord}=require("../models/mobile");
+const {getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting}=require("../models/mobile");
 
 async function RoomList(req,res){
     const result=await getRoomList();
@@ -40,4 +40,14 @@ async function RequestJoin(req,res){
     }
 }
 
-module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin};
+async function RoomRenting(req,res){
+    const result=await getDetailRoomRenting({'room_rents.user_id':req.user.id,'users.is_active':1});
+    if(result){
+        return res.status(200).json(result[0]);
+    }
+    else{
+        return res.status(400).json({"message":"Phòng này không có trên hệ thống!"})
+    }
+}
+
+module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting};

@@ -31,7 +31,17 @@ async function getDetailRoom(id,user_id){
     }
 }
 
-async function getDetailRoomRented(jsonData){
+async function getDetailRoomRenting(jsonData){
+    try {
+        const result=await GetJoinQuery('users',['rooms','room_rents'],['users.username','users.phone','users.email','users.address','rooms.name','rooms.person_limit','rooms.electric_number','rooms.water_number','rooms.check_in','rooms.img_room','rooms.bill_at','count(room_rents.user_id) as CountPeople'],['rooms.user_id=users.id','rooms.id=room_rents.room_id'],jsonData,{},undefined,'rooms.id');
+        return result;
+    }
+    catch(err){
+        return err;
+    }
+}
+
+async function getLasestBill(jsonData){
     
 }
 
@@ -63,11 +73,7 @@ async function DeleteAnnounce(){
     }
 }
 
-async function Calculate(){
-    
-}
-
 async function UpdateProfile(){
     
 }
-module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord}
+module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting}
