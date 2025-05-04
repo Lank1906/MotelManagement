@@ -45,17 +45,30 @@ async function getLasestBill(jsonData){
     
 }
 
-async function GetAnnounceForMe(){
-    
+async function GetAnnounceForMe(jsonData){
+    try{
+        const result=await GetJoinQuery('announces',['users'],['announces.id','user_id','message','viewed','username'],['announces.user_id=users.id'],jsonData,{})
+        return result;
+    }
+    catch (err){
+        return err
+    }
 }
 
-async function GetAnnounceByMe(){
-    
+async function GetAnnounceByMe(jsonData){
+    try{
+        const result=await GetJoinQuery('announces',['users'],['announces.id','for_id','message','viewed','username'],['announces.for_id=users.id'],jsonData,{})
+        return result;
+    }
+    catch (err){
+        return err
+    }
 }
 
 async function AddAnnounce(jsonData){
     try{
-        const result=await AddQuery('announces',jsonData);
+        const landlord=await GetJoinQuery('room_rents',['rooms'],['rooms.user_id'],['room_rents.room_id=rooms.id'],{'room_rents.user_id':jsonData.user_id},{});
+        const result=await AddQuery('announces',{...jsonData,'for_id':landlord[0].user_id});
         return result;
     }
     catch (err){
@@ -63,7 +76,7 @@ async function AddAnnounce(jsonData){
     }
 }
 
-async function DeleteAnnounce(){
+async function DeleteAnnounce(jsonCondition){
     try{
         const result= await DeleteQuery('announces',jsonCondition);
         return result
@@ -76,4 +89,4 @@ async function DeleteAnnounce(){
 async function UpdateProfile(){
     
 }
-module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting}
+module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce}

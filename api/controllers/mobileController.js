@@ -1,4 +1,4 @@
-const {getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting}=require("../models/mobile");
+const {getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce}=require("../models/mobile");
 
 async function RoomList(req,res){
     const result=await getRoomList();
@@ -50,4 +50,44 @@ async function RoomRenting(req,res){
     }
 }
 
-module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting};
+async function AnnounceByMe(req,res){
+    const result=await GetAnnounceByMe({"user_id":req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"Không có thông báo mới nào!"})
+    }
+}
+
+async function AnnounceForMe(req,res){
+    const result=await GetAnnounceForMe({"for_id":req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result);
+    }
+    else{
+        return res.status(400).json({"message":"Không có thông báo mới nào!"})
+    }
+}
+
+async function Add(req,res){
+    const result=await AddAnnounce({...req.body,'user_id':req.user.id});
+    if(result>0){
+        return res.status(200).json({"message":"Đã gửi thông báo thành công!","id":result});
+    }
+    else{
+        return res.status(400).json({"message":"Không thể thêm được thông báo!"})
+    }
+}
+
+async function Delete(req,res){
+    const result=await DeleteAnnounce({'id':req.params.id,'user_id':req.user.id});
+    if(result>0){
+        return res.status(200).json({"message":"Xóa thông báo thành công!"});
+    }
+    else{
+        return res.status(400).json({"message":"Xóa thông báo thất bại!"});
+    }
+}
+
+module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting,AnnounceForMe,AnnounceByMe,Add,Delete};
