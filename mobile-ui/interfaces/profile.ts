@@ -1,15 +1,9 @@
-export interface PersonDetailType{
-    id?:number,
-    room_id?:number,
-    room_name?:string,
-    renter_name?:string,
-    user_id?:number,
-    cccd?:string,
-    country?:string,
-    email?:string
-    phone?:string,
-    img_font?:string,
-    img_back?:string,
-    tctv?:boolean,
-    status?:boolean
+export interface ProfileType {
+    username: string;
+    phone: string;
+    email: string;
+    cccd: string;
+    address: string;
+    img_font: string | null;
+    img_back: string | null;
 }

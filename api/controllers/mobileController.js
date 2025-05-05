@@ -1,7 +1,11 @@
-const {getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce}=require("../models/mobile");
+const {getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login}=require("../models/mobile");
+const jwt = require('jsonwebtoken');
 
 async function RoomList(req,res){
-    const result=await getRoomList();
+    const { address, minPrice, maxPrice } = req.query;
+    jsonLike=address?{'users.address':address}:{};
+    extendCondition=['rooms.check_in is null',minPrice?' types.priceFM >= '+minPrice+' ':'',maxPrice?' maxPrice <= '+maxPrice+' ':''];
+    const result=await getRoomList(jsonLike,extendCondition);
     if(result.length>0){
         return res.status(200).json(result);
     }
@@ -90,4 +94,50 @@ async function Delete(req,res){
     }
 }
 
-module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting,AnnounceForMe,AnnounceByMe,Add,Delete};
+async function GetProfile(req,res){
+    const result=await getProfile({'id':req.user.id});
+    if(result.length>0){
+        return res.status(200).json(result[0]);
+    }
+    else{
+        return res.status(400).json({"message":"Lấy thông tin thất bại!"});
+    }
+}
+
+async function UpdateProfile(req,res){
+    const result=await updateProfile(req.body,{'id':req.user.id});
+    if(result>0){
+        return res.status(200).json({"message":"Cập nhật thành công!"});
+    }
+    else{
+        return res.status(401).json({"message":"Cập nhật thất bại !"});
+    }
+}
+
+async function SignUpRenter(req,res){
+    const result=await SignUp(req.body);
+    console.log(result)
+    if (result > 0) {
+  return res.status(200).json({ message: "Đăng ký thành công !" });
+} else if (typeof result === "string" && result.startsWith("Duplicate entry")) {
+  return res.status(401).json({ message: "Tên đăng nhập đã tồn tại !" });
+} else {
+  return res.status(401).json({ message: "Đăng ký thất bại !" });
+}
+}
+
+async function LoginRenter(req,res){
+    console.log(req.body);
+    const result=await Login(req.body);
+    if(typeof result=='object'){
+        const token = jwt.sign({ id:result.id,username:req.body.username,per:result.per }, 'Lank1906', { expiresIn: '6h' });
+        delete result.id;
+        console.log("Login success!")
+        return res.status(200).json({ "message":"Đăng nhập thành công !","token":token,"info":result });
+    }
+    else{
+        console.log("Password error!")
+        return res.status(401).json({ "message":"Tài khoản hoặc mật khẩu không đúng !"});
+    }
+}
+module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting,AnnounceForMe,AnnounceByMe,Add,Delete,GetProfile,UpdateProfile,SignUpRenter,LoginRenter};

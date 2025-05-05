@@ -18,7 +18,7 @@ export default function SignUpScreen() {
 
     setLoading(true);
     PostFetch(
-      'signup',
+      'mobile/signup',
       { username, email, phone, password },
       async (data: any) => {
         router.replace('/login');

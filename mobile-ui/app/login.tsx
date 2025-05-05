@@ -16,7 +16,7 @@ export default function LoginScreen() {
     }
     setLoading(true);
     PostFetch(
-      'login',
+      'mobile/login',
       { username, password },
       (data: any) => {
         setLoading(false);

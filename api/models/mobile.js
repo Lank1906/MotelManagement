@@ -1,8 +1,9 @@
 const {GetQuery,GetJoinQuery,AddQuery,UpdateQuery,DeleteQuery}=require("./connect");
+const bcrypt=require('bcryptjs')
 
-async function getRoomList(){
+async function getRoomList(jsonLike,extendCondition){
     try {
-        const result=await GetJoinQuery('rooms',['users','types'],['rooms.name','rooms.id','users.username','check_in','img_room','rooms.user_id','types.priceFM','users.address'],['rooms.user_id=users.id','rooms.type=types.id'],{},{},['check_in is null']);
+        const result=await GetJoinQuery('rooms',['users','types'],['rooms.name','rooms.id','users.username','check_in','img_room','rooms.user_id','types.priceFM','users.address'],['rooms.user_id=users.id','rooms.type=types.id'],{},jsonLike,extendCondition);
         return result;
     }
     catch(err){
@@ -86,7 +87,56 @@ async function DeleteAnnounce(jsonCondition){
     }
 }
 
-async function UpdateProfile(){
-    
+async function getProfile(jsonData){
+    try{
+        const result=await GetQuery('users',['username','phone','email','cccd','address','img_font','img_back'],jsonData,{});
+        return result;
+    }
+    catch(err){
+        return err;
+    }
 }
-module.exports={getRoomList,getDetailRoom,AddAnnounce,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce}
+
+async function updateProfile(jsonChange,jsonCondition){
+    try{
+        const result=await UpdateQuery('users',jsonChange,jsonCondition);
+        return result;
+    }
+    catch(err){
+        return err;
+    }
+}
+
+async function SignUp(jsonData){
+    jsonData.per=2
+    try{
+        jsonData.password= await bcrypt.hash(jsonData.password,12)
+        const result=await AddQuery('users',jsonData);
+        const re=await AddQuery('room_rents',{'user_id':result})
+        return result;
+    }
+    catch (err){
+        return err;
+    }
+}
+async function Login(jsonData){
+    try{
+        password=jsonData.password;
+        jsonData.is_active=1;
+        jsonData.per=2;
+        delete jsonData.password;
+        result= await GetQuery('users',['id','username','password','per'],jsonData,{});
+        if(result.length==1 && await bcrypt.compare(password,result[0].password)){
+            result=result[0];
+            delete result.password
+            return result;
+        }
+        else if(result.length==1)
+            return -1;
+        return 0;
+    }
+    catch(err){
+        return err;
+    }
+}
+module.exports={getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login}

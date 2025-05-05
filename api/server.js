@@ -1,6 +1,8 @@
 const express =require('express')
 const cors = require('cors');
+const fs = require('fs');
 const authenticateToken=require('./authen.js');
+const {LoginRenter,SignUpRenter}=require('./controllers/mobileController.js');
 
 //npm install nodemon --save-dev
 
@@ -14,6 +16,8 @@ const port = 5000;
 app.use(cors()); // Sử dụng middleware CORS
 
 app.use("/",express.json(),require("./routers/userRoute"));
+app.use("/mobile/login",express.json(),LoginRenter);
+app.use("/mobile/signup",express.json(),SignUpRenter);
 
 //ap dung xac thuc
 app.use(authenticateToken);
@@ -38,8 +42,16 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
         }
         res.send(req.file.filename);
     } catch (error) {
+        console.log(error)
         res.status(400).send('Có lỗi xảy ra khi upload');
     }
+});
+app.get('/api/uploads/:filename', (req, res) => {
+    const filePath = path.join(__dirname, 'uploads', req.params.filename);
+    fs.readFile(filePath, { encoding: 'base64' }, (err, data) => {
+        if (err) return res.status(404).send('Not found');
+        res.send({ base64: `data:image/jpeg;base64,${data}` });
+    });
 });
 
 // ap dung json cho cac router duoi
