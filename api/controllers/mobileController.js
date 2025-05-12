@@ -1,10 +1,16 @@
-const {getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login}=require("../models/mobile");
+const {getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login,getLasestBill,confirmBill}=require("../models/mobile");
 const jwt = require('jsonwebtoken');
 
 async function RoomList(req,res){
     const { address, minPrice, maxPrice } = req.query;
     jsonLike=address?{'users.address':address}:{};
-    extendCondition=['rooms.check_in is null',minPrice?' types.priceFM >= '+minPrice+' ':'',maxPrice?' maxPrice <= '+maxPrice+' ':''];
+    extendCondition=['rooms.check_in is null'];
+    if (minPrice) {
+    extendCondition.push(`types.priceFM >= ${minPrice}`);
+  }
+  if (maxPrice) {
+    extendCondition.push(`types.priceFM <= ${maxPrice}`);
+  }
     const result=await getRoomList(jsonLike,extendCondition);
     if(result.length>0){
         return res.status(200).json(result);
@@ -51,6 +57,26 @@ async function RoomRenting(req,res){
     }
     else{
         return res.status(400).json({"message":"Phòng này không có trên hệ thống!"})
+    }
+}
+
+async function LasestBill(req,res){
+    const result=await getLasestBill({'room_id':req.params.id});
+    if(result){
+        return res.status(200).json(result[0]);
+    }
+    else{
+        return res.status(400).json({"message":"Chưa có hóa đơn cho phòng này!"})
+    }
+}
+
+async function ConfirmBill(req,res){
+    const result=await confirmBill({'user_id':req.user.id},req.body,{'id':req.params.id});
+    if(result>0){
+        return res.status(200).json({"message":"Cập nhật thành công!"});
+    }
+    else{
+        return res.status(401).json({"message":"Cập nhật thất bại !"});
     }
 }
 
@@ -140,4 +166,14 @@ async function LoginRenter(req,res){
         return res.status(401).json({ "message":"Tài khoản hoặc mật khẩu không đúng !"});
     }
 }
-module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting,AnnounceForMe,AnnounceByMe,Add,Delete,GetProfile,UpdateProfile,SignUpRenter,LoginRenter};
+
+async function LeaveRoom(req,res){
+    const result=await AddAnnounce({'user_id':req.user.id,'message':'Tôi muốn rời phòng vui lòng kiểm tra thông tin và hóa đơn cần thiết và phê duyệt!'});
+    if(result>0){
+        return res.status(200).json({"message":"Đã gửi thông báo thành công!","id":result});
+    }
+    else{
+        return res.status(400).json({"message":"Không thể thêm được thông báo!"})
+    }
+}
+module.exports={RoomList,RoomDetail,RoomByLandLord,RequestJoin,RoomRenting,AnnounceForMe,AnnounceByMe,Add,Delete,GetProfile,UpdateProfile,SignUpRenter,LoginRenter,LasestBill,ConfirmBill,LeaveRoom};

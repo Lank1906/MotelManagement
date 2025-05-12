@@ -34,7 +34,7 @@ async function getDetailRoom(id,user_id){
 
 async function getDetailRoomRenting(jsonData){
     try {
-        const result=await GetJoinQuery('users',['rooms','room_rents'],['users.username','users.phone','users.email','users.address','rooms.name','rooms.person_limit','rooms.electric_number','rooms.water_number','rooms.check_in','rooms.img_room','rooms.bill_at','count(room_rents.user_id) as CountPeople'],['rooms.user_id=users.id','rooms.id=room_rents.room_id'],jsonData,{},undefined,'rooms.id');
+        const result=await GetJoinQuery('users',['rooms','room_rents'],['rooms.id','users.username','users.phone','users.email','users.address','users.bank','users.account_no','users.account_name','rooms.name','rooms.person_limit','rooms.electric_number','rooms.water_number','rooms.check_in','rooms.img_room','rooms.bill_at','count(room_rents.user_id) as CountPeople'],['rooms.user_id=users.id','rooms.id=room_rents.room_id'],jsonData,{},undefined,'rooms.id');
         return result;
     }
     catch(err){
@@ -43,7 +43,25 @@ async function getDetailRoomRenting(jsonData){
 }
 
 async function getLasestBill(jsonData){
-    
+    try {
+        const result=await GetQuery('bill_rooms',['id','room_id','day','room_price','electric_price','electric_number','electric_number_final','water_price','water_number','water_number_final','service_price','img_bill'],jsonData,{},undefined,undefined,undefined,'day DESC',undefined,1);
+        return result;
+    }
+    catch(err){
+        return err;
+    }
+}
+
+async function confirmBill(jsonData,jsonChange,jsonCondition){
+    try{
+        const result=await UpdateQuery('bill_rooms',jsonChange,jsonCondition);
+        const landlord=await GetJoinQuery('room_rents',['rooms'],['rooms.user_id'],['room_rents.room_id=rooms.id'],{'room_rents.user_id':jsonData.user_id},{});
+        const result2=await AddQuery('announces',{...jsonData,'message':"Đã thanh toán tiền phòng vui lòng kiểm tra và xóa thông báo hóa đơn!",'for_id':landlord[0].user_id});
+        return result;
+    }
+    catch(err){
+        return err;
+    }
 }
 
 async function GetAnnounceForMe(jsonData){
@@ -139,4 +157,4 @@ async function Login(jsonData){
         return err;
     }
 }
-module.exports={getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login}
+module.exports={getRoomList,getDetailRoom,getRoomByLandlord,getDetailRoomRenting,GetAnnounceByMe,GetAnnounceForMe,AddAnnounce,DeleteAnnounce,getProfile,updateProfile,SignUp,Login,getLasestBill,confirmBill}

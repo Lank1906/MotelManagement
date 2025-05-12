@@ -1,4 +1,12 @@
-import React, { useState } from 'react';
+import BillType from '@/interfaces/bill';
+import RoomRenting from '@/interfaces/roomRenting';
+import { GetFetch, PostImage, PutFetch } from '@/libs/fetch';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,179 +15,274 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  PermissionsAndroid,
-  Platform,
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
-import { launchImageLibrary, Asset } from 'react-native-image-picker';
+
+const API_IMAGE_BASE64 = "https://ho-ng-b-i-1.paiza-user-free.cloud:5000/api/uploads/";
 
 export default function FullPaymentScreen() {
-  const [paymentImage, setPaymentImage] = useState<Asset | null>(null);
+  const [paymentImage, setPaymentImage] = useState<string | null>(null);
+  const [data, setData] = useState<RoomRenting | null>(null);
+  const [token, setToken] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [bill, setBill] = useState<BillType | null>(null);
+  const info = useRef<any | null>(null);
+  const [img, setImg] = useState<string | null>(null);
 
-  const data = {
-    name: 'P3',
-    person_limit: 3,
-    CountPeople: 1,
-    electric_number: 0,
-    water_number: 0,
-    check_in: '2025-05-01',
-    bill_at: '2025-03-09 00:00:00',
-    username: 'Lank',
-    phone: '0349852986',
-    email: 'lank@gmail.com',
-    address: 'hy-vl-nd',
-    amount: 1500000,
-    bankCode: 'MB',
-    accountNo: '89696996696699',
-    accountName: 'BUI XUAN HOANG',
-    addInfo: 'Thanh toan phong P3 - Thang 5',
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  useEffect(() => {
+    if (token) loadData();
+  }, [token]);
+
+  useEffect(() => {
+    loadBill();
+  }, [data?.id]);
+
+  useEffect(() => {
+    if (bill?.img_bill) fetchImage(bill.img_bill, setImg);
+  }, [bill?.img_bill]);
+
+  const getToken = async () => {
+    const storedToken = await AsyncStorage.getItem('token');
+    const storedInfo = await AsyncStorage.getItem('info');
+    info.current = storedInfo ? JSON.parse(storedInfo) : null;
+    if (storedToken) setToken(storedToken);
+    else router.replace('/login');
   };
 
-  const qrURL = `https://img.vietqr.io/image/${data.bankCode}-${data.accountNo}-compact.png?amount=${data.amount}&addInfo=${encodeURIComponent(
-    data.addInfo
-  )}&accountName=${encodeURIComponent(data.accountName)}`;
+  const loadData = async () => {
+    setLoading(true);
+    GetFetch('mobile/renting', (res: RoomRenting) => setData(res), token, (err: any) => alert(err.message));
+    setLoading(false);
+  };
 
-  const requestAndroidPermission = async () => {
-    if (Platform.OS === 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    }
-    return true;
+  const loadBill = async () => {
+    if (!data) return;
+    setLoading(true);
+    GetFetch('mobile/bill/' + data.id, (res: BillType) => setBill(res), token, (err: any) => alert(err.message));
+    setLoading(false);
   };
 
   const downloadQR = async () => {
-    try {
-      const hasPermission = await requestAndroidPermission();
-      if (!hasPermission) {
-        Alert.alert('Không có quyền lưu ảnh');
-        return;
-      }
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') return Alert.alert('❌ Không có quyền truy cập thư viện ảnh');
+    setLoading(true);
+    const fileUri = FileSystem.documentDirectory + `QR_${Date.now()}.png`;
+    const downloadResumable = FileSystem.createDownloadResumable(qrURL, fileUri);
+    const downloadResult = await downloadResumable.downloadAsync();
+    if (!downloadResult?.uri) return Alert.alert('❌ Lỗi', 'Không thể tải ảnh QR');
+    const asset = await MediaLibrary.createAssetAsync(downloadResult.uri);
+    await MediaLibrary.createAlbumAsync('Download', asset, false);
+    Alert.alert('✅ Thành công', 'Đã lưu ảnh QR vào thư viện ảnh!');
+    setLoading(false);
+  };
 
-      const RNFS = await import('react-native-fs');
-      const filePath = `${RNFS.default.DownloadDirectoryPath}/QR_${Date.now()}.png`;
-
-      const result = await RNFS.default.downloadFile({
-        fromUrl: qrURL,
-        toFile: filePath,
-      }).promise;
-
-      if (result.statusCode === 200) {
-        Alert.alert('✅ Thành công', `Đã lưu QR tại: ${filePath}`);
-      } else {
-        Alert.alert('❌ Lỗi', 'Không thể tải ảnh QR');
-      }
-    } catch (err) {
-      console.error(err);
-      Alert.alert('❌ Lỗi', 'Lưu QR thất bại');
+  const pickImage = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) return Alert.alert("Không có quyền truy cập thư viện ảnh!");
+    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, quality: 0.7 });
+    if (!result.canceled && result.assets.length > 0) {
+      const asset = result.assets[0];
+      const localUri = asset.uri;
+      const filename = localUri.split('/').pop() || 'photo.jpg';
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+      const formData = new FormData();
+      formData.append('image', { uri: localUri, name: filename, type } as any);
+      setLoading(true);
+      PostImage('api/upload', formData, (filename: string) => {
+        setPaymentImage(filename);
+        setBill((prev) => prev ? { ...prev, img_bill: filename } : prev);
+        Alert.alert("✅ Thành công", "Ảnh đã được tải lên!");
+        setLoading(false);
+      }, token);
     }
   };
 
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo', quality: 0.8 }, (response) => {
-      if (response.didCancel) return;
-      if (response.assets && response.assets.length > 0) {
-        setPaymentImage(response.assets[0]);
-      }
-    });
+  const fetchImage = async (filename: string, setUri: (url: string) => void) => {
+    try {
+      const res = await fetch(API_IMAGE_BASE64 + filename, {
+        headers: { Authorization: `Lank ${token}` },
+      });
+      const data = await res.json();
+      if (data.base64) setUri(data.base64);
+    } catch (error) {
+      console.error("Failed to load secure image", error);
+    }
   };
 
+  const confirmBill = async () => {
+    if (!bill?.img_bill) return alert("Hãy upload ảnh hóa đơn của bạn!");
+    setLoading(true);
+    PutFetch('mobile/bill/confirm/' + bill.id, { img_bill: bill.img_bill }, (data: any) => {
+      alert(data.message + " Hãy chờ thông báo mới nhất từ chủ thuê!");
+    }, token, (err: any) => alert(err.message));
+    setLoading(false);
+  };
+
+  const handleLeave = async () => {
+    setLoading(true);
+    GetFetch('mobile/leave', (data: any) => {
+      alert(data.message + " Hãy đợi thông báo mới nhất từ chủ thuê!");
+    }, token, (err: any) => alert(err.message));
+    setLoading(false);
+  };
+
+  const qrURL = data
+    ? `https://img.vietqr.io/image/${data.bank}-${data.account_no}-compact.png?amount=1500&addInfo=${encodeURIComponent('Thanh toan tien phong thang nay')}&accountName=${encodeURIComponent(data.account_name)}`
+    : '';
+
+  if ((loading && !refreshing) || !data) {
+    return <View style={styles.loadingContainer}><ActivityIndicator size="large" color="#007bff" /></View>;
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Phòng {data.name}</Text>
+    <ScrollView contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadData} />}>
+      <Text style={styles.header}>💼 Thanh toán phòng: {data.name}</Text>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>👤 Chủ phòng</Text>
-        <Text>Họ tên: {data.username}</Text>
-        <Text>📞 SĐT: {data.phone}</Text>
-        <Text>📧 Email: {data.email}</Text>
-        <Text>🏠 Địa chỉ: {data.address}</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>📌 Chủ phòng</Text>
+        <Text>👤 {data.username}</Text>
+        <Text>📞 {data.phone}</Text>
+        <Text>📧 {data.email}</Text>
+        <Text>🏠 {data.address}</Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🏡 Thông tin phòng</Text>
-        <View style={styles.infoRow}>
-          <Text>👥 {data.CountPeople}/{data.person_limit} người</Text>
-          <Text>⚡ Điện: {data.electric_number}</Text>
-        </View>
-        <View style={styles.infoRow}>
-          <Text>💧 Nước: {data.water_number}</Text>
-          <Text>🧾 Hóa đơn: {data.bill_at.split(' ')[0]}</Text>
-        </View>
-        <Text>🗓️ Nhận phòng: {data.check_in}</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>🧾 Thông tin phòng</Text>
+        <Text>👥 {data.CountPeople}/{data.person_limit} người</Text>
+        <Text>⚡ Điện: {data.electric_number}</Text>
+        <Text>💧 Nước: {data.water_number}</Text>
+        <Text>📅 Hóa đơn: {data.bill_at ? new Date(data.bill_at).toDateString() : '---'}</Text>
+        <Text>🗓️ Nhận phòng: {data.check_in ? new Date(data.check_in).toDateString() : '---'}</Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🏦 Thông tin chuyển khoản</Text>
-        <Text>💳 Ngân hàng: {data.bankCode}</Text>
-        <Text>🔢 STK: {data.accountNo}</Text>
-        <Text>👤 Tên người nhận: {data.accountName}</Text>
-        <Text>📝 Nội dung: {data.addInfo}</Text>
-        <View style={styles.sectionRow}>
-          <TouchableOpacity style={styles.buttonSmall} onPress={downloadQR}>
-            <Text style={styles.buttonText}>⬇️ Tải QR</Text>
-          </TouchableOpacity>
-          <Image
-            source={{ uri: qrURL }}
-            style={styles.qrImageSmall}
-          />
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📷 Ảnh chuyển khoản</Text>
-        <View style={styles.sectionRow}>
-          <TouchableOpacity style={styles.buttonSmall} onPress={selectImage}>
-            <Text style={styles.buttonText}>📤 Chọn ảnh</Text>
-          </TouchableOpacity>
-          {paymentImage?.uri ? (
-            <Image source={{ uri: paymentImage.uri }} style={styles.qrImageSmall} />
-          ) : (
-            <View style={styles.qrImageSmall}>
-              <Text style={{ fontSize: 12 }}>Chưa có ảnh</Text>
+      {bill && (
+        <>
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>🏦 Thông tin chuyển khoản</Text>
+            <Text>Ngân hàng: {data.bank}</Text>
+            <Text>STK: {data.account_no}</Text>
+            <Text>Tên người nhận: {data.account_name}</Text>
+            <Text>Nội dung: Thanh toan tien phong thang nay</Text>
+            <View style={styles.qrRow}>
+              <TouchableOpacity style={styles.button} onPress={downloadQR}>
+                <Text style={styles.buttonText}>⬇️ Tải QR</Text>
+              </TouchableOpacity>
+              {qrURL !== '' && <Image source={{ uri: qrURL }} style={styles.qrImage} />}
             </View>
-          )}
-        </View>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>📋 Chi tiết thanh toán</Text>
+            <Text>📅 Ngày tạo: {new Date(bill.day).toLocaleDateString()}</Text>
+            <Text>💵 Giá phòng: {bill.room_price.toLocaleString()}đ</Text>
+            <Text>⚡ Điện x {bill.electric_number_final-bill.electric_number}   = {(bill.electric_price).toLocaleString()}đ</Text>
+            <Text>💧 Nước x {bill.water_number_final-bill.water_number}  = {(bill.water_price).toLocaleString()}đ</Text>
+            <Text>🛎️ Dịch vụ: {bill.service_price.toLocaleString()}đ</Text>
+            <View style={{ height: 1, backgroundColor: '#ccc', marginVertical: 8 }} />
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>🧾 Tổng cộng: {(bill.room_price + bill.electric_price + bill.water_price + bill.service_price).toLocaleString()}đ</Text>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>📤 Ảnh chuyển khoản</Text>
+            <TouchableOpacity style={styles.button} onPress={pickImage}>
+              <Text style={styles.buttonText}>📁 Chọn ảnh từ thư viện</Text>
+            </TouchableOpacity>
+            {bill.img_bill || paymentImage ? (
+              <Image source={{ uri: img || paymentImage! }} style={styles.uploadedImage} />
+            ) : (
+              <Text style={{ marginTop: 10, color: '#888' }}>Chưa có ảnh nào được chọn</Text>
+            )}
+            <TouchableOpacity style={styles.button} onPress={confirmBill}>
+              <Text style={styles.buttonText}>✅ Xác nhận đã thanh toán</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+
+      <View style={styles.card}>
+        <TouchableOpacity style={styles.buttonRed} onPress={handleLeave}>
+          <Text style={styles.buttonText}>📤 Rời phòng</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: '#fff' },
-  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 16 },
-  section: { marginBottom: 20 },
-  sectionRow: {
+  container: {
+    padding: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 16,
+    marginBottom: 20,
+    borderRadius: 12,
+    elevation: 1,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    gap: 6,
+  },
+  sectionTitle: {
+    fontWeight: '600',
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  qrRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 8,
-    gap: 16,
+    marginTop: 12,
   },
-  sectionTitle: { fontWeight: '600', fontSize: 16, marginBottom: 8 },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 6,
+  qrImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+    backgroundColor: '#eee',
   },
-  buttonSmall: {
+  uploadedImage: {
+    width: '100%',
+    height: 180,
+    marginTop: 12,
+    borderRadius: 12,
+    backgroundColor: '#f0f0f0',
+    resizeMode: 'cover',
+  },
+  button: {
     backgroundColor: '#007bff',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  buttonRed: {
+    backgroundColor: '#ff4d4f',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
   },
   buttonText: {
     color: '#fff',
-    fontWeight: '500',
-    fontSize: 14,
-  },
-  qrImageSmall: {
-    width: 120,
-    height: 120,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    resizeMode: 'contain',
+    fontWeight: '600',
   },
 });
