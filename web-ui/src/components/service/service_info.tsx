@@ -58,7 +58,7 @@ export default function ServiceInfo() {
     async function handleUpdate() {
         loadingContext?.setStatus(true)
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn sửa dịch vụ " + object?.name+" ?")
-        if (!result)
+        if (result)
             return
         PutFetch('service/' + dataContext?.id,
             object,

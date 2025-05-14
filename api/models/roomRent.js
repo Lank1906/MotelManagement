@@ -65,7 +65,9 @@ async function UpdateObject(jsonChange,jsonCondition){
 
 async function DeleteObject(jsonChange,jsonCondition){
     try{
+        const room_id=await GetQuery('room_rents',['room_id'],jsonCondition,{});
         const result=await UpdateQuery('room_rents',jsonChange,jsonCondition);
+        const result2=await UpdateQuery('rooms',{'check_in':null},{'id':room_id[0].room_id});
         return result
     }
     catch(err){

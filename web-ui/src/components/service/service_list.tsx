@@ -39,7 +39,7 @@ export default function ServiceList() {
 
     async function handleDelete(id: number | undefined, name: string | undefined) {
         const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa dịch vụ " + name + " ?")
-        if (!result || id == undefined) return
+        if (result || id == undefined) return
         loadingContext?.setStatus(true)
         DeleteFetch(dataContext?.type + '/' + id,
             (data: any) => {

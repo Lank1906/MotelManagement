@@ -18,10 +18,10 @@ export default function PersonCard(props: PersonType) {
   const publicUrl="https://ho-ng-b-i-1.paiza-user-free.cloud:5000/uploads/";
 
   async function HandleDelete() {
-    loadingContext?.setStatus(true)
     const result = await toastifyContext?.confirmResult("Bạn có chắc chắn muốn xóa " + props.renter_name + " không ?")
-    if (!result) return
-    DeleteFetch('renter/' + props.id,
+    if (result) return
+    loadingContext?.setStatus(true)
+    DeleteFetch('room-rent/' + props.id,
       (data: any) => {
         let tam = (dataContext?.list as (RoomType | PersonType)[]).filter(
           (item: RoomType | PersonType) =>

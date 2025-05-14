@@ -58,7 +58,7 @@ async function Update(req,res){
 }
 
 async function Delete(req,res){
-    const result=await DeleteObject({"is_active":0,"room_id":null},{"user_id":req.user.id,"id":req.params.id})
+    const result=await DeleteObject({"is_active":0,"room_id":null},{"id":req.params.id})
     if(result>0){
         return res.status(200).json({"message":"Xác nhận chuyển đi thành công","id":result});
     }

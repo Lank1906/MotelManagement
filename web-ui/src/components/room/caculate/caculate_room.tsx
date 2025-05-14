@@ -83,8 +83,7 @@ export default function RoomCaculate() {
             announceContext?.setType("warning");
             announceContext?.setClose(true);
             return;
-        } else if (id === 0) {
-            console.log(id)
+        } else if (type === -1) {
             announceContext?.setMessage("Vui lòng chọn loại thanh toán để tạo hóa đơn!");
             announceContext?.setType("warning");
             announceContext?.setClose(true);

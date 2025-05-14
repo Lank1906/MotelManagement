@@ -57,7 +57,10 @@ export default function FullPaymentScreen() {
 
   const loadData = async () => {
     setLoading(true);
-    GetFetch('mobile/renting', (res: RoomRenting) => setData(res), token, (err: any) => alert(err.message));
+    GetFetch('mobile/renting', (res: RoomRenting) => setData(res), token, (err: any) => {
+      // alert(err.message)
+      setData(null)
+    });
     setLoading(false);
   };
 
@@ -137,8 +140,11 @@ export default function FullPaymentScreen() {
     ? `https://img.vietqr.io/image/${data.bank}-${data.account_no}-compact.png?amount=1500&addInfo=${encodeURIComponent('Thanh toan tien phong thang nay')}&accountName=${encodeURIComponent(data.account_name)}`
     : '';
 
-  if ((loading && !refreshing) || !data) {
+  if ((loading && !refreshing)) {
     return <View style={styles.loadingContainer}><ActivityIndicator size="large" color="#007bff" /></View>;
+  }
+  if(!data){
+    return <View style={styles.loadingContainer}><Text>Bạn chưa thuê phòng nào!</Text></View>;
   }
 
   return (
